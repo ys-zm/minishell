@@ -1,0 +1,7 @@
+a.*
+*.a
+*.o
+*.out
+.vscode
+.DS_Store
+.idea*
