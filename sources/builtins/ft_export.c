@@ -78,6 +78,7 @@ int ft_export_single(t_var *mini, char *arg, size_t op_type, size_t op_pos)
     return (EXIT_SUCCESS);
 }
 
+//a=b ignores the key for some reason
 int   ft_export(t_var *mini, char **args, int fd_out)
 {
     size_t op_type = 0;
@@ -91,9 +92,9 @@ int   ft_export(t_var *mini, char **args, int fd_out)
     while (args && args[i])
     {
         op_type = ft_find_operator_type(args[i]);
+        printf("op type: %zu\n", op_type);
         op_pos = ft_find_operator_pos(args[i]);
-        if (ft_export_single(mini, args[i], op_type, op_pos))
-            return (EXIT_FAILURE);
+        ft_export_single(mini, args[i], op_type, op_pos);
         i++;
     } 
     return (EXIT_SUCCESS);

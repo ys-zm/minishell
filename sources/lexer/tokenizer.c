@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/27 17:20:39 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/12 16:45:41 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/12 17:11:49 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,13 +268,13 @@ t_list	*tokenize(char *input)
 					ft_lstclear(&tokens, ft_free);
 					return (NULL);
 				}
-				if (is_valid_char(input, len, '='))
-					end_word = true;
+				// if (is_valid_char(input, len, '='))
+				// 	end_word = true;
 				len++;
 				if (input[len] == '\0')
 					end_word = true;
-				else if (is_valid_char(input, len, '='))
-					end_word = true;
+				// else if (is_valid_char(input, len, '='))
+				// 	end_word = true;
 			}
 		}
 		if (new_word)

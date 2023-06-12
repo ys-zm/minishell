@@ -13,11 +13,20 @@ bool   ft_if_redir(t_var *mini, int index)
 
 bool    ft_check_permission(t_cmd *cmd, t_red_type red_type, int index)
 {
+    char    *file;
+
+    file = "here_doc/here_doc_";
     printf("red type: %d\n", red_type);
-    
-    if (red_type == RED_IN_SINGLE || red_type == RED_IN_DOUBLE)
+    if (red_type == RED_IN_SINGLE )
     {
         cmd->fd_in = open(cmd->files[index], O_RDONLY);
+        if (cmd->fd_in == -1)
+            return (EXIT_FAILURE);
+    }
+    if (red_type == RED_IN_DOUBLE)
+    {
+        file = ft_strjoin(file, ft_itoa(index + 1), "", 0);
+        cmd->fd_in = open(file, O_RDONLY);
         if (cmd->fd_in == -1)
             return (EXIT_FAILURE);
     }
@@ -46,7 +55,7 @@ void    ft_redir_type(t_var *mini, int index)
     while (cmd->files && cmd->files[i])
     {
         if (ft_check_permission(cmd, cmd->redirections[i], i) == EXIT_FAILURE)
-            ft_error_msg(mini, "Open failed.", 1);
+            ft_error_msg(mini, "Open failed.\n", 1);
         i++;
     }
 

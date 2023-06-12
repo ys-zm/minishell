@@ -7,7 +7,7 @@ int ft_find_operator_type(char *env)
     i = 0;
     if (env[i] == '=')
         return (false);
-    while (env && env[i] && env[i] != '=')
+    while (env[i] && env[i] != '=')
         i++;
     if (env[i] == '\0')
         return (false);
@@ -18,7 +18,7 @@ int ft_find_operator_type(char *env)
         else
             return (APPEND);
     }
-    if (env[i] == '=' && env[i - 1] == '+')
+    if (env[i] == '=' && env[i - 1] != '+')
         return (REPLACE);
     return (false);
 }

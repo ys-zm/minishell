@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/19 17:46:55 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/12 12:08:49 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/12 16:59:32 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,16 +164,9 @@ int32_t	handle_here_doc(char **cmd, uint32_t *cnt)
 			return (-1);
 		}
 		status_fork = fork_here_doc(file_name, delimiter);
-		if (status_fork == -1)
-		{
-			ft_free(file_name);
-			ft_free(delimiter);
-			return (-1);
-		}
-		*cmd = ft_insert_str(*cmd, file_name, del_pos + 1, del_pos + ft_strlen(delimiter));
 		ft_free(delimiter);
 		ft_free(file_name);
-		if (*cmd == NULL)
+		if (status_fork == -1)
 			return (-1);
 		del_pos = find_next_eof_pos(*cmd, del_pos);
 	}
