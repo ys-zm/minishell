@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/27 17:20:39 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/12 17:11:49 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/12 18:26:48 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,40 +127,64 @@ bool	get_cmd(t_list *tokens, t_cmd *cmd)
 	return (true);
 }
 
-bool	get_redirections(t_list *tokens, t_cmd *cmd)
+bool	get_redirections(t_list *tokens, t_cmd *cmd, int32_t order_cmd)
 {
 	uint32_t	i;
+	char		*here_doc_file;
 
-	cmd->redirections = ft_calloc(count_redirections(tokens), sizeof(t_red_type));
-	cmd->files = ft_calloc(cmd->n_redirect + 1, sizeof(char *));
-	if ((cmd->redirections == NULL) || (cmd->files == NULL))
+	cmd->n_redirect = count_redirections(tokens);
+	if (cmd->n_redirect == 0)
 	{
-		ft_free(cmd->redirections);
-		ft_free(cmd->files);
-		return (false);
+		cmd->redirections = NULL;
+		cmd->files = NULL;
+		return (true);
 	}
-	i = 0;
-	while (tokens)
+	else
 	{
-		if (is_redirection(tokens->content))	// NB need to check if redirection is inside quotes
+		cmd->redirections = ft_calloc(cmd->n_redirect, sizeof(t_red_type));
+		if (cmd->redirections == NULL)
+			return (false);
+		cmd->files = ft_calloc(cmd->n_redirect + 1, sizeof(char *));
+		if (cmd->files == NULL)
 		{
-			cmd->redirections[i] = get_type_redirection(tokens->content);
-			tokens = tokens->next;
-			if (((! ft_strchr(tokens->content, '\'')) || (! ft_strchr(tokens->content, '\"'))))
-				cmd->files[i] = remove_quotes(tokens->content);
-			else
-				cmd->files[i] = ft_strdup(tokens->content);
-			if (cmd->files[i] == NULL)
-			{
-				ft_free(cmd->redirections);
-				ft_free(cmd->files);
-				return (false);
-			}
-			i++;
+			ft_free(cmd->redirections);
+			return (false);
 		}
-		tokens = tokens->next;
+		i = 0;
+		while (tokens)
+		{
+			if (is_redirection(tokens->content))	// NB need to check if redirection is inside quotes
+			{
+				cmd->redirections[i] = get_type_redirection(tokens->content);
+				tokens = tokens->next;
+				if (cmd->redirections[i] == RED_IN_DOUBLE)
+				{
+					here_doc_file = create_file_name(order_cmd);
+					if (here_doc_file == NULL)
+					{
+						ft_free(cmd->redirections);
+						ft_free(cmd->files);
+						return (false);
+					}
+					ft_free(tokens->content);
+					tokens->content = here_doc_file;
+				}
+				if (((! ft_strchr(tokens->content, '\'')) || (! ft_strchr(tokens->content, '\"'))))
+					cmd->files[i] = remove_quotes(tokens->content);
+				else
+					cmd->files[i] = ft_strdup(tokens->content);
+				if (cmd->files[i] == NULL)
+				{
+					ft_free(cmd->redirections);
+					ft_free(cmd->files);
+					return (false);
+				}
+				i++;
+			}
+			tokens = tokens->next;
+		}
+		return (true);
 	}
-	return (true);
 }
 
 bool	is_redirection(char	*word)
@@ -183,27 +207,18 @@ bool	is_redirection(char	*word)
 		return (false);
 }
 
-bool	split_input(t_cmd *cmd, t_list *tokens)
+bool	split_input(t_cmd *cmd, t_list *tokens, int32_t order_cmd)
 {
 	bool		status;
 
 	status = get_cmd(tokens, cmd);
 	if (status == false)
 		return (false);
-	cmd->n_redirect = count_redirections(tokens);
-	if (cmd->n_redirect > 0)
+	status = get_redirections(tokens, cmd, order_cmd);
+	if (status == false)
 	{
-		status = get_redirections(tokens, cmd);
-		if (status == false)
-		{
-			ft_free(cmd->full_cmd);
-			return (false);
-		}
-	}
-	else
-	{
-		cmd->redirections = NULL;
-		cmd->files = NULL;
+		ft_free(cmd->full_cmd);
+		return (false);
 	}
 	return (true);
 }

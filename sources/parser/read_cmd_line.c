@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/12 16:50:01 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/12 18:48:56 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ t_cmd	*create_new_cmd(char *cmd_str, t_var *depo)
 			ft_free(cmd);
 			return (ft_free_double((void **) str_cmds, -1));
 		}
-		cmd_status = split_input(cmd + i, tokens);
+		cmd_status = split_input(cmd + i, tokens, i + 1);
 		ft_lstclear(&tokens, ft_free);
 		if (cmd_status == false)
 		{
@@ -122,7 +122,6 @@ void	main_loop(t_var *depo)
 	{
 		new_cmd = NULL;
 		status = aquire_cmd(&new_cmd);
-		ft_printf("status cmd: %d - cmd: %s\n", status, new_cmd);
 		if (status == CMD_MEM_ERR)
 			malloc_protect(depo, NULL);
 		else if (status == CMD_NULL_ERR)
@@ -141,10 +140,10 @@ void	main_loop(t_var *depo)
 			depo->cmd_data = create_new_cmd(new_cmd, depo);
 			if (depo->cmd_data == NULL)
 				malloc_protect(depo, NULL);
-			if (depo->cmd_data->cmd_name)
-				print_cmd(depo);
+			print_cmd(depo);
 			ft_exec(depo);
-			// remove here_docs
+			if (remove_here_docs(depo) == false)
+				malloc_protect(depo, NULL);
 			ft_free_cmd_arr(depo->cmd_data, depo->n_cmd);
 			depo->cmd_data = NULL;
 		}

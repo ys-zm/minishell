@@ -198,15 +198,15 @@ uint32_t		count_words(t_list *tokens);
 
 uint32_t		count_redirections(t_list *tokens);
 
-bool			has_redirections(t_list *tokens);
+// bool			has_redirections(t_list *tokens);
 
 bool			get_cmd(t_list *tokens, t_cmd *cmd);
 
-bool			get_redirections(t_list *tokens, t_cmd *cmd);
+bool			get_redirections(t_list *tokens, t_cmd *cmd, int32_t order_cmd);
 
 bool			is_redirection(char	*word);
 
-bool			split_input(t_cmd *cmd, t_list *tokens);
+bool			split_input(t_cmd *cmd, t_list *tokens, int32_t order_cmd);
 
 t_red_type		get_type_redirection(char *to_check);
 
@@ -259,5 +259,7 @@ bool			is_arrow(char to_check);
 void			print_cmd(t_var *depo);
 
 uint32_t		get_order_cmd(char *str, uint32_t pos);
+
+bool remove_here_docs(t_var *mini);
 
 #endif

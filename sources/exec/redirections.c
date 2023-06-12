@@ -13,10 +13,6 @@ bool   ft_if_redir(t_var *mini, int index)
 
 bool    ft_check_permission(t_cmd *cmd, t_red_type red_type, int index)
 {
-    char    *file;
-
-    file = "here_doc/here_doc_";
-    printf("red type: %d\n", red_type);
     if (red_type == RED_IN_SINGLE )
     {
         cmd->fd_in = open(cmd->files[index], O_RDONLY);
@@ -25,8 +21,7 @@ bool    ft_check_permission(t_cmd *cmd, t_red_type red_type, int index)
     }
     if (red_type == RED_IN_DOUBLE)
     {
-        file = ft_strjoin(file, ft_itoa(index + 1), "", 0);
-        cmd->fd_in = open(file, O_RDONLY);
+        cmd->fd_in = open(cmd->files[index], O_RDONLY);
         if (cmd->fd_in == -1)
             return (EXIT_FAILURE);
     }

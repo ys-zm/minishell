@@ -92,7 +92,7 @@ int   ft_export(t_var *mini, char **args, int fd_out)
     while (args && args[i])
     {
         op_type = ft_find_operator_type(args[i]);
-        printf("op type: %zu\n", op_type);
+        // printf("op type: %zu\n", op_type);
         op_pos = ft_find_operator_pos(args[i]);
         ft_export_single(mini, args[i], op_type, op_pos);
         i++;
