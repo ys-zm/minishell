@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/20 19:09:49 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/11 18:41:15 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/12 16:50:40 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void	print_cmd(t_var	*mini)
 	{
 		ft_printf("COMMAND\n\tcmd name: %s\n", mini->cmd_data[j].cmd_name);
 		i = 0;
-		while (mini->cmd_data[j].full_cmd[i])
+		while (mini->cmd_data[j].full_cmd && mini->cmd_data[j].full_cmd[i])
 			ft_printf("\t\targ: %s\n", mini->cmd_data[j].full_cmd[i++]);
 		if (mini->cmd_data[j].redirections)
 		{

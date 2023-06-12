@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   tokenizer.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/27 17:20:39 by fra               #+#    #+#             */
-/*   Updated: 2023/06/10 20:26:21 by fra              ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   tokenizer.c                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: fra <fra@student.42.fr>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/05/27 17:20:39 by fra           #+#    #+#                 */
+/*   Updated: 2023/06/12 16:45:41 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,15 @@ uint32_t	count_redirections(t_list *tokens)
 bool	get_cmd(t_list *tokens, t_cmd *cmd)
 {
 	uint32_t	i;
+	uint32_t	n_words;
 
+	n_words = count_words(tokens);
+	if (n_words == 0)
+	{
+		cmd->full_cmd = NULL;
+		cmd->cmd_name = NULL;
+		return (true);
+	}
 	cmd->full_cmd = ft_calloc(count_words(tokens) + 1, sizeof(char *));
 	if (cmd->full_cmd == NULL)
 		return (false);
@@ -217,10 +225,10 @@ t_red_type	get_type_redirection(char *to_check)
 	{
 		if (is_quote(*to_check))
 			to_check++;
-		if (*to_check == '<')
-			return (RED_IN_DOUBLE);
+		if (*to_check == '>')
+			return (RED_OUT_DOUBLE);
 		else
-			return (RED_IN_SINGLE);
+			return (RED_OUT_SINGLE);
 	}
 }
 

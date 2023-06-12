@@ -160,19 +160,13 @@ void    ft_redirect(t_var *mini, int index);
 
 int     wait_for_children(t_var *mini);
 
-void	ft_exec_child_single(t_var *mini, int index, int fd_out);
+int		ft_exec_child_single(t_var *mini, int index, int fd_out);
 
 char    *ft_find_path(t_var *mini);
 
 void    ft_split_path(t_var *mini);
 
 int		process_management(t_var *mini);
-
-// Main Utils
-
-// void    set_up_struct(t_var **mini, char **envp);
-
-// void    fill_up_struct(t_var *mini);
 
 //==============================================================
 
@@ -223,14 +217,10 @@ char			*expand_vars(char *input, t_env *env_vars);
 
 char			*get_var_value(t_env *env_vars, char *var_name);
 
-// char			*insert_var(char *input, char *var_value, uint32_t start, uint32_t end);
-
 
 t_cmd_status	ft_readline(char **buffer, const char *prompt, bool check);
 
 t_cmd_status	aquire_cmd(char **cmd);
-
-// bool			has_here_doc(char *cmd);
 
 t_cmd			*create_new_cmd(char *cmd, t_var *depo);
 

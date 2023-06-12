@@ -13,8 +13,8 @@ bool   ft_if_redir(t_var *mini, int index)
 
 bool    ft_check_permission(t_cmd *cmd, t_red_type red_type, int index)
 {
-
-    red_type = RED_OUT_SINGLE;
+    printf("red type: %d\n", red_type);
+    
     if (red_type == RED_IN_SINGLE || red_type == RED_IN_DOUBLE)
     {
         cmd->fd_in = open(cmd->files[index], O_RDONLY);

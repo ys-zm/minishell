@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 
-void ft_exec_child_single(t_var *mini, int index, int fd_out)
+int ft_exec_child_single(t_var *mini, int index, int fd_out)
 {
     char    *cmd_path;
     t_cmd   cmd;
@@ -9,6 +9,8 @@ void ft_exec_child_single(t_var *mini, int index, int fd_out)
     
     cmd_path = NULL;
     cmd = mini->cmd_data[index];
+    if (!cmd.cmd_name)
+        exit(EXIT_SUCCESS);
     if (!ft_if_builtin(cmd.cmd_name))
     {
         cmd_path = access_cmd_path(mini, cmd.cmd_name);
@@ -18,7 +20,7 @@ void ft_exec_child_single(t_var *mini, int index, int fd_out)
     {
         status_check = ft_exec_builtin(mini, index, fd_out);
         if (status_check == 0)
-            exit(EXIT_SUCCESS);
+            exit (EXIT_SUCCESS);
         else if (status_check == -1 && mini->status == -1)
             exit(mini->status);
     }

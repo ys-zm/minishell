@@ -8,6 +8,11 @@ int   single_cmd(t_var *mini)
     int     exit_status;
 
     cmd = mini->cmd_data;
+    if (!cmd->cmd_name)
+    {
+        ft_redir_type(mini, 0);
+        return (0);
+    }
     if (ft_if_builtin(cmd->cmd_name))
     {
         ft_redir_type(mini, 0);
@@ -19,10 +24,7 @@ int   single_cmd(t_var *mini)
     if (mini->pid[0] < 0)
         return (ft_error_msg(mini, "Fork failed.", 1), mini->status = -1, -1);
     if (mini->pid[0] == 0)
-    {
         ft_exec_child_single(mini, 0, STDOUT_FILENO);
-        return (EXIT_SUCCESS);
-    }
     waitpid(mini->pid[0], &exit_status, 0);
     if (WIFEXITED(exit_status))
         return (WEXITSTATUS(exit_status));
