@@ -79,6 +79,8 @@ int ft_export_single(t_var *mini, char *arg, size_t op_type, size_t op_pos)
 }
 
 //a=b ignores the key for some reason
+//expansion should work i.e. echo $new_key shold expand new_value
+// export a="ls -la". run $a should run the cmd.
 int   ft_export(t_var *mini, char **args, int fd_out)
 {
     size_t op_type = 0;
@@ -94,6 +96,7 @@ int   ft_export(t_var *mini, char **args, int fd_out)
         op_type = ft_find_operator_type(args[i]);
         printf("op type: %zu\n", op_type);
         op_pos = ft_find_operator_pos(args[i]);
+        printf("op pos: %zu\n", op_pos);
         ft_export_single(mini, args[i], op_type, op_pos);
         i++;
     } 

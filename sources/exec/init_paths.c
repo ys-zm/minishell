@@ -25,7 +25,10 @@ void ft_split_path(t_var *mini)
     {
         mini->paths = ft_split(path_value, ':', false);
         if (!mini->paths)
+        {
+            free(mini->paths);
             malloc_protect(mini, NULL);
+        }
         return ;
     }
     mini->paths = NULL;

@@ -22,6 +22,8 @@
 # include <limits.h>
 # include <dirent.h>
 
+int global_exit_code;
+
 
 typedef enum s_cmd_status
 {
@@ -63,7 +65,7 @@ typedef struct s_var
 {
     t_cmd       *cmd_data;
     u_int32_t   n_cmd;
-    t_env       *env_list;
+    t_env       *env_list; //make it a double pointer
     char        **env_arr;
     char        **paths;
     int         **pipes;
@@ -97,7 +99,7 @@ int     ft_pwd(int fd_out);
 int     ft_cd(t_var *mini, char **args, int fd_out);
 int     ft_env(t_var *mini, int fd_out);
 int		ft_echo(char **args, int fd_out);
-int     ft_unset(t_var *mini, char *key, int fd_out);
+int     ft_unset(t_var **mini, char *key, int fd_out);
 int		ft_exit(t_var *mini, char **args, int fd_out);
 int		ft_export(t_var *mini, char **args, int fd_out);
 
@@ -119,7 +121,7 @@ t_env	*ft_new_node(char *key, char *value);
 // Functions for ENV Parsing and Export Function
 t_env   *ft_envp_node(t_var *mini, char *envp);
 
-int    ft_exec(t_var *mini);
+int    ft_exec(t_var **mini);
 void    ft_command_not_found(char *cmd);
 void    ft_permission_denied(char *cmd);
 
@@ -131,7 +133,7 @@ void    fill_up_struct(t_var *mini);
 
 // Exec Functions
 
-void    ft_mem_alloc(t_var *mini);
+void    ft_mem_alloc(t_var **mini);
 
 bool    ft_if_builtin(char *func);
 
@@ -139,7 +141,7 @@ bool    ft_if_redir(t_var *mini, int index);
 
 bool    ft_check_permission(t_cmd *cmd, t_red_type red_type, int index);
 
-int    ft_exec_builtin(t_var *mini, int index, int fd_out);
+int    ft_exec_builtin(t_var **mini, int index, int fd_out);
 
 //Functinons to check if program exists in paths --> exec/access.c
 char    *check_env_paths(t_var *mini, char *cmd);

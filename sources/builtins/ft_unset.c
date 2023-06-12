@@ -1,30 +1,46 @@
 #include "minishell.h"
 
-int    ft_del_node(t_env *env_list, char *key)
+int    ft_del_node(t_var **mini, char *key)
 {
+    t_env   *env_list = (*mini)->env_list;
     t_env   *prev;
-    
+    t_env   *next;
+    t_env   *curr;
+
+    curr = env_list;
     prev = NULL;
-    while (env_list)
+    next = env_list->next;
+    if (curr->key && !ft_strcmp(curr->key, key))
     {
-        if (!ft_strcmp(env_list->key, key))
-            break ;
-        prev = env_list;
-        env_list = env_list->next;
+        free(curr);
+        (*mini)->env_list = next;
     }
-    if (env_list && !ft_strcmp(env_list->key, key))
+    else
     {
-        prev->next = env_list->next; //segfault bait
-        free(env_list); //its a struct
+        while (curr)
+        {
+            if (!ft_strcmp(curr->key, key))
+                break ;
+            prev = curr;
+            curr = curr->next;
+            next = curr->next;
+        }
+    }
+    if (curr && !ft_strcmp(env_list->key, key))
+    {
+        prev->next = next; //segfault bait
+        free(curr); //its a struct
     }
     return (EXIT_FAILURE);
 }
 
 //ft_unset: remove env variable from list
-int    ft_unset(t_var *mini, char *key, int fd_out)
+//if its the head, set new head
+int    ft_unset(t_var **mini, char *key, int fd_out)
 {
     (void)fd_out;
-    if (ft_del_node(mini->env_list, key))
+
+    if (ft_del_node(mini, key))
         return (EXIT_FAILURE);
     return (EXIT_SUCCESS);
 }

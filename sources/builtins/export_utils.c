@@ -18,7 +18,7 @@ int ft_find_operator_type(char *env)
         else
             return (APPEND);
     }
-    if (env[i] == '=' && env[i - 1] != '+')
+    if (env[i] == '=')
         return (REPLACE);
     return (false);
 }
@@ -36,7 +36,7 @@ int ft_find_operator_pos(char *env)
         return (0);
     if (env[i - 1] == '+')
         return (i - 1);
-    if (env[i] == '=' && env[i - 1] == '+')
+    if (env[i] == '=')
         return (i);
     return (0);
 }

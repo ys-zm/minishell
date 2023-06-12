@@ -11,7 +11,7 @@ void    create_pipes(t_var *mini)
         if (pipe(mini->pipes[i]) == -1)
         {
             ft_free_all(mini);
-            ft_error_msg(mini, "Creating pipes failde.", 1);
+            ft_error_msg(mini, "Creating pipes failed.", 1);
         }
         i++;
     }
