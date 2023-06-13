@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/13 09:23:19 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/13 15:30:06 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,16 +100,13 @@ t_cmd	*create_new_cmd(char *cmd_str, t_var *depo)
 			ft_free(cmd);
 			return (ft_free_double((void **) str_cmds, -1));
 		}
-		// cmd_status = split_input(cmd + i, tokens, i + 1);
-
 		cmd_status = get_cmd(tokens, cmd);
+		if (cmd_status == false)
 		{
 			ft_lstclear(&tokens, ft_free);
 			ft_free_cmd_arr(cmd, i);
 			return (NULL);
 		}
-		// if (status == false)
-		// 	return (false);
 		cmd_status = get_redirections(tokens, cmd, i + 1);
 		if (cmd_status == false)
 		{
@@ -119,11 +116,6 @@ t_cmd	*create_new_cmd(char *cmd_str, t_var *depo)
 			return (NULL);
 		}
 		ft_lstclear(&tokens, ft_free);
-		// if (cmd_status == false)
-		// {
-		// 	ft_free_cmd_arr(cmd, i);
-		// 	return (ft_free_double((void **) str_cmds, -1));
-		// }
 		i++;
 	}
 	ft_free_double((void **) str_cmds, -1);

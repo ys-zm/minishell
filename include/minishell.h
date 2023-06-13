@@ -16,12 +16,14 @@
 # include <stdbool.h>		// boolean types
 # include <stdint.h>		// cross-compiler types
 # include <signal.h>    	// signal(), sigemptyset(), kill(), getpid(), ...
+#include <termios.h>		// terminal confiuration stuff
 # include <sys/wait.h>
 # include <errno.h>
 # include <stddef.h>
 # include <limits.h>
 # include <dirent.h>
 
+typedef struct termios t_termios;
 
 typedef enum s_cmd_status
 {
