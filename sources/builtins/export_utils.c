@@ -75,7 +75,7 @@ void    ft_replace_value(t_var *mini, char *key, char *new_value)
 {
      t_env   *list;
 
-    list = mini->env_list;
+    list = *(mini->env_list);
     while (list)
     {
         if (ft_strcmp(list->key, key) == 0)
@@ -97,7 +97,7 @@ void    ft_append_value(t_var *mini, char *key, char *to_add)
     char    *new_value;
 
     new_value = NULL;
-    list = mini->env_list;
+    list = *(mini->env_list);
     while (list)
     {
         if (ft_strcmp(list->key, key) == 0)

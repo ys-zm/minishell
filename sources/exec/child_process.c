@@ -20,7 +20,7 @@ int ft_exec_child_single(t_var *mini, int index, int fd_out)
     }
     else
     {
-        status_check = ft_exec_builtin(&mini, index, fd_out);
+        status_check = ft_exec_builtin(mini, index, fd_out);
         if (status_check == 0)
             exit (EXIT_SUCCESS);
         else if (status_check == -1 && mini->status == -1)

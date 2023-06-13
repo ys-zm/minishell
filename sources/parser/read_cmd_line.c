@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/12 20:03:40 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/13 14:17:48 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ t_cmd	*create_new_cmd(char *cmd_str, t_var *depo)
 	t_list		*tokens;
 	uint32_t	i;
 
-	exp_var_cmd = expand_vars(cmd_str, depo->env_list);
+	exp_var_cmd = expand_vars(cmd_str, *(depo->env_list)); //i added a pointer fra!
 	if (exp_var_cmd == NULL)
 		return (NULL);
 	depo->n_cmd = n_cmds(exp_var_cmd);
@@ -143,7 +143,7 @@ void	main_loop(t_var *depo)
 				malloc_protect(depo, NULL);
 			if (depo->cmd_data->cmd_name)
 				print_cmd(depo);
-			ft_exec(&depo);
+			ft_exec(depo);
 			// remove here_docs
 			// ft_free_cmd_arr(depo->cmd_data, depo->n_cmd);
 			// ft_free_all(depo);

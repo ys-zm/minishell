@@ -20,24 +20,24 @@ char *ft_remove_lastdir(char *old_path)
 
 char    *ft_get_home(t_var *mini)
 {
-    t_env   *env;
+    t_env   **env;
 
     env = mini->env_list;
-    while (env->next && ft_strncmp(env->key, "HOME", 4))
-        env = env->next;
-    if (ft_strncmp(env->key, "HOME", 4))
+    while ((*env)->next && ft_strncmp((*env)->key, "HOME", 4))
+        *env = (*env)->next;
+    if (ft_strncmp((*env)->key, "HOME", 4))
     {
         ft_putstr_fd("cd: HOME not set", 2);
         return (NULL);
     }
-    return (env->value);
+    return ((*env)->value);
 }
 
-t_env   *ft_search_env_var(t_env *env_list, char *which_env)
+t_env   *ft_search_env_var(t_env **env_list, char *which_env)
 {
     t_env   *env;
 
-    env = env_list;
+    env = *env_list;
     while (env)
     {
         if (!ft_strncmp(which_env, env->key, ft_strlen(which_env)))
@@ -47,7 +47,7 @@ t_env   *ft_search_env_var(t_env *env_list, char *which_env)
     return (env);
 }
 
-void ft_update_env_var(t_env *env_list, char *which_env, char *new_env)
+void ft_update_env_var(t_env **env_list, char *which_env, char *new_env)
 {
     t_env   *env_var;
 
