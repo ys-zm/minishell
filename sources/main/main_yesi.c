@@ -14,6 +14,8 @@ void	signal_handler(int signum, siginfo_t *client, void *ucontext)
 	ucontext++;
 }
 
+int global_exit_code;
+
 int main(int argc, char **argv, char **envp)
 {
 	struct sigaction	action;

@@ -14,7 +14,7 @@ int    ft_del_node(t_var *mini, char *key)
     if (curr->key && !ft_strcmp(curr->key, key))
     {
         free(curr);
-        *(mini->env_list) = next;
+        *(mini->env_list) = next; //can this seg fault if it is null
     }
     else
     {
@@ -24,7 +24,8 @@ int    ft_del_node(t_var *mini, char *key)
                 break ;
             prev = curr;
             curr = curr->next;
-            next = curr->next;
+            if (curr)
+                next = curr->next;
         }
     }
     if (curr && !ft_strcmp(curr->key, key))
@@ -37,11 +38,23 @@ int    ft_del_node(t_var *mini, char *key)
 
 //ft_unset: remove env variable from list
 //if its the head, set new head
-int    ft_unset(t_var *mini, char *key, int fd_out)
+//if not valid key
+int    ft_unset(t_var *mini, char **args, int fd_out)
 {
-    (void)fd_out;
+    int i;
+    t_env *env;
 
-    if (ft_del_node(mini, key))
-        return (EXIT_FAILURE);
+    i = 1;
+    env = *(mini->env_list);
+    (void)fd_out;
+    if (!args || !env)
+        return (EXIT_SUCCESS);
+    while (args && args[i])
+    {
+        ft_check_key(args[i]);
+        if (ft_del_node(mini, args[i]))
+            return (EXIT_FAILURE);
+        i++;
+    }
     return (EXIT_SUCCESS);
 }

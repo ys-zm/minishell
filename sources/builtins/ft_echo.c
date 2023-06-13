@@ -14,25 +14,12 @@ t_env   *ft_find_node(t_env *env_list, char *key)
         return (NULL);
 }
 
-int ft_check_nflag(char *arg)
-{
-    int i;
 
-    i = 1;
-    if(!ft_strncmp("-n", arg, 2))
-    {
-        while (arg[i] == 'n')
-            i++;
-        if (arg[i] == '\0')
-            return (true);
-    }
-    return (false);
-}
-//make sure -nnnnnnn that is not single is also ignored!
 int    ft_echo(char **args, int fd_out)
 {
     bool    new_line;
     int     i;
+    int     j;
 
     i = 1;
     new_line = 1;
@@ -41,9 +28,12 @@ int    ft_echo(char **args, int fd_out)
         ft_putstr_fd("\n", fd_out);
         return (EXIT_SUCCESS);
     }
-    while (!ft_strncmp("-n", args[i], 2))
+    while (args[i] && args[i][0] == '-')
     {
-        if (ft_check_nflag(args[i]))
+        j = 1;
+        while (args[i][j] == 'n')
+            j++;
+        if (args[i][j] == '\0')
             new_line = 0;
         else
             break ;

@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/20 19:09:49 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/12 16:50:40 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/13 18:16:03 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 uint32_t	skip_redirect_chars(char *cmd, uint32_t pos)
 {
 	uint32_t	start_pos;
-
+	
 	start_pos = pos;
 	while (is_valid_arrow(cmd, pos))
 	{
@@ -153,12 +153,10 @@ void	print_cmd(t_var	*mini)
 
 uint32_t	get_order_cmd(char *str, uint32_t pos)
 {
-	uint32_t	i;
 	uint32_t	order;
 	char		*next_pipe;
 	uint32_t	pipe_pos;
 
-	i = 0;
 	order = 1;
 	pipe_pos = 0;
 	while (true)

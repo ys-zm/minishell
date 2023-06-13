@@ -14,3 +14,5 @@ int main(void)
     //closed single quotes should simply join contents between the quotes
     ft_export("a='a''b'c");
 }
+//Errors:
+// cat <Makefile exists the program completely

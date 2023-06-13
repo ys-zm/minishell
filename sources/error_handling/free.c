@@ -71,4 +71,8 @@ int ft_free_env_list(t_env **env_list)
     return (EXIT_SUCCESS);
 }
 
-
+void    ft_free_and_null(void *var)
+{
+    free(var);
+    var = NULL;
+}
