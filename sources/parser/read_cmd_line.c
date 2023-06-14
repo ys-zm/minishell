@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/14 17:40:14 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/14 18:08:08 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ t_cmd	*create_new_cmd(char *cmd_str, t_var *depo)
 	t_list		*tokens;
 	uint32_t	i;
 
-	exp_var_cmd = expand_vars(cmd_str, depo->env_list);
+	exp_var_cmd = expand_vars(cmd_str, *(depo->env_list)); //i added a pointer fra!
 	if (exp_var_cmd == NULL)
 		return (NULL);
 	depo->n_cmd = n_cmds(exp_var_cmd);
@@ -130,6 +130,8 @@ void	main_loop(t_var *depo)
 
 	while (true)
 	{
+		printf("NEW_MINISHELL\n");
+		printf("pid new mini: %d\n", getpid());
 		new_cmd = NULL;
 		status = aquire_cmd(&new_cmd);
 		if (status == CMD_MEM_ERR)
@@ -159,6 +161,9 @@ void	main_loop(t_var *depo)
 		}
 		else
 			ft_free(new_cmd);
+
+			
 	}
+
 	clear_history();
 }

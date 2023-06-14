@@ -4,8 +4,18 @@ char *ft_find_path(t_var *mini)
 {
     t_env   *env_list;
 
-    env_list = mini->env_list;
-    while (env_list->next != NULL)
+    if (!(mini->env_list))
+    {
+        printf("HELLO\n");
+        exit(0);
+    }
+     if (*(mini->env_list) == NULL)
+    {
+        printf("HELLO3\n");
+        exit(0);
+    }
+    env_list = *(mini->env_list);
+    while (env_list && env_list->next != NULL)
     {
         if (!ft_strncmp(env_list->key, "PATH", 4))
             break ;
@@ -25,7 +35,10 @@ void ft_split_path(t_var *mini)
     {
         mini->paths = ft_split(path_value, ':', false);
         if (!mini->paths)
+        {
+            free(mini->paths);
             malloc_protect(mini, NULL);
+        }
         return ;
     }
     mini->paths = NULL;

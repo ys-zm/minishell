@@ -30,7 +30,6 @@
 # include <limits.h>
 # include <dirent.h>
 
-
 extern int g_exit_code;
 
 typedef struct termios t_termios;
@@ -75,7 +74,7 @@ typedef struct s_var
 {
     t_cmd       *cmd_data;
     u_int32_t   n_cmd;
-    t_env       *env_list;
+    t_env       **env_list; //make it a double pointer
     char        **env_arr;
     char        **paths;
     int         **pipes;
@@ -91,8 +90,8 @@ int ft_free_strings(char **arr);
 int ft_free_pipes(int **pipes, int size);
 int ft_free_cmd_struct(t_cmd *cmd);
 int ft_free_cmd_arr(t_cmd *cmd_data, u_int32_t n_cmds);
-int ft_free_env_list(t_env *env_list);
-
+int ft_free_env_list(t_env **env_list);
+void    ft_free_and_null(void *var);
 //Error Handling Functions --> error_handling/error.c
 
 void    ft_free_all(t_var *mini);
@@ -109,10 +108,11 @@ int     ft_pwd(int fd_out);
 int     ft_cd(t_var *mini, char **args, int fd_out);
 int     ft_env(t_var *mini, int fd_out);
 int		ft_echo(char **args, int fd_out);
-int     ft_unset(t_var *mini, char *key, int fd_out);
+int    ft_unset(t_var *mini, char **args, int fd_out);
 int		ft_exit(t_var *mini, char **args, int fd_out);
 int		ft_export(t_var *mini, char **args, int fd_out);
 
+char    **ft_list_to_arr(t_var *mini, t_env *env_list);
 
 //Export Utils
 int 	ft_find_operator_type(char *env);
@@ -131,9 +131,9 @@ t_env	*ft_new_node(char *key, char *value);
 // Functions for ENV Parsing and Export Function
 t_env   *ft_envp_node(t_var *mini, char *envp);
 
-int    ft_exec(t_var *mini);
-void    ft_command_not_found(char *cmd);
-void    ft_permission_denied(char *cmd);
+void    ft_exec(t_var *mini);
+void    ft_command_not_found(t_var *mini, char *cmd);
+void    ft_permission_denied(t_var *mini, char *cmd);
 
 //Main functions
 
@@ -156,7 +156,7 @@ int    ft_exec_builtin(t_var *mini, int index, int fd_out);
 //Functinons to check if program exists in paths --> exec/access.c
 char    *check_env_paths(t_var *mini, char *cmd);
 
-char    *check_cwd(char *cmd);
+char    *check_cwd(t_var *mini, char *cmd);
 
 bool    check_absolute_path(char *cmd);
 

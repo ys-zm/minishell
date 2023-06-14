@@ -18,7 +18,7 @@ int ft_find_operator_type(char *env)
         else
             return (APPEND);
     }
-    if (env[i] == '=' && env[i - 1] != '+')
+    if (env[i] == '=')
         return (REPLACE);
     return (false);
 }
@@ -36,7 +36,7 @@ int ft_find_operator_pos(char *env)
         return (0);
     if (env[i - 1] == '+')
         return (i - 1);
-    if (env[i] == '=' && env[i - 1] == '+')
+    if (env[i] == '=')
         return (i);
     return (0);
 }
@@ -75,7 +75,7 @@ void    ft_replace_value(t_var *mini, char *key, char *new_value)
 {
      t_env   *list;
 
-    list = mini->env_list;
+    list = *(mini->env_list);
     while (list)
     {
         if (ft_strcmp(list->key, key) == 0)
@@ -97,7 +97,7 @@ void    ft_append_value(t_var *mini, char *key, char *to_add)
     char    *new_value;
 
     new_value = NULL;
-    list = mini->env_list;
+    list = *(mini->env_list);
     while (list)
     {
         if (ft_strcmp(list->key, key) == 0)

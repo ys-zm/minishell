@@ -37,6 +37,6 @@ int    ft_exec_builtin(t_var *mini, int index, int fd_out)
     if (!ft_strcmp(cmd.cmd_name, "pwd"))
         return (ft_pwd(fd_out));
     if (!ft_strcmp(cmd.cmd_name, "unset"))
-        return (ft_unset(mini, cmd.full_cmd[1], fd_out));
+        return (ft_unset(mini, cmd.full_cmd, fd_out));
     return (EXIT_FAILURE);
 }

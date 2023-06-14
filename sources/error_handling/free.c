@@ -53,19 +53,26 @@ int ft_free_cmd_arr(t_cmd *cmd_data, u_int32_t n_cmds)
     return (EXIT_SUCCESS);
 }
 
-int ft_free_env_list(t_env *env_list)
+int ft_free_env_list(t_env **env_list)
 {
+    t_env   *env;
     t_env   *save;
     
-    while (env_list)
+    env = *env_list;
+    while (env)
     {
-        save = env_list;
-        env_list = env_list->next;
+        save = env;
+        env = env->next;
         free(save->key);
         free(save->value);
         free(save);
     }
+    free(env_list);
     return (EXIT_SUCCESS);
 }
 
-
+void    ft_free_and_null(void *var)
+{
+    free(var);
+    var = NULL;
+}

@@ -14,30 +14,36 @@ t_env    *ft_new_node(char *key, char *value)
 }
 
 
-void    ft_add_node(t_env *env_list, t_env *new_node)
+void    ft_add_node(t_env **env_list, t_env *new_node)
 {
-    while (env_list->next != NULL)
+    t_env   *env;
+
+    env = *env_list;
+    while (env->next != NULL)
     {
-        env_list = env_list->next;
+        env = env->next;
     }
-    env_list->next = new_node;
+    env->next = new_node;
 }
 
-void    ft_print_export(t_env *env_list)
+void    ft_print_export(t_env **env_list)
 {
-    while (env_list)
+    t_env   *env;
+
+    env = *env_list;
+    while (env)
     {
         ft_putstr_fd("declare -x ", 1);
-        ft_putstr_fd(env_list->key, 1);
-        if (env_list->value)
+        ft_putstr_fd(env->key, 1);
+        if (env->value)
         {
             ft_putstr_fd("=\"", 1);
-            ft_putstr_fd(env_list->value, 1);
+            ft_putstr_fd(env->value, 1);
             ft_putstr_fd("\"\n", 1);
         }
         else
             ft_putstr_fd("\n", 1);
-        env_list = env_list->next; 
+        env = env->next; 
     }
 }
 
@@ -61,11 +67,11 @@ int ft_export_single(t_var *mini, char *arg, size_t op_type, size_t op_pos)
             return (EXIT_FAILURE);
         value = NULL;
     }
-    if (mini->env_list)
+    if (*(mini->env_list))
     {
-        if (ft_check_if_key_exists(mini->env_list, key))
+        if (ft_check_if_key_exists(*(mini->env_list), key))
         {
-            if (op_type == REPLACE && !ft_check_if_same_value(mini->env_list, key, value))
+            if (op_type == REPLACE && !ft_check_if_same_value(*(mini->env_list), key, value))
                 ft_replace_value(mini, key, value);
             else if (op_type == APPEND)
                 ft_append_value(mini, key, value);
@@ -74,11 +80,13 @@ int ft_export_single(t_var *mini, char *arg, size_t op_type, size_t op_pos)
             ft_add_node(mini->env_list, ft_new_node(key, value));
     }
     else
-        mini->env_list = ft_new_node(key, value);
+        *(mini->env_list) = ft_new_node(key, value);
     return (EXIT_SUCCESS);
 }
 
 //a=b ignores the key for some reason
+//expansion should work i.e. echo $new_key shold expand new_value
+// export a="ls -la". run $a should run the cmd.
 int   ft_export(t_var *mini, char **args, int fd_out)
 {
     size_t op_type = 0;
@@ -88,11 +96,12 @@ int   ft_export(t_var *mini, char **args, int fd_out)
     (void) fd_out;
     i = 1;
     if (!args[i])
+    {
         return (ft_print_export(mini->env_list), EXIT_SUCCESS);
+    }
     while (args && args[i])
     {
         op_type = ft_find_operator_type(args[i]);
-        // printf("op type: %zu\n", op_type);
         op_pos = ft_find_operator_pos(args[i]);
         ft_export_single(mini, args[i], op_type, op_pos);
         i++;

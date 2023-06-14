@@ -56,6 +56,7 @@ int ft_if_sign(char *str)
 int    ft_exit(t_var *mini, char **args, int fd_out)
 {
     (void)fd_out;
+    printf("pid at exit: %d\n", getpid());
     ft_putstr_fd("exit\n", 2);
     if (count_args(args) == 1)
         exit(mini->status); //exit last exitcode
@@ -64,14 +65,15 @@ int    ft_exit(t_var *mini, char **args, int fd_out)
         ft_putstr_fd("minishell: exit: ", 2);
         ft_putstr_fd(args[1], 2);
         ft_putstr_fd(": numeric argument required\n", 2);
-        return (mini->status = 255, mini->status);
+         mini->status = 255;
+         exit(mini->status);
     }
     else
     {
         if (ft_num_of_args(args) == 2)
         {
             mini->status = ft_if_sign(args[1]);
-            return (mini->status);
+            exit(mini->status);
         }
         else
         {
@@ -79,5 +81,5 @@ int    ft_exit(t_var *mini, char **args, int fd_out)
             return (mini->status = 1, mini->status); // dont exit here
         }
     }
-    return (EXIT_SUCCESS);
+    return (0);
 }

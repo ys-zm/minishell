@@ -21,7 +21,6 @@ void	ft_error_msg(t_var *mini, char *str, int error)
     ft_putstr_fd(str, 2);
 	perror(str);
     mini->status = error;
-	// exit(error);
 }
 
 //kill program when malloc fails
@@ -30,5 +29,6 @@ int    malloc_protect(t_var *mini, void *var)
     (void)var;
 		ft_free_all(mini);
 		ft_error_msg(mini, "", 1);
+        exit(1);
         return (mini->status = -1, mini->status);
 }
