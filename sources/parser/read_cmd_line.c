@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/12 16:50:01 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/14 17:40:14 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ t_cmd_status	aquire_cmd(char **cmd)
 	uint32_t		cnt;
 
 	buffer = NULL;
-	status = ft_readline(&buffer, "-> ", true);
+	// status = ft_readline(&buffer, "-> ", true);
+	status = ft_readline(&buffer, BOLD YEL "MI" MAG "NI" RED "HELL-> "  COL_RESET BOLD_RESET, true);
 	if ((status == CMD_NULL_ERR) || (status == CMD_MEM_ERR))
 		return (status);
 	cnt = 0;
@@ -100,13 +101,22 @@ t_cmd	*create_new_cmd(char *cmd_str, t_var *depo)
 			ft_free(cmd);
 			return (ft_free_double((void **) str_cmds, -1));
 		}
-		cmd_status = split_input(cmd + i, tokens);
-		ft_lstclear(&tokens, ft_free);
+		cmd_status = get_cmd(tokens, cmd);
 		if (cmd_status == false)
 		{
+			ft_lstclear(&tokens, ft_free);
 			ft_free_cmd_arr(cmd, i);
-			return (ft_free_double((void **) str_cmds, -1));
+			return (NULL);
 		}
+		cmd_status = get_redirections(tokens, cmd, i + 1);
+		if (cmd_status == false)
+		{
+			ft_lstclear(&tokens, ft_free);
+			ft_free_cmd_arr(cmd, i);
+			ft_free(cmd->full_cmd);
+			return (NULL);
+		}
+		ft_lstclear(&tokens, ft_free);
 		i++;
 	}
 	ft_free_double((void **) str_cmds, -1);
@@ -122,7 +132,6 @@ void	main_loop(t_var *depo)
 	{
 		new_cmd = NULL;
 		status = aquire_cmd(&new_cmd);
-		ft_printf("status cmd: %d - cmd: %s\n", status, new_cmd);
 		if (status == CMD_MEM_ERR)
 			malloc_protect(depo, NULL);
 		else if (status == CMD_NULL_ERR)
@@ -141,10 +150,10 @@ void	main_loop(t_var *depo)
 			depo->cmd_data = create_new_cmd(new_cmd, depo);
 			if (depo->cmd_data == NULL)
 				malloc_protect(depo, NULL);
-			if (depo->cmd_data->cmd_name)
-				print_cmd(depo);
+			// print_cmd(depo);
 			ft_exec(depo);
-			// remove here_docs
+			if (remove_here_docs(depo) == false)
+				malloc_protect(depo, NULL);
 			ft_free_cmd_arr(depo->cmd_data, depo->n_cmd);
 			depo->cmd_data = NULL;
 		}

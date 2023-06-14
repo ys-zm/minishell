@@ -16,8 +16,11 @@ LFLAGS := -Llibft -lft -lreadline -lhistory
 
 ifeq ($(shell uname -s),Darwin)			# Mac
 	IFLAGS := $(IFLAGS) -I$(shell brew --prefix readline)/include
-	LFLAGS := $(LFLAGS) -L$(shell brew --prefix readline)/lib 
-#-lreadline -lhistory
+	LFLAGS := $(LFLAGS) -L$(shell brew --prefix readline)/lib
+endif
+
+ifeq ($(shell uname -s),Linux)			# Linux
+	LFLAGS := $(LFLAGS) -ltermios
 endif
 
 GREEN = \x1b[32;01m

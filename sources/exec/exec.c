@@ -47,5 +47,5 @@ int    ft_exec(t_var *mini)
     else
         mini->status = multiple_cmds(mini);
     return (mini->status);
-    printf("exit code: %d\n", mini->status);
+    // printf("exit code: %d\n", mini->status);
 }

@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/19 17:46:55 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/12 16:59:32 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/14 17:36:47 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,9 @@ t_cmd_status	write_here_doc(char *file_name, char *delimiter)
 	status = read_stdin(delimiter, &here_doc);
 	if ((status == CMD_MEM_ERR) || (status == CMD_NULL_ERR))
 		exit(status);
+	here_doc = ft_append_char(here_doc, '\n');
+	if (here_doc == NULL)
+		exit(CMD_MEM_ERR);
 	fd = open(file_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if ((fd == -1) || (write(fd, here_doc, ft_strlen(here_doc)) == -1))
 		status = CMD_MEM_ERR;
@@ -174,3 +177,32 @@ int32_t	handle_here_doc(char **cmd, uint32_t *cnt)
 	return (0);
 }
 
+bool remove_here_docs(t_var *mini)
+{
+	uint32_t	i;
+	uint32_t	j;
+	char		*here_doc_to_drop;
+	int32_t		status;
+
+	i = 0;
+	while (i < mini->n_cmd)
+	{
+		j = 0;
+		while (j < mini->cmd_data[i].n_redirect)
+		{
+			if (mini->cmd_data[i].redirections[j] == RED_IN_DOUBLE)
+			{
+				here_doc_to_drop = create_file_name(i + 1);
+				if (here_doc_to_drop == NULL)
+					return (false);
+				status = unlink(here_doc_to_drop);
+				ft_free(here_doc_to_drop);
+				// if (status == -1)
+					// error occurred!
+			}
+			j++;
+		}
+		i++;
+	}
+	return (true);
+}

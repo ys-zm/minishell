@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/20 19:09:49 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/12 16:50:40 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/12 18:47:19 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,8 @@ void	print_cmd(t_var	*mini)
 	uint32_t	j;
 	
 	j = 0;
+	if (mini == NULL)
+		return;
 	while (j < mini->n_cmd)
 	{
 		ft_printf("COMMAND\n\tcmd name: %s\n", mini->cmd_data[j].cmd_name);

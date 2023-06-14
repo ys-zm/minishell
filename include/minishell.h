@@ -5,7 +5,14 @@
 # define WRITE 1
 # define REPLACE 2
 # define APPEND 3
-
+# define RED   "\x1B[31m"	// colors for the messages on the stdout
+# define GRN   "\x1B[32m"
+# define YEL   "\x1B[33m"
+# define BLU   "\x1B[34m"
+# define MAG   "\x1B[35m"
+# define COL_RESET "\x1B[0m"
+# define BOLD	"\033[1m"
+# define BOLD_RESET	"\033[0m"
 # include "libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
@@ -16,12 +23,14 @@
 # include <stdbool.h>		// boolean types
 # include <stdint.h>		// cross-compiler types
 # include <signal.h>    	// signal(), sigemptyset(), kill(), getpid(), ...
+# include <termios.h>		// terminal configuration stuff
 # include <sys/wait.h>
 # include <errno.h>
 # include <stddef.h>
 # include <limits.h>
 # include <dirent.h>
 
+typedef struct termios t_termios;
 
 typedef enum s_cmd_status
 {
@@ -198,15 +207,15 @@ uint32_t		count_words(t_list *tokens);
 
 uint32_t		count_redirections(t_list *tokens);
 
-bool			has_redirections(t_list *tokens);
+// bool			has_redirections(t_list *tokens);
 
 bool			get_cmd(t_list *tokens, t_cmd *cmd);
 
-bool			get_redirections(t_list *tokens, t_cmd *cmd);
+bool			get_redirections(t_list *tokens, t_cmd *cmd, int32_t order_cmd);
 
 bool			is_redirection(char	*word);
 
-bool			split_input(t_cmd *cmd, t_list *tokens);
+bool			split_input(t_cmd *cmd, t_list *tokens, int32_t order_cmd);
 
 t_red_type		get_type_redirection(char *to_check);
 
@@ -259,5 +268,7 @@ bool			is_arrow(char to_check);
 void			print_cmd(t_var *depo);
 
 uint32_t		get_order_cmd(char *str, uint32_t pos);
+
+bool			remove_here_docs(t_var *mini);
 
 #endif
