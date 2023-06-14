@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 02:32:32 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/14 17:25:49 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/14 17:39:50 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int main(int argc, char **argv, char **envp)
         perror("tcsetattr");
         exit(1);
     }
-
+	init_sig_handle(0);
 	// action.sa_flags = SA_NODEFER | SA_RESTART;
 	// action.sa_sigaction = &signal_handler;
 	// sigemptyset(&(action.sa_mask));
