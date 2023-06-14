@@ -6,11 +6,13 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 02:32:32 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/14 17:39:50 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/14 18:05:52 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int g_exit_code;
 
 void f(void)
 {

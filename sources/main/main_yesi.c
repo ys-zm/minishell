@@ -1,5 +1,7 @@
 // #include "minishell.h"
 
+// int g_exit_code
+
 // void f(void)
 // {
 // 	system("leaks -q minishell");

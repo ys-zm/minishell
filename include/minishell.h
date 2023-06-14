@@ -30,6 +30,9 @@
 # include <limits.h>
 # include <dirent.h>
 
+
+extern int g_exit_code;
+
 typedef struct termios t_termios;
 
 typedef enum s_cmd_status
