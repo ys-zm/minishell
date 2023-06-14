@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 02:32:32 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/13 17:19:31 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/14 17:25:49 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,45 @@ void f(void)
 	system("leaks -q minishell");
 }
 
-void	signal_handler(int signum, siginfo_t *client, void *ucontext)
+void	signal_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
-	// rl_on_new_line();
-	rl_replace_line("", 1	);
-	rl_redisplay();
+		ft_printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
 	}
-	// signum++;
-	client++;
-	ucontext++;
+	// return (NULL);
+}
+
+void	init_sig_handle(int mode)
+{
+	if (mode == 0)
+	{
+		signal(SIGINT, signal_handler);
+		signal(SIGQUIT, SIG_IGN);
+	}
+	else if (mode == 1)
+	{
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+	}
+	else if (mode == 2)
+	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+	}
+	else if (mode == 3)
+	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_IGN);
+	}
 }
 
 int main(int argc, char **argv, char **envp)
 {
-	struct sigaction	action;
+	// struct sigaction	action;
 	t_var               *mini;
     t_termios			term;
 	
@@ -42,18 +65,19 @@ int main(int argc, char **argv, char **envp)
         exit(1);
     }
     // Imposta il flag ISIG su 0 per evitare la stampa di "^C"
-    term.c_lflag &= ~ISIG;
+    // term.c_lflag &= ~ISIG;
+	// term.c_lflag &= ~ECHOCTL;
     if (tcsetattr(STDIN_FILENO, TCSANOW, &term) == -1)
 	{
         perror("tcsetattr");
         exit(1);
     }
 
-	action.sa_flags = SA_NODEFER | SA_RESTART;
-	action.sa_sigaction = &signal_handler;
-	sigemptyset(&(action.sa_mask));
-	if (sigaction(SIGINT, &action, NULL))
-		ft_printf("signal error!\n");
+	// action.sa_flags = SA_NODEFER | SA_RESTART;
+	// action.sa_sigaction = &signal_handler;
+	// sigemptyset(&(action.sa_mask));
+	// if (sigaction(SIGINT, &action, NULL))
+	// 	ft_printf("signal error!\n");
 	(void)argc;
 	(void)argv;
 	// atexit(f);

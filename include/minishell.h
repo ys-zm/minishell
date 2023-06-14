@@ -5,7 +5,14 @@
 # define WRITE 1
 # define REPLACE 2
 # define APPEND 3
-
+# define RED   "\x1B[31m"	// colors for the messages on the stdout
+# define GRN   "\x1B[32m"
+# define YEL   "\x1B[33m"
+# define BLU   "\x1B[34m"
+# define MAG   "\x1B[35m"
+# define COL_RESET "\x1B[0m"
+# define BOLD	"\033[1m"
+# define BOLD_RESET	"\033[0m"
 # include "libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
@@ -16,7 +23,7 @@
 # include <stdbool.h>		// boolean types
 # include <stdint.h>		// cross-compiler types
 # include <signal.h>    	// signal(), sigemptyset(), kill(), getpid(), ...
-#include <termios.h>		// terminal confiuration stuff
+# include <termios.h>		// terminal configuration stuff
 # include <sys/wait.h>
 # include <errno.h>
 # include <stddef.h>
@@ -262,6 +269,6 @@ void			print_cmd(t_var *depo);
 
 uint32_t		get_order_cmd(char *str, uint32_t pos);
 
-bool remove_here_docs(t_var *mini);
+bool			remove_here_docs(t_var *mini);
 
 #endif
