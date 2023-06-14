@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 01:49:19 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/14 17:26:12 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/14 17:40:53 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*expand_vars(char *input, t_env *env_vars)
 				return (ft_free(input));
 			if (ft_strncmp(var_name, "?", 1) == 0)
 			{
-				var_value = ft_itoa(123);	// g_exit_code
+				var_value = ft_itoa(g_exit_code);
 				if (var_value == NULL)
 				{
 					ft_free(var_name);
