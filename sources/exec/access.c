@@ -12,10 +12,8 @@ void    ft_find_error(t_var *mini, char *cmd)
     while (mini->paths && mini->paths[i])
     {
         cmd_path = ft_trip_join(mini->paths[i], "/", cmd);
-        printf("cmd: %s\n", cmd_path);
         if (access(cmd_path, F_OK) == 0)
         {
-            // exit(0);
             found = 1;
             break ;
         }
@@ -97,7 +95,6 @@ char    *access_cmd_path(t_var *mini, char *cmd)
 
     cmd_path = NULL;
     ft_split_path(mini);
-    // ft_print_array(mini->paths);
     if (check_absolute_path(cmd))
         return (cmd);
     cmd_path = check_cwd(mini, cmd);

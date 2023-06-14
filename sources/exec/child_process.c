@@ -15,21 +15,25 @@ int ft_exec_child_single(t_var *mini, int index, int fd_out)
     {
         cmd_path = access_cmd_path(mini, cmd.cmd_name);
         global_exit_code = 0;
+        printf("path is: %s\n", cmd_path);
         execve(cmd_path, cmd.full_cmd, mini->env_arr);
+        printf("execve fails\n");
         free(cmd_path);
     }
     else
     {
         status_check = ft_exec_builtin(mini, index, fd_out);
-        if (status_check == 0)
-            exit (EXIT_SUCCESS);
-        else if (status_check == -1 && mini->status == -1)
-            exit(mini->status);
+        if (status_check == -1)
+            mini->status = -1;
+        exit(mini->status);
     }
-    ft_error_msg(mini, "", 127);
-    // child_error_handler();
+        int pid = getpid();
+    if (waitpid(pid, &mini->status, -1) < 0)
+            return -1;
+    ft_error_msg(mini, cmd.cmd_name, 127);
     global_exit_code = 127;
-    exit(mini->status);
+    return mini->status;
+    // exit(mini->status);
 }
 
 

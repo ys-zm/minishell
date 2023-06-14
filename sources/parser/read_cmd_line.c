@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/13 14:17:48 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/14 17:50:39 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,9 +120,10 @@ void	main_loop(t_var *depo)
 
 	while (true)
 	{
+		printf("NEW_MINISHELL\n");
+		printf("pid new mini: %d\n", getpid());
 		new_cmd = NULL;
 		status = aquire_cmd(&new_cmd);
-		ft_printf("status cmd: %d - cmd: %s\n", status, new_cmd);
 		if (status == CMD_MEM_ERR)
 			malloc_protect(depo, NULL);
 		else if (status == CMD_NULL_ERR)
@@ -142,16 +143,19 @@ void	main_loop(t_var *depo)
 			if (depo->cmd_data == NULL)
 				malloc_protect(depo, NULL);
 			if (depo->cmd_data->cmd_name)
-				print_cmd(depo);
+				// print_cmd(depo);
+			
 			ft_exec(depo);
 			// remove here_docs
 			// ft_free_cmd_arr(depo->cmd_data, depo->n_cmd);
 			// ft_free_all(depo);
-			// exit(0);
 			depo->cmd_data = NULL;
 		}
 		else
 			ft_free(new_cmd);
+
+			
 	}
+
 	clear_history();
 }

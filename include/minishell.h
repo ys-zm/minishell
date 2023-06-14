@@ -122,7 +122,7 @@ t_env	*ft_new_node(char *key, char *value);
 // Functions for ENV Parsing and Export Function
 t_env   *ft_envp_node(t_var *mini, char *envp);
 
-int    ft_exec(t_var *mini);
+void    ft_exec(t_var *mini);
 void    ft_command_not_found(t_var *mini, char *cmd);
 void    ft_permission_denied(t_var *mini, char *cmd);
 
