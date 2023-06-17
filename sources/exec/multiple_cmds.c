@@ -56,7 +56,7 @@ int process_management(t_var *mini)
     {
         mini->pid[i] = fork();
         if (mini->pid[i] == 0)
-            ft_exec_child_multiple(mini, i);
+            ft_exec_multiple(mini, i);
         i++;
     }
     return (EXIT_SUCCESS);

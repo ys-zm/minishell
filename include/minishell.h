@@ -19,7 +19,7 @@
 # include <readline/history.h>
 # include <stdlib.h>    	// malloc(), free()
 # include <unistd.h>    	// write(), read(), ...
-# include <fcntl.h>			// macro to open files (O_CREAT, O_WRONLY, O_RDONLY ..)
+ # include <fcntl.h>			// macro to open files (O_CREAT, O_WRONLY, O_RDONLY ..)
 # include <stdbool.h>		// boolean types
 # include <stdint.h>		// cross-compiler types
 # include <signal.h>    	// signal(), sigemptyset(), kill(), getpid(), ...
@@ -61,7 +61,7 @@ typedef struct s_env
 
 typedef struct s_cmd
 {
-	char				*cmd_name;
+char				*cmd_name;
 	char				**full_cmd;
 	uint32_t			n_redirect;
 	t_red_type			*redirections;
@@ -94,9 +94,9 @@ int ft_free_env_list(t_env **env_list);
 void    ft_free_and_null(void *var);
 //Error Handling Functions --> error_handling/error.c
 
-void    ft_free_all(t_var *mini);
+void	ft_free_all(t_var *mini);
 void	ft_error_msg(t_var *mini, char *str, int error);
-int		malloc_protect(t_var *mini, void *var);
+int	malloc_protect(t_var *mini);
 
 // Util Functions --> builtins/utils.c
 int	    ft_strcmp(const char *s1, const char *s2);
@@ -125,7 +125,9 @@ void    ft_redir_type(t_var *mini, int index);
 void    ft_replace_value(t_var *mini, char *key, char *new_value);
 void    ft_append_value(t_var *mini, char *key, char *to_add);
 void    make_env_list(char **envp, t_var *mini);
-char    *ft_find_value(t_var *mini, char *arg, size_t op_type, size_t op_pos);
+
+char	*ft_find_value(t_var *mini, char *arg, size_t op_type, size_t op_pos);
+
 t_env	*ft_new_node(char *key, char *value);
 
 // Functions for ENV Parsing and Export Function
@@ -164,15 +166,15 @@ char    *access_cmd_path(t_var *mini, char *cmd);
 
 void    create_pipes(t_var *mini);
 
-void    ft_exec_child_multiple(t_var *mini, u_int32_t index);
+void    ft_exec_multiple(t_var *mini, u_int32_t index);
 
 void    close_pipes(t_var *mini);
 
-void    ft_redirect(t_var *mini, int index);
+void	ft_redirect(t_var *mini, int index);
 
-int     wait_for_children(t_var *mini);
+int	wait_for_children(t_var *mini);
 
-int		ft_exec_child_single(t_var *mini, int index, int fd_out);
+int	ft_exec_child_single(t_var *mini);
 
 char    *ft_find_path(t_var *mini);
 

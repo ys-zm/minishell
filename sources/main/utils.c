@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int    set_up_struct(t_var **mini, char **envp)
+int	set_up_struct(t_var **mini, char **envp)
 {
 	*mini = ft_calloc(1, sizeof(t_var));
 	if (*mini == NULL)

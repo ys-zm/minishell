@@ -11,8 +11,8 @@ OBJECTS := $(patsubst $(SRC_DIR)%,$(OBJ_DIR)%,$(SOURCES:.c=.o))
 
 CC  := gcc
 IFLAGS := -Iinclude -I$(LIBFT_DIR)/include
-CFLAGS := -Wall -Wextra -Werror -g3 #-fsanitize=address
-LFLAGS := -Llibft -lft -lreadline -lhistory
+CFLAGS := -Wall -Wextra -Werror -arch x86_64 -g3 #-fsanitize=address
+LFLAGS := -Llibft -lft -lreadline -lhistory 
 
 ifeq ($(shell uname -s),Darwin)			# Mac
 	IFLAGS := $(IFLAGS) -I$(shell brew --prefix readline)/include

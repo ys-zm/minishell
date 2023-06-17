@@ -182,7 +182,7 @@ bool remove_here_docs(t_var *mini)
 	uint32_t	i;
 	uint32_t	j;
 	char		*here_doc_to_drop;
-	int32_t		status;
+	//int32_t		status;
 
 	i = 0;
 	while (i < mini->n_cmd)
@@ -195,7 +195,7 @@ bool remove_here_docs(t_var *mini)
 				here_doc_to_drop = create_file_name(i + 1);
 				if (here_doc_to_drop == NULL)
 					return (false);
-				status = unlink(here_doc_to_drop);
+				//status = unlink(here_doc_to_drop);
 				ft_free(here_doc_to_drop);
 				// if (status == -1)
 					// error occurred!

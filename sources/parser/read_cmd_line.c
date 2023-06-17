@@ -36,7 +36,7 @@ t_cmd_status	aquire_cmd(char **cmd)
 	uint32_t		cnt;
 
 	buffer = NULL;
-	// status = ft_readline(&buffer, "-> ", true);
+	//status = ft_readline(&buffer, "-> ", true);
 	status = ft_readline(&buffer, BOLD YEL "MI" MAG "NI" RED "HELL-> "  COL_RESET BOLD_RESET, true);
 	if ((status == CMD_NULL_ERR) || (status == CMD_MEM_ERR))
 		return (status);
@@ -135,7 +135,7 @@ void	main_loop(t_var *depo)
 		new_cmd = NULL;
 		status = aquire_cmd(&new_cmd);
 		if (status == CMD_MEM_ERR)
-			malloc_protect(depo, NULL);
+			malloc_protect(depo);
 		else if (status == CMD_NULL_ERR)
 		{
 			if (has_trailing_pipe(new_cmd) == true)
@@ -151,11 +151,11 @@ void	main_loop(t_var *depo)
 		{
 			depo->cmd_data = create_new_cmd(new_cmd, depo);
 			if (depo->cmd_data == NULL)
-				malloc_protect(depo, NULL);
+				malloc_protect(depo);
 			// print_cmd(depo);
 			ft_exec(depo);
 			if (remove_here_docs(depo) == false)
-				malloc_protect(depo, NULL);
+				malloc_protect(depo);
 			ft_free_cmd_arr(depo->cmd_data, depo->n_cmd);
 			depo->cmd_data = NULL;
 		}
