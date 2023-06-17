@@ -19,9 +19,10 @@ ifeq ($(shell uname -s),Darwin)			# Mac
 	LFLAGS := $(LFLAGS) -L$(shell brew --prefix readline)/lib
 endif
 
-ifeq ($(shell uname -s),Linux)			# Linux
-	LFLAGS := $(LFLAGS) -ltermios
-endif
+# ifeq ($(shell uname -s),Linux)			# Linux
+# 	LFLAGS := $(LFLAGS) -ltermios
+# # furthermore, readline package must be installed (sudo apt install libreadline-dev)
+# endif
 
 GREEN = \x1b[32;01m
 RED = \x1b[31;01m

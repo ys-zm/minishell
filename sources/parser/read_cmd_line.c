@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/14 18:08:08 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/17 00:35:06 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_cmd_status	ft_readline(char **buffer, const char *prompt, bool sintax)
 
 	new_string = readline(prompt);
 	if (! new_string)
-		return (CMD_NULL_ERR);
+		return (CMD_EOF);
 	*buffer = ft_strdup(new_string);
 	ft_free(new_string);
 	if (*buffer == NULL)
@@ -38,12 +38,12 @@ t_cmd_status	aquire_cmd(char **cmd)
 	buffer = NULL;
 	// status = ft_readline(&buffer, "-> ", true);
 	status = ft_readline(&buffer, BOLD YEL "MI" MAG "NI" RED "HELL-> "  COL_RESET BOLD_RESET, true);
-	if ((status == CMD_NULL_ERR) || (status == CMD_MEM_ERR))
+	if ((status == CMD_EOF) || (status == CMD_MEM_ERR))
 		return (status);
 	cnt = 0;
 	while (status == CMD_OK)
 	{
-		if (handle_here_doc(&buffer, &cnt) == -1)
+		if (handle_here_doc(buffer, &cnt) == -1)
 		{
 			ft_free(buffer);
 			ft_free(*cmd);
@@ -130,13 +130,12 @@ void	main_loop(t_var *depo)
 
 	while (true)
 	{
-		printf("NEW_MINISHELL\n");
 		printf("pid new mini: %d\n", getpid());
 		new_cmd = NULL;
 		status = aquire_cmd(&new_cmd);
 		if (status == CMD_MEM_ERR)
 			malloc_protect(depo, NULL);
-		else if (status == CMD_NULL_ERR)
+		else if (status == CMD_EOF)
 		{
 			if (has_trailing_pipe(new_cmd) == true)
 				ft_printf("sintax error\n");
@@ -154,14 +153,13 @@ void	main_loop(t_var *depo)
 				malloc_protect(depo, NULL);
 			// print_cmd(depo);
 			ft_exec(depo);
-			if (remove_here_docs(depo) == false)
-				malloc_protect(depo, NULL);
+			// if (remove_here_docs(depo) == false)
+			// 	malloc_protect(depo, NULL);
 			ft_free_cmd_arr(depo->cmd_data, depo->n_cmd);
 			depo->cmd_data = NULL;
 		}
 		else
 			ft_free(new_cmd);
-
 			
 	}
 

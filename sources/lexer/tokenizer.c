@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/27 17:20:39 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/12 18:26:48 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/17 01:57:25 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ bool	get_redirections(t_list *tokens, t_cmd *cmd, int32_t order_cmd)
 				tokens = tokens->next;
 				if (cmd->redirections[i] == RED_IN_DOUBLE)
 				{
-					here_doc_file = create_file_name(order_cmd);
+					here_doc_file = create_file_name(HERE_DOC_FIX, order_cmd);
 					if (here_doc_file == NULL)
 					{
 						ft_free(cmd->redirections);
@@ -210,7 +210,7 @@ bool	is_redirection(char	*word)
 bool	split_input(t_cmd *cmd, t_list *tokens, int32_t order_cmd)
 {
 	bool		status;
-
+	// NB must remove quotes before inspection! (or not?)
 	status = get_cmd(tokens, cmd);
 	if (status == false)
 		return (false);
@@ -283,13 +283,9 @@ t_list	*tokenize(char *input)
 					ft_lstclear(&tokens, ft_free);
 					return (NULL);
 				}
-				// if (is_valid_char(input, len, '='))
-				// 	end_word = true;
 				len++;
 				if (input[len] == '\0')
 					end_word = true;
-				// else if (is_valid_char(input, len, '='))
-				// 	end_word = true;
 			}
 		}
 		if (new_word)

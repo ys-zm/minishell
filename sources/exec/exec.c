@@ -8,7 +8,7 @@ int   single_cmd(t_var *mini)
     int     exit_status;
 
     cmd = mini->cmd_data;
-    printf("pid before fork: %d\n", getpid());
+    // printf("pid before fork: %d\n", getpid());
     if (!cmd->cmd_name)
     {
         ft_redir_type(mini, 0);
@@ -24,7 +24,7 @@ int   single_cmd(t_var *mini)
         return (ft_error_msg(mini, "Fork failed.", 1), mini->status = -1, -1);
     if (mini->pid[0] == 0)
     {
-        printf("pid after fork: %d\n", getpid());
+        // printf("pid after fork: %d\n", getpid());
         if (ft_if_redir(mini, 0))
             ft_redirect(mini, 0);
         ft_exec_child_single(mini, 0, STDOUT_FILENO);

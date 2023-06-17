@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main_fra.c                                         :+:    :+:            */
+/*   main.c                                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 02:32:32 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/14 18:09:18 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/16 23:55:26 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	signal_handler(int signum)
 
 void	init_sig_handle(int mode)
 {
-	if (mode == 0)
+	if (mode == 0)		// main process
 	{
 		signal(SIGINT, signal_handler);
 		signal(SIGQUIT, SIG_IGN);
@@ -59,21 +59,21 @@ int main(int argc, char **argv, char **envp)
 {
 	// struct sigaction	action;
 	t_var               *mini;
-    t_termios			term;
+    // t_termios			term;
 	
-	if (tcgetattr(STDIN_FILENO, &term) == -1)
-	{
-        perror("tcgetattr");
-        exit(1);
-    }
+	// if (tcgetattr(STDIN_FILENO, &term) == -1)
+	// {
+    //     perror("tcgetattr");
+    //     exit(1);
+    // }
     // Imposta il flag ISIG su 0 per evitare la stampa di "^C"
     // term.c_lflag &= ~ISIG;
 	// term.c_lflag &= ~ECHOCTL;
-    if (tcsetattr(STDIN_FILENO, TCSANOW, &term) == -1)
-	{
-        perror("tcsetattr");
-        exit(1);
-    }
+    // if (tcsetattr(STDIN_FILENO, TCSANOW, &term) == -1)
+	// {
+    //     perror("tcsetattr");
+    //     exit(1);
+    // }
 	init_sig_handle(0);
 	// action.sa_flags = SA_NODEFER | SA_RESTART;
 	// action.sa_sigaction = &signal_handler;

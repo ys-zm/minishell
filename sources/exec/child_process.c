@@ -15,7 +15,7 @@ int ft_exec_child_single(t_var *mini, int index, int fd_out)
     {
         cmd_path = access_cmd_path(mini, cmd.cmd_name);
         g_exit_code = 0;
-        printf("path is: %s\n", cmd_path);
+        // printf("path is: %s\n", cmd_path);
         execve(cmd_path, cmd.full_cmd, mini->env_arr);
         printf("execve fails\n");
         free(cmd_path);
