@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/17 21:31:18 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/17 22:30:34 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ t_cmd_status	aquire_cmd(char **cmd)
 	uint32_t		cnt;
 
 	buffer = NULL;
-	// status = ft_readline(&buffer, "-> ", true);
-	status = ft_readline(&buffer, BOLD YEL "MI" MAG "NI" RED "HELL-> "  COL_RESET BOLD_RESET, true);
+	status = ft_readline(&buffer, PROMPT, true);
 	if ((status == CMD_EOF) || (status == CMD_MEM_ERR))
 		return (status);
 	cnt = 0;
@@ -151,7 +150,7 @@ void	main_loop(t_var *depo)
 			depo->cmd_data = create_new_cmd(new_cmd, depo);
 			if (depo->cmd_data == NULL)
 				malloc_protect(depo, NULL);
-			print_cmd(depo);
+			// print_cmd(depo);
 			ft_exec(depo);
 			if (remove_here_docs(depo) == false)
 				malloc_protect(depo, NULL);
@@ -160,7 +159,6 @@ void	main_loop(t_var *depo)
 		}
 		else
 			ft_free(new_cmd);
-			
 	}
 
 	clear_history();

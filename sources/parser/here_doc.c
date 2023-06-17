@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/19 17:46:55 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/17 01:59:25 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/17 22:24:23 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ int32_t	fork_here_doc(int cnt, char *delimiter)
 
 	child_id = fork();
 	if (child_id == -1)
-		return (-1);
+		return (-1);		// NB it's a fail but not related to memoery issues, the return value should tell that
 	else if (child_id == 0)
 		write_here_doc(cnt, delimiter);
 	else
@@ -214,6 +214,7 @@ bool remove_here_docs(t_var *mini)
 				ft_free(here_doc_to_drop);
 				if (status == -1)
 					return (false);
+				break ;
 			}
 			j++;
 		}

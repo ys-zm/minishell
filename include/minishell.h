@@ -1,19 +1,32 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   minishell.h                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: fra <fra@student.codam.nl>                   +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/06/17 22:02:45 by fra           #+#    #+#                 */
+/*   Updated: 2023/06/17 22:31:22 by fra           ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# define READ 0
-# define WRITE 1
-# define REPLACE 2
-# define APPEND 3
-# define RED   		"\x1B[31m"	// colors for the messages on the stdout
-# define GRN   		"\x1B[32m"
-# define YEL   		"\x1B[33m"
-# define BLU   		"\x1B[34m"
-# define MAG   		"\x1B[35m"
-# define COL_RESET 	"\x1B[0m"
-# define BOLD		"\033[1m"
-# define BOLD_RESET	"\033[0m"
+# define READ				0
+# define WRITE				1
+# define REPLACE			2
+# define APPEND				3
+# define RED   				"\x1B[31m"	// colors for the messages on the stdout
+# define GRN   				"\x1B[32m"
+# define YEL   				"\x1B[33m"
+# define BLU   				"\x1B[34m"
+# define MAG   				"\x1B[35m"
+# define COL_RESET 			"\x1B[0m"
+# define BOLD				"\033[1m"
+# define BOLD_RESET			"\033[0m"
 # define HERE_DOC_FIX		"here_doc/here_doc"
+# define PROMPT				BOLD YEL "MI" MAG "NI" RED "HELL-> "  COL_RESET BOLD_RESET
 # include "libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
@@ -83,7 +96,7 @@ typedef struct s_var
 {
     t_cmd       *cmd_data;
     uint32_t   n_cmd;
-    t_env       **env_list; //make it a double pointer
+    t_env       **env_list;
     char        **env_arr;
     char        **paths;
     int         **pipes;

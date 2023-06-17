@@ -39,9 +39,9 @@ int ft_free_cmd_struct(t_cmd *cmd)
     return (EXIT_SUCCESS);
 }
 
-int ft_free_cmd_arr(t_cmd *cmd_data, u_int32_t n_cmds)
+int ft_free_cmd_arr(t_cmd *cmd_data, uint32_t n_cmds)
 {
-    u_int32_t   i;
+    uint32_t   i;
 
     i = 0;
     while (i < n_cmds)

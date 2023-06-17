@@ -16,6 +16,7 @@ void    ft_free_all(t_var *mini)
 
 void	ft_error_msg(t_var *mini, char *str, int error)
 {
+    // it prints 'Success' when the function is called mistakenly, shall we decide to use a fixed error msg, like 'minishell: Memory fault'?
     (void)error;
     ft_putstr_fd("minishell: ", 2);
     ft_putstr_fd(str, 2);
@@ -27,8 +28,9 @@ void	ft_error_msg(t_var *mini, char *str, int error)
 int    malloc_protect(t_var *mini, void *var)
 {
     (void)var;
-		ft_free_all(mini);
-		ft_error_msg(mini, "", 1);
-        exit(1);
-        return (mini->status = -1, mini->status);
+    remove_here_docs(mini);
+    ft_free_all(mini);
+    ft_error_msg(mini, "", 1);
+    exit(1);
+    return (mini->status = -1, mini->status);
 }
