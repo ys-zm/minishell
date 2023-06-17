@@ -13,7 +13,7 @@
 # define COL_RESET 	"\x1B[0m"
 # define BOLD		"\033[1m"
 # define BOLD_RESET	"\033[0m"
-# define HERE_DOC_FIX		"here_doc/here_doc_"
+# define HERE_DOC_FIX		"here_doc/here_doc"
 # include "libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
