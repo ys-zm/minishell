@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/17 22:02:45 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/17 22:31:22 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/18 00:07:37 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef enum s_cmd_status
 	CMD_OK,
 	CMD_SIN_ERR,
 	CMD_MEM_ERR,
+	CMD_PROC_ERR,
 	CMD_EOF,
 	CMD_EMPTY,
 }	t_cmd_status;

@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/17 22:52:54 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/18 00:52:07 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ void	main_loop(t_var *depo)
 			if (has_trailing_pipe(new_cmd) == true)		// my bash on linux just kills the session (even with multiple pipes) without printing sintax error, what happens on Mac bash??
 				ft_printf("sintax error\n");
 			ft_free(new_cmd);
+				
 			break ;
 		}
 		if (status != CMD_EMPTY)
@@ -151,6 +152,8 @@ void	main_loop(t_var *depo)
 			if (depo->cmd_data == NULL)
 				malloc_protect(depo, NULL);
 			// print_cmd(depo);
+
+			// if cmd == "./minishell" env var SHLVL must be increased!
 			ft_exec(depo);
 			if (remove_here_docs(depo) == false)
 				malloc_protect(depo, NULL);

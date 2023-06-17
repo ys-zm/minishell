@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/02 17:27:23 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/06/13 15:19:24 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/18 00:05:24 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int    set_up_struct(t_var **mini, char **envp)
 	(*mini)->cmd_data = NULL;
 	(*mini)->n_cmd = 0;
 	(*mini)->env_list = NULL;
-	make_env_list(envp, *mini);
+	make_env_list(envp, *mini);		// if make_env_list fails *min must be freed
 	(*mini)->env_arr = NULL;
 	(*mini)->paths = NULL;
 	(*mini)->pipes = NULL;

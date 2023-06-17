@@ -17,7 +17,7 @@ int ft_exec_child_single(t_var *mini, int index, int fd_out)
         g_exit_code = 0;
         // printf("path is: %s\n", cmd_path);
         execve(cmd_path, cmd.full_cmd, mini->env_arr);
-        printf("execve fails\n");
+        printf("execve value> %d\n", execve(cmd_path, cmd.full_cmd, mini->env_arr));
         free(cmd_path);
     }
     else
@@ -27,9 +27,9 @@ int ft_exec_child_single(t_var *mini, int index, int fd_out)
             mini->status = -1;
         exit(mini->status);
     }
-        int pid = getpid();
+    int pid = getpid();
     if (waitpid(pid, &mini->status, -1) < 0)
-            return -1;
+        return (-1);
     ft_error_msg(mini, cmd.cmd_name, 127);
     g_exit_code = 127;
     return mini->status;
@@ -37,7 +37,7 @@ int ft_exec_child_single(t_var *mini, int index, int fd_out)
 }
 
 
-void ft_exec_child_multiple(t_var *mini, u_int32_t index)
+void ft_exec_child_multiple(t_var *mini, uint32_t index)
 {
     if (index > 0)
         dup2(mini->pipes[index - 1][READ], STDIN_FILENO);

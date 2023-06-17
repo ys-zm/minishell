@@ -13,6 +13,7 @@ void    ft_print_array(char **arr)
     }
 }
 
+// NB this function must resturn NULL/0/... in case of failure
 void    make_env_list(char **envp, t_var *mini)
 {
     t_env   *new_node = NULL;
