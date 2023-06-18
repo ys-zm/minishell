@@ -40,7 +40,7 @@ bool    ft_check_permission(t_cmd *cmd, t_red_type red_type, int index)
     return (EXIT_SUCCESS);
 }
 
-void    ft_redir_type(t_var *mini, int index)
+int    ft_redir_type(t_var *mini, int index)
 {
     int i;
     t_cmd *cmd;
@@ -50,18 +50,23 @@ void    ft_redir_type(t_var *mini, int index)
     while (cmd->files && cmd->files[i])
     {
         if (ft_check_permission(cmd, cmd->redirections[i], i) == EXIT_FAILURE)
-            ft_error_msg(mini, "Open failed.\n", 1);
+        {
+            ft_error_msg(mini, "", 1);
+            return (EXIT_FAILURE);
+        }
         i++;
     }
+    return (EXIT_SUCCESS);
 
 }
 
-void    ft_redirect(t_var *mini, int index)
+int    ft_redirect(t_var *mini, int index)
 {
     t_cmd   *cmd;
 
     cmd = mini->cmd_data+index;
-    ft_redir_type(mini, index);
+    if (ft_redir_type(mini, index))
+        return (EXIT_FAILURE);
     if (cmd->fd_in != 0)
     {
         dup2(cmd->fd_in, STDIN_FILENO);
@@ -72,4 +77,5 @@ void    ft_redirect(t_var *mini, int index)
         dup2(cmd->fd_out, STDOUT_FILENO);
         close(cmd->fd_out);
     }
+    return (EXIT_SUCCESS);
 }

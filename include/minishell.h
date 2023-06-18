@@ -143,7 +143,7 @@ int 	ft_check_if_same_value(t_env *env_list, char *key, char *value);
 int 	ft_check_if_key_exists(t_env *env_list, char *key);
 int 	ft_find_first_equals(char *env);
 int		ft_check_key(char *key);
-void    ft_redir_type(t_var *mini, int index);
+int    ft_redir_type(t_var *mini, int index);
 void    ft_replace_value(t_var *mini, char *key, char *new_value);
 void    ft_append_value(t_var *mini, char *key, char *to_add);
 void    make_env_list(char **envp, t_var *mini);
@@ -192,7 +192,7 @@ void    ft_exec_multiple(t_var *mini, u_int32_t index);
 
 void    close_pipes(t_var *mini);
 
-void	ft_redirect(t_var *mini, int index);
+int    ft_redirect(t_var *mini, int index);
 
 int	wait_for_children(t_var *mini);
 
