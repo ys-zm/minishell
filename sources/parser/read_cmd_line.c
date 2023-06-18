@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/18 00:52:07 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/18 19:05:04 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ t_cmd	*create_new_cmd(char *cmd_str, t_var *depo)
 	t_list		*tokens;
 	uint32_t	i;
 
-	exp_var_cmd = expand_vars(cmd_str, *(depo->env_list)); //i added a pointer fra!
+	exp_var_cmd = expand_vars(cmd_str, *(depo->env_list));
 	if (exp_var_cmd == NULL)
 		return (NULL);
 	depo->n_cmd = n_cmds(exp_var_cmd);
@@ -100,14 +100,14 @@ t_cmd	*create_new_cmd(char *cmd_str, t_var *depo)
 			ft_free(cmd);
 			return (ft_free_double((void **) str_cmds, -1));
 		}
-		cmd_status = get_cmd(tokens, cmd);
+		cmd_status = get_cmd(tokens, cmd + i);
 		if (cmd_status == false)
 		{
 			ft_lstclear(&tokens, ft_free);
 			ft_free_cmd_arr(cmd, i);
 			return (NULL);
 		}
-		cmd_status = get_redirections(tokens, cmd, i + 1);
+		cmd_status = get_redirections(tokens, cmd + i, i + 1);
 		if (cmd_status == false)
 		{
 			ft_lstclear(&tokens, ft_free);
@@ -136,7 +136,7 @@ void	main_loop(t_var *depo)
 			malloc_protect(depo, NULL);
 		else if (status == CMD_EOF)
 		{
-			if (has_trailing_pipe(new_cmd) == true)		// my bash on linux just kills the session (even with multiple pipes) without printing sintax error, what happens on Mac bash??
+			if (has_trailing_pipe(new_cmd) == true)
 				ft_printf("sintax error\n");
 			ft_free(new_cmd);
 				
@@ -151,9 +151,7 @@ void	main_loop(t_var *depo)
 			depo->cmd_data = create_new_cmd(new_cmd, depo);
 			if (depo->cmd_data == NULL)
 				malloc_protect(depo, NULL);
-			// print_cmd(depo);
-
-			// if cmd == "./minishell" env var SHLVL must be increased!
+			print_cmd(depo);
 			ft_exec(depo);
 			if (remove_here_docs(depo) == false)
 				malloc_protect(depo, NULL);
