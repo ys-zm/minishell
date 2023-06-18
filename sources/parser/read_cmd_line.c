@@ -130,8 +130,6 @@ void	main_loop(t_var *depo)
 
 	while (true)
 	{
-		printf("NEW_MINISHELL\n");
-		printf("pid new mini: %d\n", getpid());
 		new_cmd = NULL;
 		status = aquire_cmd(&new_cmd);
 		if (status == CMD_MEM_ERR)
@@ -139,14 +137,14 @@ void	main_loop(t_var *depo)
 		else if (status == CMD_NULL_ERR)
 		{
 			if (has_trailing_pipe(new_cmd) == true)
-				ft_printf("sintax error\n");
+				ft_printf("syntax error\n");
 			ft_free(new_cmd);
 			break ;
 		}
 		if (status != CMD_EMPTY)
 			add_history(new_cmd);
 		if (status == CMD_SIN_ERR)
-			ft_printf("sintax error\n");
+			ft_printf("syntax error\n");
 		if ((status == CMD_OK) && (is_only_spaces(new_cmd) == false))
 		{
 			depo->cmd_data = create_new_cmd(new_cmd, depo);
@@ -161,8 +159,6 @@ void	main_loop(t_var *depo)
 		}
 		else
 			ft_free(new_cmd);
-
-			
 	}
 
 	clear_history();

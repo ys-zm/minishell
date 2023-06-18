@@ -52,8 +52,7 @@ typedef enum s_red_type
 	RED_ERROR,
 }	t_red_type;
 
-typedef struct s_env
-{
+typedef struct s_env	{
     struct s_env    *next;
     char            *key;
     char            *value;
@@ -61,7 +60,7 @@ typedef struct s_env
 
 typedef struct s_cmd
 {
-char				*cmd_name;
+	char				*cmd_name;
 	char				**full_cmd;
 	uint32_t			n_redirect;
 	t_red_type			*redirections;
@@ -113,7 +112,7 @@ int		ft_exit(t_var *mini, char **args, int fd_out);
 int		ft_export(t_var *mini, char **args, int fd_out);
 
 char    **ft_list_to_arr(t_var *mini, t_env *env_list);
-
+void	ft_add_node(t_env **env_list, t_env *new_node);
 //Export Utils
 int 	ft_find_operator_type(char *env);
 int 	ft_find_operator_pos(char *env);

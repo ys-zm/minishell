@@ -24,6 +24,7 @@ int    ft_exec_builtin(t_var *mini, int index, int fd_out)
     t_cmd   cmd;
 
     cmd = mini->cmd_data[index];
+    printf("cmd name: %s\n", cmd.cmd_name);
     if (!ft_strcmp(cmd.cmd_name, "cd"))
         return (ft_cd(mini, cmd.full_cmd, fd_out));
     if (!ft_strcmp(cmd.cmd_name, "echo"))

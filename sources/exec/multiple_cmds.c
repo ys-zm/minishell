@@ -56,7 +56,11 @@ int process_management(t_var *mini)
     {
         mini->pid[i] = fork();
         if (mini->pid[i] == 0)
+        {
+            printf("exec_multiple()\n");
             ft_exec_multiple(mini, i);
+        }
+        printf("i: %d\n", i);
         i++;
     }
     return (EXIT_SUCCESS);
