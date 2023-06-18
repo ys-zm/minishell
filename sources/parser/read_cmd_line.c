@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/14 18:08:08 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/18 19:20:28 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_cmd_status	ft_readline(char **buffer, const char *prompt, bool sintax)
 
 	new_string = readline(prompt);
 	if (! new_string)
-		return (CMD_NULL_ERR);
+		return (CMD_EOF);
 	*buffer = ft_strdup(new_string);
 	ft_free(new_string);
 	if (*buffer == NULL)
@@ -36,14 +36,13 @@ t_cmd_status	aquire_cmd(char **cmd)
 	uint32_t		cnt;
 
 	buffer = NULL;
-	//status = ft_readline(&buffer, "-> ", true);
-	status = ft_readline(&buffer, BOLD YEL "MI" MAG "NI" RED "HELL-> "  COL_RESET BOLD_RESET, true);
-	if ((status == CMD_NULL_ERR) || (status == CMD_MEM_ERR))
+	status = ft_readline(&buffer, PROMPT, true);
+	if ((status == CMD_EOF) || (status == CMD_MEM_ERR))
 		return (status);
 	cnt = 0;
 	while (status == CMD_OK)
 	{
-		if (handle_here_doc(&buffer, &cnt) == -1)
+		if (handle_here_doc(buffer, &cnt) == -1)
 		{
 			ft_free(buffer);
 			ft_free(*cmd);
@@ -79,7 +78,7 @@ t_cmd	*create_new_cmd(char *cmd_str, t_var *depo)
 	t_list		*tokens;
 	uint32_t	i;
 
-	exp_var_cmd = expand_vars(cmd_str, *(depo->env_list)); //i added a pointer fra!
+	exp_var_cmd = expand_vars(cmd_str, *(depo->env_list));
 	if (exp_var_cmd == NULL)
 		return (NULL);
 	depo->n_cmd = n_cmds(exp_var_cmd);
@@ -101,14 +100,14 @@ t_cmd	*create_new_cmd(char *cmd_str, t_var *depo)
 			ft_free(cmd);
 			return (ft_free_double((void **) str_cmds, -1));
 		}
-		cmd_status = get_cmd(tokens, cmd);
+		cmd_status = get_cmd(tokens, cmd + i);
 		if (cmd_status == false)
 		{
 			ft_lstclear(&tokens, ft_free);
 			ft_free_cmd_arr(cmd, i);
 			return (NULL);
 		}
-		cmd_status = get_redirections(tokens, cmd, i + 1);
+		cmd_status = get_redirections(tokens, cmd + i, i + 1);
 		if (cmd_status == false)
 		{
 			ft_lstclear(&tokens, ft_free);
@@ -130,15 +129,17 @@ void	main_loop(t_var *depo)
 
 	while (true)
 	{
+		// printf("pid new mini: %d\n", getpid());
 		new_cmd = NULL;
 		status = aquire_cmd(&new_cmd);
 		if (status == CMD_MEM_ERR)
-			malloc_protect(depo);
-		else if (status == CMD_NULL_ERR)
+			malloc_protect(depo, NULL);
+		else if (status == CMD_EOF)
 		{
 			if (has_trailing_pipe(new_cmd) == true)
 				ft_printf("syntax error\n");
 			ft_free(new_cmd);
+				
 			break ;
 		}
 		if (status != CMD_EMPTY)
@@ -149,7 +150,7 @@ void	main_loop(t_var *depo)
 		{
 			depo->cmd_data = create_new_cmd(new_cmd, depo);
 			if (depo->cmd_data == NULL)
-				malloc_protect(depo);
+				malloc_protect(depo, NULL);
 			print_cmd(depo);
 			ft_exec(depo);
 			if (remove_here_docs(depo) == false)

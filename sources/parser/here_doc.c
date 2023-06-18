@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/19 17:46:55 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/14 17:36:47 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/17 22:24:23 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ t_cmd_status	read_stdin(char *eof, char **here_doc)
 	while (true)
 	{
 		status = ft_readline(&new_line, "> ", false);
-		if ((status == CMD_MEM_ERR) || (status == CMD_NULL_ERR))
+		if ((status == CMD_MEM_ERR) || (status == CMD_EOF))
 		{
 			ft_free(*here_doc);
 			return (status);
@@ -78,7 +78,11 @@ t_cmd_status	read_stdin(char *eof, char **here_doc)
 		else if (ft_strncmp(new_line, eof, ft_strlen(eof)) == 0)
 		{
 			ft_free(new_line);
-			return (CMD_OK);
+			*here_doc = ft_append_char(*here_doc, '\n');
+			if (*here_doc == NULL)
+				return (CMD_MEM_ERR);
+			else
+				return (CMD_OK);
 		}
 		*here_doc = ft_strjoin(*here_doc, new_line, "\n", true);
 		if (*here_doc == NULL)
@@ -86,7 +90,7 @@ t_cmd_status	read_stdin(char *eof, char **here_doc)
 	}
 }
 
-char	*create_file_name(int32_t cnt)
+char	*create_file_name(const char *fix_part, int32_t cnt)
 {
 	char			*file_name;
 	char			*char_cnt;
@@ -94,86 +98,97 @@ char	*create_file_name(int32_t cnt)
 	char_cnt = ft_itoa(cnt);
 	if (char_cnt == NULL)
 		return (NULL);
-	file_name = ft_strjoin("here_doc/here_doc", char_cnt, "_", false);
+	file_name = ft_strjoin((char *) fix_part, char_cnt, "_", false);
 	ft_free(char_cnt);
 	return (file_name);
 }
 
-t_cmd_status	write_here_doc(char *file_name, char *delimiter)
+t_cmd_status	write_here_doc(int cnt, char *delimiter)
 {
-	t_cmd_status	status;
+	t_cmd_status	status_cmd;
+	t_hd_status		status_hd;
 	char			*here_doc;
 	int32_t			fd;
+	char			*file_name;
 
 	here_doc = NULL;
-	status = read_stdin(delimiter, &here_doc);
-	if ((status == CMD_MEM_ERR) || (status == CMD_NULL_ERR))
-		exit(status);
-	here_doc = ft_append_char(here_doc, '\n');
-	if (here_doc == NULL)
-		exit(CMD_MEM_ERR);
+	status_cmd = read_stdin(delimiter, &here_doc);
+	if (status_cmd == CMD_MEM_ERR)
+		exit(HD_MEM_ERR);
+	else if (status_cmd == CMD_EOF)
+	{
+		here_doc = ft_strdup("");
+		if (here_doc == NULL)
+			exit(HD_MEM_ERR);
+	}
+	file_name = create_file_name(HERE_DOC_FIX, cnt);
+	if (file_name == NULL)
+	{
+		ft_free(here_doc);
+		exit(HD_MEM_ERR);
+	}
 	fd = open(file_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
+	ft_free(file_name);
 	if ((fd == -1) || (write(fd, here_doc, ft_strlen(here_doc)) == -1))
-		status = CMD_MEM_ERR;
-	close(fd);
+		status_hd = HD_FILE_ERR;
+	else if (status_cmd == CMD_EOF)
+		status_hd = HD_EOF;
+	else
+		status_hd = HD_OK;
+	if (fd != -1)
+		close(fd);
 	ft_free(here_doc);
-	exit(status);
+	exit(status_hd);
 }
 
-int32_t	fork_here_doc(char *file_name, char *delimiter)
+int32_t	fork_here_doc(int cnt, char *delimiter)
 {
 	pid_t	child_id;
 	int32_t	status_procs;
 
 	child_id = fork();
 	if (child_id == -1)
-		return (-1);
+		return (-1);		// NB it's a fail but not related to memoery issues, the return value should tell that
 	else if (child_id == 0)
-		write_here_doc(file_name, delimiter);
+		write_here_doc(cnt, delimiter);
 	else
 	{
 		if (waitpid(child_id, &status_procs, 0) == -1)
 			return (-1);
 		if (WIFEXITED(status_procs))
 		{
-			if (WEXITSTATUS(status_procs) == CMD_MEM_ERR)
+			if ((WEXITSTATUS(status_procs) == HD_MEM_ERR) || (WEXITSTATUS(status_procs) == HD_FILE_ERR))
 				return (-1);
+			else if (WEXITSTATUS(status_procs) == HD_EOF)
+				ft_printf("minishell: here_doc interrupted\n");
 		}
 	}
 	return (0);
 }
 
-int32_t	handle_here_doc(char **cmd, uint32_t *cnt)
+int32_t	handle_here_doc(char *cmd, uint32_t *cnt)
 {
 	char	*delimiter;
 	int32_t	del_pos;
 	int32_t	status_fork;
-	char	*file_name;
 
-	del_pos = find_next_eof_pos(*cmd, 0);
+	del_pos = find_next_eof_pos(cmd, 0);
 	while (del_pos != -1)
 	{
-		if (get_order_cmd(*cmd, del_pos) >= *cnt)
-			*cnt = get_order_cmd(*cmd, del_pos);
+		if (get_order_cmd(cmd, del_pos) >= *cnt)
+			*cnt = get_order_cmd(cmd, del_pos);
 		else
-			*cnt += get_order_cmd(*cmd, del_pos);
-		file_name = create_file_name(*cnt);
-		if (file_name == NULL)
-			return (-1);
-		delimiter = isolate_eof(*cmd + del_pos);
+			*cnt += get_order_cmd(cmd, del_pos);
+		delimiter = isolate_eof(cmd + del_pos);
 		if (delimiter == NULL)
-		{
-			ft_free(file_name);
 			return (-1);
-		}
-		status_fork = fork_here_doc(file_name, delimiter);
+		status_fork = fork_here_doc(*cnt, delimiter);
 		ft_free(delimiter);
-		ft_free(file_name);
 		if (status_fork == -1)
 			return (-1);
-		del_pos = find_next_eof_pos(*cmd, del_pos);
+		del_pos = find_next_eof_pos(cmd, del_pos);
 	}
-	*cnt += find_next_eof_pos(*cmd, 0) != -1;
+	*cnt += find_next_eof_pos(cmd, 0) != -1;
 	return (0);
 }
 
@@ -192,13 +207,14 @@ bool remove_here_docs(t_var *mini)
 		{
 			if (mini->cmd_data[i].redirections[j] == RED_IN_DOUBLE)
 			{
-				here_doc_to_drop = create_file_name(i + 1);
+				here_doc_to_drop = create_file_name(HERE_DOC_FIX, i + 1);
 				if (here_doc_to_drop == NULL)
 					return (false);
 				//status = unlink(here_doc_to_drop);
 				ft_free(here_doc_to_drop);
-				// if (status == -1)
-					// error occurred!
+				if (status == -1)
+					return (false);
+				break ;
 			}
 			j++;
 		}
