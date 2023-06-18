@@ -6,6 +6,7 @@ int	single_cmd(t_var *mini)
 {
 	t_cmd	*cmd;
 	int		exit_status;
+	int		status;
 
 	cmd = mini->cmd_data;
 	printf("pid before fork: %d\n", getpid());
@@ -24,15 +25,21 @@ int	single_cmd(t_var *mini)
 		return (ft_error_msg(mini, "Fork failed.", 1), mini->status = -1, -1);
 	if (mini->pid[0] == 0)
 	{
+		printf("child fork: %d\n", (mini)->pid[0]);
 		printf("pid after fork: %d\n", getpid());
 		if (ft_if_redir(mini, 0))
 			ft_redirect(mini, 0);
 		ft_exec_child_single(mini);
 	}
+	printf("parent fork: %d\n", (mini)->pid[0]);
 	waitpid(mini->pid[0], &exit_status, 0);
 	if (WIFEXITED(exit_status))
-		return (WEXITSTATUS(exit_status));
-	return (mini->status = -1, mini->status);   
+	{
+		status = WEXITSTATUS(exit_status);
+		printf("status from child: %d\n", status);	
+		return (status);
+	}
+	return (EXIT_FAILURE);   
 }
 
 int	multiple_cmds(t_var *mini)

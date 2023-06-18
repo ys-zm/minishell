@@ -1,6 +1,7 @@
 #include "minishell.h"
 
-
+// Execution of single command using execve(). Global variable g_exit_code is set to 0. 
+// If it fails, g_exit_code is switched to 127 with ft_error_msg() function.
 int	ft_exec_child_single(t_var *mini)
 {
 	char	*cmd_path;
@@ -10,16 +11,14 @@ int	ft_exec_child_single(t_var *mini)
 	cmd = mini->cmd_data[0];
 	if (!cmd.cmd_name)
 		exit(EXIT_SUCCESS);
-	
-	 cmd_path = access_cmd_path(mini, cmd.cmd_name);
+	cmd_path = access_cmd_path(mini, cmd.cmd_name);
 	g_exit_code = 0;
-	printf("path is: %s\n", cmd_path);
+	mini->env_arr = ft_list_to_arr(mini, *(mini->env_list));
 	execve(cmd_path, cmd.full_cmd, mini->env_arr);
-	printf("execve fails\n");
 	free(cmd_path);
 	ft_error_msg(mini, cmd.cmd_name, 127);
-	g_exit_code = 127;
-	exit(g_exit_code);
+	ft_free_all(mini);	
+	exit(g_exit_code); //not sure if I should exit here
 }
 
 int	ft_exec_child_multiple(t_var *mini, int index, int fd_out)
@@ -37,18 +36,19 @@ int	ft_exec_child_multiple(t_var *mini, int index, int fd_out)
 	{
 		cmd_path = access_cmd_path(mini, cmd.cmd_name);
 		g_exit_code = 0;
-		printf("path is: %s\n", cmd_path);
 		execve(cmd_path, cmd.full_cmd, mini->env_arr);
-		printf("execve fails\n");
 		free(cmd_path);
+		g_exit_code = 127;
 	}
 	else
+	{	
+		g_exit_code = 0;
 		status_check = ft_exec_builtin(mini, index, fd_out);
-	ft_error_msg(mini, cmd.cmd_name, 127);
-	if (status_check != 0)
-		g_exit_code = status_check;
-	else
-		g_exit_code = 127;
+		if (status_check)
+			g_exit_code = status_check;
+	}
+	ft_error_msg(mini, cmd.cmd_name, g_exit_code);
+	ft_free_all(mini);
 	exit(g_exit_code);
 }
 

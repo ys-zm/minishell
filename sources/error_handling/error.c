@@ -4,14 +4,31 @@
 void    ft_free_all(t_var *mini)
 {
 	if (mini->cmd_data)
+	{
 		ft_free_cmd_arr(mini->cmd_data, mini->n_cmd);
+		mini->cmd_data = NULL;
+	}
 	ft_free_env_list(mini->env_list);
 	if (mini->pipes)
+	{	
 		ft_free_pipes(mini->pipes, mini->n_cmd - 1);
+		mini->pipes = NULL;	
+	}	
 	if (mini->paths)
+	{
 		ft_free_strings(mini->paths);
+		mini->paths = NULL;
+	}
+	if (mini->env_arr)
+	{
+		ft_free_strings(mini->env_arr);	
+		mini->env_arr = NULL;
+	}
 	if (mini->pid)
+	{
 		free(mini->pid);
+		mini->pid = NULL;
+	}
 	free(mini);
 }
 

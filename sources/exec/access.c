@@ -72,12 +72,12 @@ char	*check_cwd(t_var *mini, char *cmd)
 		{
 			if (!access(cmd_path, X_OK))
 				return (cmd_path);
-		}
-		else
-		{
-			free(cmd_path);
-			cmd_path = NULL;
-			ft_permission_denied(mini, cmd);
+			else
+			{
+				free(cmd_path);
+				cmd_path = NULL;
+				ft_permission_denied(mini, cmd);
+			}
 		}
 	}
 	free(cmd_path);
@@ -105,6 +105,7 @@ char	*access_cmd_path(t_var *mini, char *cmd)
 	if (mini->paths)
 	{
 		cmd_path = check_env_paths(mini, cmd);
+		printf("cmd path: %s\n", cmd_path);
 		if (cmd_path)
 			return (cmd_path);
 		free(cmd_path);
