@@ -38,6 +38,7 @@ void	ft_error_msg(t_var *mini, char *str, int error)
 {
     // it prints 'Success' when the function is called mistakenly, shall we decide to use a fixed error msg, like 'minishell: Memory fault'?
     (void)error;
+	(void)mini;
     ft_putstr_fd("minishell: ", 2);
     ft_putstr_fd(str, 2);
 	perror(str);

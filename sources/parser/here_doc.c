@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/19 17:46:55 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/17 22:24:23 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/18 19:29:00 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ bool remove_here_docs(t_var *mini)
 	uint32_t	i;
 	uint32_t	j;
 	char		*here_doc_to_drop;
-	//int32_t		status;
+	int32_t		status;
 
 	i = 0;
 	while (i < mini->n_cmd)
@@ -210,7 +210,7 @@ bool remove_here_docs(t_var *mini)
 				here_doc_to_drop = create_file_name(HERE_DOC_FIX, i + 1);
 				if (here_doc_to_drop == NULL)
 					return (false);
-				//status = unlink(here_doc_to_drop);
+				status = unlink(here_doc_to_drop);
 				ft_free(here_doc_to_drop);
 				if (status == -1)
 					return (false);

@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/18 19:20:28 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/18 19:29:38 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ void	main_loop(t_var *depo)
 		new_cmd = NULL;
 		status = aquire_cmd(&new_cmd);
 		if (status == CMD_MEM_ERR)
-			malloc_protect(depo, NULL);
+			malloc_protect(depo);
 		else if (status == CMD_EOF)
 		{
 			if (has_trailing_pipe(new_cmd) == true)
@@ -150,7 +150,7 @@ void	main_loop(t_var *depo)
 		{
 			depo->cmd_data = create_new_cmd(new_cmd, depo);
 			if (depo->cmd_data == NULL)
-				malloc_protect(depo, NULL);
+				malloc_protect(depo);
 			print_cmd(depo);
 			ft_exec(depo);
 			if (remove_here_docs(depo) == false)
