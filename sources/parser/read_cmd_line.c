@@ -151,7 +151,7 @@ void	main_loop(t_var *depo)
 			depo->cmd_data = create_new_cmd(new_cmd, depo);
 			if (depo->cmd_data == NULL)
 				malloc_protect(depo);
-			print_cmd(depo);
+			// print_cmd(depo);
 			ft_exec(depo);
 			if (remove_here_docs(depo) == false)
 				malloc_protect(depo);
