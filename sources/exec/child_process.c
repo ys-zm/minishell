@@ -67,7 +67,6 @@ int	ft_exec_child_multiple(t_var *mini, int index)
 		exit(EXIT_SUCCESS);
 	if (!ft_if_builtin(cmd.cmd_name))
 	{
-		write(STDERR_FILENO, "hi\n", 3);
 		cmd_path = access_cmd_path(mini, cmd.cmd_name);
 		g_exit_code = 0;
 		execve(cmd_path, cmd.full_cmd, mini->env_arr);
@@ -76,22 +75,13 @@ int	ft_exec_child_multiple(t_var *mini, int index)
 	}
 	else
 	{
-		write(STDERR_FILENO, "h2\n", 3);	
 		g_exit_code = 0;
-		printf("hoi\n");
-		char x = cmd.fd_out + 48;
-		 write(STDERR_FILENO, &x, 1);
-		 write(STDERR_FILENO, "\n", 1);
-		status_check = ft_exec_builtin(mini, index, cmd.fd_out);
-		char c = status_check + 48;
-		write(STDERR_FILENO, &c, 1);
-		write(STDERR_FILENO, "\n", 1);
+		status_check = ft_exec_builtin(mini, index, STDOUT_FILENO);
 		if (status_check)
 			g_exit_code = status_check;
 		else
 			exit(status_check);
 	}
-	printf("hi!\n");
 	ft_error_msg(mini, cmd.cmd_name, g_exit_code);
 	ft_free_all(mini);
 	exit(g_exit_code);
@@ -102,18 +92,18 @@ void ft_exec_multiple(t_var *mini, u_int32_t index)
 {
     if (index > 0)
     {
-		printf("fd_in : %d\n", mini->cmd_data->fd_in);
+		printf("index: %d fd_indup\n", index);
 		dup2(mini->pipes[index - 1][READ], STDIN_FILENO);
 	}
 	
     if (index < mini->n_cmd - 1)
     {
-		printf("fd_out : %d\n", mini->cmd_data->fd_out);
+		printf("index: %d fd_outdup\n", index);
 		dup2(mini->pipes[index][WRITE], STDOUT_FILENO);
 	}
 	if (ft_if_redir(mini, index))
-    {
-		printf("shouldnt print this\n");
+	{
+		printf("doesn't happen\n");
 		ft_redirect(mini, index);
 	}
     close_pipes(mini);
