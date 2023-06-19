@@ -87,7 +87,7 @@ int	ft_exec_child_multiple(t_var *mini, int index)
 			exit(status_check);
 		}
 	}
-	ft_error_msg(mini, cmd.cmd_name, g_exit_code);
+	ft_error_msg(mini, "", g_exit_code);
 	ft_free_all(mini);
 	exit(g_exit_code);
 }

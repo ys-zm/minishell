@@ -17,6 +17,7 @@ t_env	*ft_find_node(t_env *env_list, char *key)
 //edge case: echo $?weoiruyfh ours outputs nothing
 //$? outputs
 // minishell: 0: command not found i our one
+//echo - does not work
 int	ft_echo(char **args, int fd_out)
 {
 	bool	new_line;
