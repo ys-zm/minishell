@@ -17,6 +17,7 @@ int	single_cmd(t_var *mini)
 	{
 		if (ft_redir_type(mini, 0))
 			return (EXIT_FAILURE);
+		write(STDERR_FILENO, "!!!!\n", 5);
 		return (ft_exec_builtin(mini, 0, mini->cmd_data[0].fd_out));
 	}
 	(mini)->pid[0] = fork();

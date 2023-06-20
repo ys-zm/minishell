@@ -126,11 +126,11 @@ char    *ft_trip_join(char *str1, char *str2, char *str3);
 size_t  count_args(char **args);
 
 //Builtin Functions --> builtins/ft_funcname.c
-int     ft_pwd(int fd_out);
+int		ft_pwd(t_var *mini, int fd_out);
 int     ft_cd(t_var *mini, char **args, int fd_out);
 int     ft_env(t_var *mini, int fd_out);
 int		ft_echo(char **args, int fd_out);
-int    ft_unset(t_var *mini, char **args, int fd_out);
+int		ft_unset(t_var *mini, char **args, int fd_out);
 int		ft_exit(t_var *mini, char **args, int fd_out);
 int		ft_export(t_var *mini, char **args, int fd_out);
 
@@ -143,7 +143,7 @@ int 	ft_check_if_same_value(t_env *env_list, char *key, char *value);
 int 	ft_check_if_key_exists(t_env *env_list, char *key);
 int 	ft_find_first_equals(char *env);
 int		ft_check_key(char *key);
-int    ft_redir_type(t_var *mini, int index);
+int		ft_redir_type(t_var *mini, int index);
 void    ft_replace_value(t_var *mini, char *key, char *new_value);
 void    ft_append_value(t_var *mini, char *key, char *to_add);
 void    make_env_list(char **envp, t_var *mini);
