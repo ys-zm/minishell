@@ -43,4 +43,11 @@ int main(void)
 //exit
 //should decrement shlvl
 
-//point: REDIR 61
+
+//cat<>out --> shoudl create outfile!
+//echo $ | echo $$$ --- prints 8010...wtf
+//SEG FAULTS!
+//error when you ctrl D in a heredoc
+//echo 'ab"cd'ef'gh"ij'kl --> SEGFAULT FUCK
+//echo " hello '$USER' world " !
+//<< heredocs in general, not working

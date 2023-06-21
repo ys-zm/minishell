@@ -51,7 +51,7 @@ int    ft_redir_type(t_var *mini, int index)
     {
         if (ft_check_permission(cmd, cmd->redirections[i], i) == EXIT_FAILURE)
         {
-            ft_error_msg(mini, "", 1);
+            ft_error_msg(mini, cmd->files[i], 1);
             return (EXIT_FAILURE);
         }
         i++;

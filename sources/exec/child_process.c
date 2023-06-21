@@ -48,8 +48,9 @@ int	ft_exec_child_single(t_var *mini)
 	mini->env_arr = ft_list_to_arr(mini, *(mini->env_list));
 	g_exit_code = 0;
 	execve(cmd_path, cmd.full_cmd, mini->env_arr);
-	free(cmd_path);
-	ft_error_msg(mini, cmd.cmd_name, 127);
+	g_exit_code = 127;
+	//ft_error_msg(mini, cmd.cmd_name, g_exit_code);
+	ft_error_msg(mini, "", g_exit_code);
 	ft_free_all(mini);	
 	exit(g_exit_code); //not sure if I should exit here
 }
@@ -88,7 +89,6 @@ int	ft_exec_child_multiple(t_var *mini, int index)
 			exit(status_check);
 		}
 	}
-	// ft_error_msg(mini, "", g_exit_code);
 	ft_free_all(mini);
 	exit(g_exit_code);
 }
