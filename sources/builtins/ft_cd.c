@@ -8,13 +8,14 @@ char *ft_remove_lastdir(t_var *mini, char *old_path)
 
 	len = ft_strlen(old_path);
 	i = len - 1;
+	if (old_path[i] == '/')
+		i--;
 	while (i >= 0)
 	{
 		if (old_path[i] == '/')
 			break ;
 		i--;
 	}
-	printf("i %d\n", i);
 	new_path = ft_substr(old_path, 0, i + 1);
 	if (!new_path)
 		malloc_protect(mini);
@@ -28,12 +29,9 @@ char    *ft_get_home(t_var *mini)
 	env = *(mini->env_list);
 	while (env->next && ft_strncmp(env->key, "HOME", 4))
 		env = env->next;
-	if (ft_strncmp(env->key, "HOME", 4))
-	{
-		ft_putstr_fd("cd: HOME not set", 2);
-		return (NULL);
-	}
-	return (env->value);
+	if (env && !ft_strncmp(env->key, "HOME", 4))
+		return (env->value);
+	return (NULL);
 }
 
 t_env	*ft_search_env_var(t_env **env_list, char *which_env)
@@ -73,11 +71,14 @@ char	*ft_replace_tilde(t_var *mini, char *str)
 {
 	size_t	len;
 	char	*home_path;
+	// char	*make_it_absolute;
 	char	*new_path;
 	char	*temp;
 
 	len = ft_strlen(str) - 2;
 	home_path = ft_get_home(mini);
+	printf("home: %s\n", home_path);
+	// make_it_absolute 
 	temp = ft_substr(str, 2, len);
 	if (!temp)
 		malloc_protect(mini);
@@ -93,7 +94,7 @@ int	ft_cd_to_homedir(t_var *mini)
 	new_path = ft_get_home(mini);
 	if (!new_path)
 	{
-		ft_putstr_fd("minishell: cd: HOME not set", 2);
+		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
 		return (EXIT_FAILURE);
 	}
 	if (!chdir(new_path))
@@ -121,7 +122,6 @@ int	ft_cd_to_oldpwd(t_var *mini)
 		ft_putstr_fd("minishell: cd: OLDPWD not set", 2);
 		return (EXIT_FAILURE);
 	}
-	printf("old: %s\n", old_pwd);
 	if (!chdir(old_pwd))
 		return (EXIT_SUCCESS);
 	else
@@ -155,7 +155,6 @@ int	ft_count_directories(char *arg)
 	}
 	if (flag == 1 && !*arg)
 		count++;
-	printf("count: %d\n", count);
 	if (!count)
 		return (1);
 	return (count);
@@ -168,9 +167,7 @@ char	*ft_calculate_path(t_var *mini, char *arg, char *curr_path)
 	// size_t	dirs;
 	char	*new_path;
 	char **args = ft_split(arg, '/', 0);
-	printf("args[0]: %s\n", args[0]);
-	printf("cur_path = %s\n", curr_path);
-	// dirs = ft_count_directories(arg);
+	
 	i = 0;
 	while (args && args[i])
 	{
@@ -188,7 +185,9 @@ char	*ft_calculate_path(t_var *mini, char *arg, char *curr_path)
 		}
 		i++;
 	}
-	printf("curr_path: %s\n", curr_path);
+	new_path = ft_strjoin("/", curr_path, "", 0);
+	free(curr_path);
+	curr_path = new_path;
 	return (curr_path);
 }
 
@@ -207,7 +206,6 @@ int ft_cd(t_var *mini, char **args, int fd_out) //update the envp for PWD and OL
 		ft_putstr_fd("minishell: cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n", 2);
 			return (0);
 	}
-	printf("cwd: %s\n", cwd);
 	ft_update_env_var(mini->env_list, "OLDPWD", cwd);
 	if (count_args(args) == 1 || ft_check_for_tilde(args))
 		return (ft_cd_to_homedir(mini));
@@ -217,15 +215,15 @@ int ft_cd(t_var *mini, char **args, int fd_out) //update the envp for PWD and OL
 		return (EXIT_SUCCESS);
 	if (args[1][0] == '~' && args[1][1] == '/')
 	{
-		write(STDERR_FILENO, "ERR1\n", 4);
 		temp = ft_replace_tilde(mini, args[1]);
 		free(args[1]);
 		args[1] = temp;
+		free(cwd);
+		cwd = NULL;
 	}
 	new_path = ft_calculate_path(mini, args[1], cwd);
 	if (!chdir(new_path))
 	{
-		write(STDERR_FILENO, "ERR5\n", 4);
 		ft_update_env_var(mini->env_list, "PWD", new_path);
 		return (EXIT_SUCCESS);
 	}

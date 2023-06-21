@@ -22,3 +22,25 @@ int main(void)
 
 //Errors:
 // cat <Makefile exists the program completely
+
+//Edge cases:
+// echo:
+// echo ~ ==> $HOME - should this happen in the expander or....
+// echo "\\s" and echo "\s" should both ==> \s | only \\\ or \\\\ show two and so forth
+//env
+//env weirddddd ==> no such file or directory
+
+//export
+//export var=a - export $var=test - echo $var $a !!!!
+//export $variouh=test outputinBASH: bash: export: `=test': not a valid identifier
+//export $var=test - unset var
+//export "" test=a
+
+//"" - should give the output of error/ command not found not permission denied
+
+//ls | exit ==>shouldnt print exit on command line
+
+//exit
+//should decrement shlvl
+
+//point: REDIR 61

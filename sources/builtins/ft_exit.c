@@ -51,6 +51,7 @@ int	ft_if_sign(char *str)
 
 //ft_exit // only hapens in curr process if using pipes!
 //sometimes its an exit code1 or 255 when int too long, or non numeric
+//if SHLVL exists, decrement shlvl
 int	ft_exit(t_var *mini, char **args, int fd_out)
 {
 	(void)fd_out;

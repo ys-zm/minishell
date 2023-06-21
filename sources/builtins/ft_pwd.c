@@ -20,6 +20,7 @@ int	ft_pwd(t_var *mini, int fd_out)
 	char	*curr_dir;
 
 	(void)fd_out;
+	(void)mini;
 	curr_dir = getcwd(0, 0);
 	if (curr_dir)
 	{
@@ -30,13 +31,13 @@ int	ft_pwd(t_var *mini, int fd_out)
 	}
 	else
 	{
-		curr_dir = ft_get_pwd(mini);
-		if (curr_dir)
-		{
-			ft_putstr_fd(curr_dir, 1);
-			free(curr_dir);
-			return (write(STDOUT_FILENO, "\n", 1), EXIT_SUCCESS);
-		}
+		// curr_dir = ft_get_pwd(mini);
+		// if (curr_dir)
+		// {
+		// 	ft_putstr_fd(curr_dir, 1);
+		// 	free(curr_dir);
+		// 	return (write(STDOUT_FILENO, "\n", 1), EXIT_SUCCESS);
+		// }
 		write(STDERR_FILENO, "pwd failed\n", 11);
 		return (EXIT_FAILURE);
 	}
