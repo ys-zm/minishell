@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/22 14:03:22 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/22 15:07:17 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ t_cmd_status	aquire_cmd(char **cmd)
 			return (CMD_MEM_ERR);
 		}
 		*cmd = ft_strjoin(*cmd, buffer, "\n", true);
-	ft_printf("cmd: %s\n", *cmd);
 		if (*cmd == NULL)
 			return (CMD_MEM_ERR);
 		if (has_trailing_pipe(*cmd) == false)
@@ -132,7 +131,6 @@ void	main_loop(t_var *depo)
 	{
 		new_cmd = NULL;
 		status = aquire_cmd(&new_cmd);
-		printf("newcmd: %s\n", new_cmd);
 		if (status == CMD_MEM_ERR)
 			malloc_protect(depo);
 		else if (status == CMD_EOF)
@@ -148,7 +146,6 @@ void	main_loop(t_var *depo)
 			ft_printf("syntax error\n");
 		if ((status == CMD_OK) && (is_only_spaces(new_cmd) == false))
 		{
-			printf("newcmd: %s\n", new_cmd);
 			depo->cmd_data = create_new_cmd(new_cmd, depo);
 			if (depo->cmd_data == NULL)
 				malloc_protect(depo);

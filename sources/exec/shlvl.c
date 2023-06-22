@@ -2,7 +2,7 @@
 
 int ft_check_if_minishell(char *cmd)
 {
-    if (!ft_strncmp("./minishell", cmd, 11))
+    if (cmd && !ft_strncmp("./minishell", cmd, 11))
         return (true);
     return (false);
 }

@@ -19,16 +19,9 @@ int	ft_check_key(char *key)
 	int	i;
 
 	i = 0;
-	if (key && key[0])
-	{
-		if (ft_isalpha(key[0]) == 0 && key[0] != '_')
-		{
-			ft_putstr_fd("minishell: export: '", 2);
-			ft_putstr_fd(key, 2);
-			ft_putstr_fd("' : not a valid identifier\n", 2);
-			return (EXIT_FAILURE);
-		}
-	}
+	if (key && key[0] == '\0')
+		return (ft_putstr_fd("minishell: export: `': not a valid identifier\n", 2), EXIT_FAILURE);
+
 	while (key && key[i])
 	{
 		if (!ft_isalnum(key[i]) && key[i] != '_')

@@ -16,14 +16,14 @@ void	ft_increment_shlvl(t_var *mini)
 	{
 		value = ft_atoi(env_list->value);
 		value += 1;
-		free(env_list);
+		free(env_list->value);
 		env_list->value = ft_itoa(value);
 	}
 }
 
 void	ft_set_shlvl(t_var *mini, char *cmd_name)
 {
-	if (!ft_strcmp("./minishell", cmd_name))
+	if (cmd_name && !ft_strcmp("./minishell", cmd_name))
 	{
 		if (ft_check_if_key_exists(*(mini->env_list), "SHLVL"))
 			ft_increment_shlvl(mini);
@@ -44,13 +44,11 @@ int	ft_exec_child_single(t_var *mini)
 	if (!cmd.cmd_name)
 		exit(EXIT_SUCCESS);
 	cmd_path = access_cmd_path(mini, cmd.cmd_name);
-	printf("cmd_pth: %s\n", cmd_path);
 	ft_set_shlvl(mini, cmd.cmd_name);
 	mini->env_arr = ft_list_to_arr(mini, *(mini->env_list));
 	g_exit_code = 0;
 	execve(cmd_path, cmd.full_cmd, mini->env_arr);
 	g_exit_code = 127;
-	printf("execve failed\n");
 	ft_error_msg(mini, "", g_exit_code);
 	ft_free_all(mini);	
 	exit(g_exit_code); //not sure if I should exit here
