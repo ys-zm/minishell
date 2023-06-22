@@ -15,7 +15,8 @@ int	single_cmd(t_var *mini)
 	}
 	if (ft_if_builtin(cmd->cmd_name))
 	{
-		ft_redir_type(mini, 0);
+		if (ft_redir_type(mini, 0))
+			return (EXIT_FAILURE);
 		return (ft_exec_builtin(mini, 0, mini->cmd_data[0].fd_out));
 	}
 	(mini)->pid[0] = fork();
@@ -24,7 +25,13 @@ int	single_cmd(t_var *mini)
 	if (mini->pid[0] == 0)
 	{
 		if (ft_if_redir(mini, 0))
-			ft_redirect(mini, 0);
+		{
+			if (ft_redirect(mini, 0))
+				{
+					ft_free_all(mini);
+					exit(EXIT_FAILURE);
+				}
+		}
 		ft_exec_child_single(mini);
 	}
 	waitpid(mini->pid[0], &exit_status, 0);

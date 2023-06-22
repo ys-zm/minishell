@@ -40,7 +40,7 @@ void	ft_error_msg(t_var *mini, char *str, int error)
     (void)error;
 	(void)mini;
     ft_putstr_fd("minishell: ", 2);
-    ft_putstr_fd(str, 2);
+    // fti_putstr_fd(str, 2);
 	perror(str);
 	g_exit_code = error;
 }
