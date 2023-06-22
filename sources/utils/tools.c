@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/20 19:09:49 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/14 18:07:56 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/22 12:38:08 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*remove_quotes(char *to_clear)
 	uint32_t	len;
 	uint32_t	i;
 	uint32_t	j;
-	
+
 	len = ft_strlen(to_clear);
 	i = 0;
 	while (to_clear[i])

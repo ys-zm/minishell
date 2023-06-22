@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/19 17:46:55 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/18 19:29:00 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/22 12:54:07 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,32 +35,61 @@ int32_t	find_next_eof_pos(char *cmd, uint32_t start_pos)
 
 char	*isolate_eof(char *start)
 {
-	char 		start_quote;
 	char 		*eof;
-	uint32_t	i;
+	uint32_t	eof_len;
 
-	i = 0;
-	if (is_quote(*start))
+	eof_len = 0;
+	while (is_valid_space(start, eof_len))
+		start++;
+	while (start[eof_len] != '\0')
 	{
-		start_quote = *start;
-		while (*start && (*start == start_quote))
-			start++;
-		while (start[i] && (start[i] != start_quote))
-			i++;
-	}	
-	else
-	{
-		while (start[i] && (! ft_isspace(start[i])) && (! is_arrow(start[i])) && (start[i] != '|'))
-			i++;
+		if (is_valid_space(start, eof_len))
+			break ;
+		else if (is_valid_arrow(start, eof_len))
+			break ;
+		else if (is_valid_char(start, eof_len, '|'))
+			break ;
+		else if (is_valid_space(start, eof_len))
+			break ;
+		else
+			eof_len++;
 	}
-	eof = ft_calloc((i + 1), sizeof(char));
-	if (eof)
-	{
-		while (i--)
-			eof[i] = start[i];
-	}
-	return (eof);
+	eof = ft_calloc((eof_len + 1), sizeof(char));
+	if (eof == NULL)
+		return (NULL);
+	while (eof_len--)
+		eof[eof_len] = start[eof_len];
+	return (remove_quotes(eof));
 }
+
+// char	*isolate_eof_bk(char *start)
+// {
+// 	char 		start_quote;
+// 	char 		*eof;
+// 	uint32_t	i;
+// 
+// 	i = 0;
+// 	if (is_quote(*start))
+// 	{
+// 		start_quote = *start;
+// 		while (*start && (*start == start_quote))
+// 			start++;
+// 		while (start[i] && (start[i] != start_quote))
+// 			i++;
+// 	}	
+// 	else
+// 	{
+// 		while (start[i] && (! ft_isspace(start[i])) && (! is_arrow(start[i])) && (start[i] != '|'))
+// 			i++;
+// 	}
+// 	eof = ft_calloc((i + 1), sizeof(char));
+// 	if (eof)
+// 	{
+// 		while (i--)
+// 			eof[i] = start[i];
+// 	}
+// 	return (eof);
+// }
 
 t_cmd_status	read_stdin(char *eof, char **here_doc)
 {
@@ -70,10 +99,19 @@ t_cmd_status	read_stdin(char *eof, char **here_doc)
 	while (true)
 	{
 		status = ft_readline(&new_line, "> ", false);
-		if ((status == CMD_MEM_ERR) || (status == CMD_EOF))
+		if (status == CMD_MEM_ERR)
 		{
 			ft_free(*here_doc);
 			return (status);
+		}
+		else if (status == CMD_EOF)
+		{
+			ft_free(*here_doc);
+			*here_doc = ft_strdup("");
+			if (*here_doc == NULL)
+				return (CMD_MEM_ERR);
+			else
+				return (CMD_EOF);
 		}
 		else if (ft_strncmp(new_line, eof, ft_strlen(eof)) == 0)
 		{
@@ -115,12 +153,6 @@ t_cmd_status	write_here_doc(int cnt, char *delimiter)
 	status_cmd = read_stdin(delimiter, &here_doc);
 	if (status_cmd == CMD_MEM_ERR)
 		exit(HD_MEM_ERR);
-	else if (status_cmd == CMD_EOF)
-	{
-		here_doc = ft_strdup("");
-		if (here_doc == NULL)
-			exit(HD_MEM_ERR);
-	}
 	file_name = create_file_name(HERE_DOC_FIX, cnt);
 	if (file_name == NULL)
 	{
@@ -166,6 +198,7 @@ int32_t	fork_here_doc(int cnt, char *delimiter)
 	return (0);
 }
 
+// NB this cat <<halo= | grep h  <--- this is problematic
 int32_t	handle_here_doc(char *cmd, uint32_t *cnt)
 {
 	char	*delimiter;
@@ -179,7 +212,7 @@ int32_t	handle_here_doc(char *cmd, uint32_t *cnt)
 			*cnt = get_order_cmd(cmd, del_pos);
 		else
 			*cnt += get_order_cmd(cmd, del_pos);
-		delimiter = isolate_eof(cmd + del_pos);
+		delimiter = isolate_eof((cmd + del_pos));
 		if (delimiter == NULL)
 			return (-1);
 		status_fork = fork_here_doc(*cnt, delimiter);

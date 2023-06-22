@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/17 22:02:45 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/18 00:07:37 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/22 10:23:02 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@
 # define BOLD				"\033[1m"
 # define BOLD_RESET			"\033[0m"
 # define HERE_DOC_FIX		"here_doc/here_doc"
-# define PROMPT				BOLD YEL "MI" MAG "NI" RED "HELL-> "  COL_RESET BOLD_RESET
+# define PROMPT				BOLD YEL "MI" MAG "NI" RED "HELL-> "  COL_RESET BOLD_RESET 
 # include "libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdlib.h>    	// malloc(), free()
 # include <unistd.h>    	// write(), read(), ...
- # include <fcntl.h>			// macro to open files (O_CREAT, O_WRONLY, O_RDONLY ..)
+# include <fcntl.h>			// macro to open files (O_CREAT, O_WRONLY, O_RDONLY ..)
 # include <stdbool.h>		// boolean types
 # include <stdint.h>		// cross-compiler types
 # include <signal.h>    	// signal(), sigemptyset(), kill(), getpid(), ...

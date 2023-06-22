@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/18 19:29:38 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/22 11:25:14 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ t_cmd	*create_new_cmd(char *cmd_str, t_var *depo)
 		tokens = tokenize(str_cmds[i]);
 		if (tokens == NULL)
 		{
-			ft_free(cmd);
+			ft_free_cmd_arr(cmd, i);
 			return (ft_free_double((void **) str_cmds, -1));
 		}
 		cmd_status = get_cmd(tokens, cmd + i);
@@ -105,7 +105,7 @@ t_cmd	*create_new_cmd(char *cmd_str, t_var *depo)
 		{
 			ft_lstclear(&tokens, ft_free);
 			ft_free_cmd_arr(cmd, i);
-			return (NULL);
+			return (ft_free_double((void **) str_cmds, -1));
 		}
 		cmd_status = get_redirections(tokens, cmd + i, i + 1);
 		if (cmd_status == false)
@@ -113,7 +113,7 @@ t_cmd	*create_new_cmd(char *cmd_str, t_var *depo)
 			ft_lstclear(&tokens, ft_free);
 			ft_free_cmd_arr(cmd, i);
 			ft_free(cmd->full_cmd);
-			return (NULL);
+			return (ft_free_double((void **) str_cmds, -1));
 		}
 		ft_lstclear(&tokens, ft_free);
 		i++;
@@ -129,7 +129,6 @@ void	main_loop(t_var *depo)
 
 	while (true)
 	{
-		// printf("pid new mini: %d\n", getpid());
 		new_cmd = NULL;
 		status = aquire_cmd(&new_cmd);
 		if (status == CMD_MEM_ERR)
@@ -139,7 +138,6 @@ void	main_loop(t_var *depo)
 			if (has_trailing_pipe(new_cmd) == true)
 				ft_printf("syntax error\n");
 			ft_free(new_cmd);
-				
 			break ;
 		}
 		if (status != CMD_EMPTY)
@@ -151,7 +149,7 @@ void	main_loop(t_var *depo)
 			depo->cmd_data = create_new_cmd(new_cmd, depo);
 			if (depo->cmd_data == NULL)
 				malloc_protect(depo);
-			print_cmd(depo);
+			// print_cmd(depo);
 			ft_exec(depo);
 			if (remove_here_docs(depo) == false)
 				malloc_protect(depo);
@@ -161,6 +159,5 @@ void	main_loop(t_var *depo)
 		else
 			ft_free(new_cmd);
 	}
-
 	clear_history();
 }

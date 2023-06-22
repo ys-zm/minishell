@@ -44,7 +44,6 @@ int	multiple_cmds(t_var *mini)
 void	ft_exec(t_var *mini)
 {
 	ft_mem_alloc(mini);
-	printf("ncmd: %d\n", mini->n_cmd);
 	if (mini->n_cmd == 1)
 		g_exit_code = single_cmd(mini);
 	else

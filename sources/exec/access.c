@@ -105,7 +105,6 @@ char	*access_cmd_path(t_var *mini, char *cmd)
 	if (mini->paths)
 	{
 		cmd_path = check_env_paths(mini, cmd);
-		printf("cmd path: %s\n", cmd_path);
 		if (cmd_path)
 			return (cmd_path);
 		free(cmd_path);

@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/27 17:20:39 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/17 01:57:25 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/22 11:20:53 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,11 +109,11 @@ bool	get_cmd(t_list *tokens, t_cmd *cmd)
 		if (is_redirection(tokens->content))
 			tokens = tokens->next;
 		else
-		{	
+		{
 			if ((! ft_strchr(tokens->content, '\'')) || (! ft_strchr(tokens->content, '\"')))
 				cmd->full_cmd[i] = remove_quotes(tokens->content);
 			else
-				cmd->files[i] = ft_strdup(tokens->content);
+				cmd->full_cmd[i] = ft_strdup(tokens->content);
 			if (cmd->full_cmd[i] == NULL)
 			{
 				ft_free(cmd->full_cmd);
