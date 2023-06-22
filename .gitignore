@@ -5,3 +5,4 @@ a.*
 .vscode
 .DS_Store
 .idea*
+minishell
