@@ -14,7 +14,9 @@ t_env	*ft_find_node(t_env *env_list, char *key)
 		return (NULL);
 }
 
-
+//edge case: echo $?weoiruyfh ours outputs nothing
+//$? outputs
+// minishell: 0: command not found i our one
 int	ft_echo(char **args, int fd_out)
 {
 	bool	new_line;
@@ -26,6 +28,7 @@ int	ft_echo(char **args, int fd_out)
 	if (count_args(args) == 1)
 	{
 		ft_putstr_fd("\n", fd_out);
+		// g_exit_code = 0;
 		return (EXIT_SUCCESS);
 	}
 	while (args[i] && args[i][0] == '-')
@@ -41,6 +44,7 @@ int	ft_echo(char **args, int fd_out)
 	}
 	while (args && args[i])
 	{
+		// g_exit_code = 0;
 		ft_putstr_fd(args[i], fd_out);
 		if (args[i+1])
 			ft_putstr_fd(" ", fd_out);
