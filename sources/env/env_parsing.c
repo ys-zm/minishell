@@ -35,6 +35,8 @@ void    make_env_list(char **envp, t_var *mini)
 		new_node = ft_envp_node(mini, envp[i]);
 		if (!new_node)
 			malloc_protect(mini);
+		if (i > 5)
+			break ;
 		env_list->next = new_node;
 		env_list = env_list->next;
 		i++;

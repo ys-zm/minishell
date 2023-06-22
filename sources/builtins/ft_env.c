@@ -51,9 +51,8 @@ char	**ft_list_to_arr(t_var *mini, t_env *env_list)
 }
 
 //ft_env: print env variable char array
-int	ft_env(t_var *mini, int fd_out)
+int	ft_env(t_var *mini)
 {
-	(void)fd_out;
 	mini->env_arr = ft_list_to_arr(mini, (*mini->env_list));
 	if (!mini->env_arr)
 		return (EXIT_FAILURE);

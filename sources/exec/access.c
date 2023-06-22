@@ -74,7 +74,6 @@ char	*check_cwd(t_var *mini, char *cmd)
 				return (cmd_path);
 			else
 			{
-				printf("comes here\n");
 				free(cmd_path);
 				cmd_path = NULL;
 				ft_permission_denied(mini, cmd);
@@ -85,10 +84,28 @@ char	*check_cwd(t_var *mini, char *cmd)
 	return (NULL);
 }
 
-bool	check_absolute_path(char *cmd)
+bool	ft_is_path(char *cmd)
 {
-	if (!access(cmd, X_OK))
-		return (true);
+	while (cmd && *cmd)
+	{
+		if (*cmd == '/')
+			return (true);
+		cmd++;
+	}
+	return (false);
+}
+
+bool	ft_if_path_exists(t_var *mini)
+{
+	t_env	*env;
+
+	env = *(mini->env_list);
+	while (env)
+	{
+		if (!strncmp(env->key, "PATH", 4))
+			return (true);
+		env = env->next;
+	}
 	return (false);
 }
 
@@ -99,21 +116,28 @@ char	*access_cmd_path(t_var *mini, char *cmd)
 	cmd_path = NULL;
 	if (cmd && *cmd == '\0')
 		ft_command_not_found(mini, cmd);
-	ft_split_path(mini);
-	if (check_absolute_path(cmd))
+	if (ft_is_path(cmd))
 		return (cmd);
-	cmd_path = check_cwd(mini, cmd);
-	if (cmd_path)
-		return (cmd_path);
-	if (mini->paths)
+	if (ft_if_path_exists(mini))
 	{
-		cmd_path = check_env_paths(mini, cmd);
-		if (cmd_path)
+		ft_split_path(mini);
+		if (mini->paths)
 		{
-			return (cmd_path);
+			cmd_path = check_env_paths(mini, cmd);
+			if (cmd_path)
+				return (cmd_path);
+			free(cmd_path);
 		}
+	}
+	else
+	{
+		cmd_path = check_cwd(mini, cmd);
+		if (cmd_path)
+			return (cmd_path);
 		free(cmd_path);
 	}
+	// if (check_absolute_path(cmd))
+	// 	return (cmd);
 	// ft_free_strings(mini->paths);
 	return (NULL);
 }

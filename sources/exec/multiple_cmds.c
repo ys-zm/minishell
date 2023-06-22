@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-
 void    create_pipes(t_var *mini)
 {
     u_int32_t i;
@@ -16,7 +15,6 @@ void    create_pipes(t_var *mini)
         i++;
     }
 }
-
 
 void close_pipes(t_var *mini)
 {

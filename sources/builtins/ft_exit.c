@@ -52,11 +52,10 @@ int	ft_if_sign(char *str)
 //ft_exit // only hapens in curr process if using pipes!
 //sometimes its an exit code1 or 255 when int too long, or non numeric
 //if SHLVL exists, decrement shlvl
-int	ft_exit(t_var *mini, char **args, int fd_out)
+int	ft_exit(t_var *mini, char **args)
 {
-	(void)fd_out;
-	printf("pid at exit: %d\n", getpid());
-	ft_putstr_fd("exit\n", 2);
+	if (mini->n_cmd == 1)
+		ft_putstr_fd("exit\n", 1);
 	if (count_args(args) == 1)
 	{
 		ft_free_all(mini);

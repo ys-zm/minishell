@@ -192,13 +192,12 @@ char	*ft_calculate_path(t_var *mini, char *arg, char *curr_path)
 
 //ft_cd: change directory
 //fix .. setting old pwd and pwd when you do ..
-int ft_cd(t_var *mini, char **args, int fd_out) //update the envp for PWD and OLDPWD, but only if they exist
+int ft_cd(t_var *mini, char **args) //update the envp for PWD and OLDPWD, but only if they exist
 {
 	char	*cwd;
 	char	*new_path;
 	char	*temp;
 
-	(void)fd_out;
 	cwd = getcwd(0, 0);
 	if (!cwd)
 	{
@@ -220,6 +219,8 @@ int ft_cd(t_var *mini, char **args, int fd_out) //update the envp for PWD and OL
 		free(cwd);
 		cwd = NULL;
 	}
+	else if (args[1][0] == '/')
+		cwd = NULL;
 	new_path = ft_calculate_path(mini, args[1], cwd);
 	if (!chdir(new_path))
 	{

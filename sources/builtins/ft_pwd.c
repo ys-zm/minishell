@@ -15,11 +15,10 @@ char	*ft_get_pwd(t_var *mini)
 }
 
 //ft_pwd: print working directory
-int	ft_pwd(t_var *mini, int fd_out)
+int	ft_pwd(t_var *mini)
 {
 	char	*curr_dir;
 
-	(void)fd_out;
 	(void)mini;
 	curr_dir = getcwd(0, 0);
 	if (curr_dir)

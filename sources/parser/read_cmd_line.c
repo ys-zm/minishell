@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/22 15:07:17 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/22 17:03:29 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,6 @@ void	main_loop(t_var *depo)
 			if (depo->cmd_data == NULL)
 				malloc_protect(depo);
 			print_cmd(depo);
-			
 			ft_exec(depo);
 			if (remove_here_docs(depo) == false)
 				malloc_protect(depo);

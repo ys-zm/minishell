@@ -87,13 +87,12 @@ int	ft_export_single(t_var *mini, char *arg, size_t op_type, size_t op_pos)
 //a=b ignores the key for some reason
 //expansion should work i.e. echo $new_key shold expand new_value
 // export a="ls -la". run $a should run the cmd.
-int	ft_export(t_var *mini, char **args, int fd_out)
+int	ft_export(t_var *mini, char **args)
 {
 	size_t	op_type;
 	size_t	op_pos;
 	int	i;
 
-	(void) fd_out;
 	i = 1;
 	op_type = 0;
 	op_pos = 0;
