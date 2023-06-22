@@ -78,7 +78,6 @@ char	*ft_replace_tilde(t_var *mini, char *str)
 	len = ft_strlen(str) - 2;
 	home_path = ft_get_home(mini);
 	printf("home: %s\n", home_path);
-	// make_it_absolute 
 	temp = ft_substr(str, 2, len);
 	if (!temp)
 		malloc_protect(mini);

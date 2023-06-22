@@ -26,7 +26,7 @@ int main(void)
 //Edge cases:
 // echo:
 // echo ~ ==> $HOME - should this happen in the expander or....
-// echo "\\s" and echo "\s" should both ==> \s | only \\\ or \\\\ show two and so forth
+// echo "\\s" and echo "\s" should both ==> \s | only \\\ or \\\\ show two and so forth *maybe not important
 //env
 //env weirddddd ==> no such file or directory
 
@@ -34,9 +34,9 @@ int main(void)
 //export var=a - export $var=test - echo $var $a !!!!
 //export $variouh=test outputinBASH: bash: export: `=test': not a valid identifier
 //export $var=test - unset var
-//export "" test=a
-
-//"" - should give the output of error/ command not found not permission denied
+//export "" test=a //empty string does not work!! add to export cannot set empty string!, instead err msg: "bash: export: `': not a valid identifier"
+ 
+//"" - should give the output of error/ command not found not permission denied --! do not pass to execve, handle before, command not found
 
 //ls | exit ==>shouldnt print exit on command line
 
@@ -47,7 +47,5 @@ int main(void)
 //cat<>out --> shoudl create outfile!
 //echo $ | echo $$$ --- prints 8010...wtf
 //SEG FAULTS!
-//error when you ctrl D in a heredoc
 //echo 'ab"cd'ef'gh"ij'kl --> SEGFAULT FUCK
 //echo " hello '$USER' world " !
-//<< heredocs in general, not working

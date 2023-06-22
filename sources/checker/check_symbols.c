@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/24 00:55:08 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/22 12:02:15 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/22 14:09:27 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ bool	is_valid_arrow(char *string, uint32_t pos_to_check)
 	else
 		return (is_outside_quotes(string, pos_to_check));
 }
-
+//NB fix this case; echo " hello '$USER' world "
 bool	is_valid_dollar(char *string, uint32_t pos_to_check)
 {
 	uint32_t	i;

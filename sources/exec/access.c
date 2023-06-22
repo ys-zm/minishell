@@ -26,6 +26,9 @@ void	ft_find_error(t_var *mini, char *cmd)
 		}
 		i++;
 	}
+	printf("found value: %d\n", found);
+	printf("cmd: %s\n", cmd);
+	write(STDERR_FILENO, "HI!\n", 4);
 	if (found == 0)
 	{
 		if (cmd_path)
@@ -34,6 +37,7 @@ void	ft_find_error(t_var *mini, char *cmd)
 	}
 	else if (found == 1 && access(cmd_path, X_OK) == -1)
 	{
+		printf("cmd_path: %s\n", cmd_path);
 		if (cmd_path)
 			free(cmd_path);
 		ft_permission_denied(mini, cmd);
@@ -74,6 +78,7 @@ char	*check_cwd(t_var *mini, char *cmd)
 				return (cmd_path);
 			else
 			{
+				printf("comes here\n");
 				free(cmd_path);
 				cmd_path = NULL;
 				ft_permission_denied(mini, cmd);
@@ -106,7 +111,10 @@ char	*access_cmd_path(t_var *mini, char *cmd)
 	{
 		cmd_path = check_env_paths(mini, cmd);
 		if (cmd_path)
+		{
+			printf("cmd_path: %s\n", cmd_path);
 			return (cmd_path);
+		}
 		free(cmd_path);
 	}
 	// ft_free_strings(mini->paths);
