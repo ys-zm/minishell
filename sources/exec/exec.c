@@ -9,10 +9,7 @@ int	single_cmd(t_var *mini)
 
 	cmd = mini->cmd_data;
 	if (!cmd->cmd_name)
-	{
-		ft_redir_type(mini, 0);
-		return (0);
-	}
+		return (ft_redir_type(mini, 0), EXIT_SUCCESS);
 	if (ft_if_builtin(cmd->cmd_name))
 	{
 		if (ft_redir_type(mini, 0))

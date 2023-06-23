@@ -165,8 +165,13 @@ int		set_up_struct(t_var **mini, char **envp);
 
 void    fill_up_struct(t_var *mini);
 
-// Exec Functions
+//Shlvl Functions
 
+void	ft_set_shlvl(t_var *mini, char *cmd_name);
+
+void	ft_increment_shlvl(t_var *mini);
+
+// Exec Functions
 void    ft_mem_alloc(t_var *mini);
 
 bool    ft_if_builtin(char *func);
