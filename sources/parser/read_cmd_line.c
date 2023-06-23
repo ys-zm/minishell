@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/23 15:03:07 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/23 15:35:38 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,8 @@ void	main_loop(t_var *depo)
 		}
 		if (status != CMD_EMPTY)
 			add_history(new_cmd);
+		else
+			ft_free(new_cmd);
 		if (status == CMD_SIN_ERR)
 			ft_printf("syntax error\n");
 		if ((status == CMD_OK) && (is_only_spaces(new_cmd) == false))
@@ -176,8 +178,6 @@ void	main_loop(t_var *depo)
 			depo->cmd_data = NULL;
 			depo->n_cmd = 0;
 		}
-		// else
-		// 	ft_free(new_cmd);
 	}
 	clear_history();
 }

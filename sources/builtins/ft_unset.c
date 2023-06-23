@@ -28,7 +28,6 @@ void	ft_del_node(t_env **env_list, char *key)
 			prev = curr;
 			curr = curr->next;
 		}
-			
 	}
 }
 

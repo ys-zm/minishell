@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/17 22:02:45 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/23 14:40:30 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/23 15:43:48 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int ft_free_strings(char **arr);
 int ft_free_pipes(int **pipes, int size);
 int ft_free_cmd_struct(t_cmd *cmd);
 int ft_free_cmd_arr(t_cmd *cmd_data, u_int32_t n_cmds);
-int ft_free_env_list(t_env **env_list);
+int	ft_free_env_list(t_var *mini);
 void    ft_free_and_null(void *var);
 //Error Handling Functions --> error_handling/error.c
 

@@ -15,47 +15,65 @@ void	ft_print_array(char **arr)
 
 void	ft_update_shell(t_env **env_list)
 {
-	while (*env_list)
+	t_env	*env;
+
+	env = *env_list;
+	while (env)
 	{
-		if (!ft_strncmp("SHELL", (*env_list)->key, 5))
+		if (!ft_strncmp("SHELL", env->key, 5))
 		{
-			free((*env_list)->value);
-			(*env_list)->value = getcwd(0, 0);
+			free(env->value);
+			env->value = getcwd(0, 0);
 			return ;
 		}
-		*env_list = (*env_list)->next;
+		env = env->next;
+	}
+}
+
+void	ft_free_prev(t_env* head)
+{
+	t_env	*tmp;
+
+	tmp = NULL;
+	while (head)
+	{
+		tmp = head;
+		head = head->next;
+		free(tmp->key);
+		free(tmp->value);
+		free(tmp);
 	}
 }
 
 // NB this function must resturn NULL/0/... in case of failure
-void    make_env_list(char **envp, t_var *mini)
+void	make_env_list(char **envp, t_var *mini)
 {
-	t_env	*new_node = NULL;
-	t_env   *first;
-	t_env   *env_list;
-	// char    **arr = NULL;
-	int i;
-	i = 0;
+	t_env	*head;
+	t_env	*node;
+	int		i;
 
-	env_list = ft_envp_node(mini, envp[i++]); // if it is null it could also be because the key does not fit the right format
-	if (!env_list)
-		return ;
-	mini->env_list = malloc(sizeof(t_env *) * 1);
+	i = 1;
+	ft_print_array(envp);
+	mini->env_list = ft_calloc(sizeof(t_env *), 1);
 	if (!mini->env_list)
-		return ;
-	first = env_list;
-	while (envp && envp[i])
+		malloc_protect(mini);
+	head = ft_envp_node(mini, envp[0]);
+	if (!head)
+		malloc_protect(mini);
+	node = head;
+	printf("nodes: %s\n", node->key);
+	while (envp[i])
 	{
-		new_node = ft_envp_node(mini, envp[i]);
-		if (!new_node)
+		node->next = ft_envp_node(mini, envp[i]);
+		if (!node->next)
+		{
+			ft_free_prev(head);
 			malloc_protect(mini);
-		env_list->next = new_node;
-		env_list = env_list->next;
+		}
+		node = node->next;
+		printf("nodes: %s\n", node->key);
 		i++;
 	}
-	*(mini->env_list) = first;
-	ft_update_shell(mini->env_list);
-	// arr = ft_list_to_arr(mini, *(mini->env_list));
-	// ft_print_array(arr);
-	// exit(0);
+	*(mini->env_list) = head;
+	// ft_update_shell(mini->env_list);
 }

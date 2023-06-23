@@ -53,16 +53,19 @@ int ft_free_cmd_arr(t_cmd *cmd_data, uint32_t n_cmds)
 	return (EXIT_SUCCESS);
 }
 
-int	ft_free_env_list(t_env **env_list)
+int	ft_free_env_list(t_var *mini)
 {
 	t_env	*tmp;
+	t_env	**env_list;
 
-	
-	if (!env_list)
-		return (EXIT_SUCCESS);
-	tmp = *env_list;
-	while (*env_list)
+	env_list = mini->env_list;
+	// if (!env_list)
+	// 	return (EXIT_SUCCESS);
+	if (!*env_list)
+		printf("!!!\n");
+	while (*env_list != NULL)
 	{
+		printf("keyvar: %s\n", (*env_list)->key);
 		tmp = *env_list;
 		*env_list = (*env_list)->next;
 		free(tmp->key);

@@ -136,8 +136,5 @@ char	*access_cmd_path(t_var *mini, char *cmd)
 			return (cmd_path);
 		free(cmd_path);
 	}
-	// if (check_absolute_path(cmd))
-	// 	return (cmd);
-	// ft_free_strings(mini->paths);
-	return (NULL);
+	return (ft_command_not_found(mini, cmd), NULL);
 }
