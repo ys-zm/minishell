@@ -59,13 +59,10 @@ int	ft_free_env_list(t_var *mini)
 	t_env	**env_list;
 
 	env_list = mini->env_list;
-	// if (!env_list)
-	// 	return (EXIT_SUCCESS);
-	if (!*env_list)
-		printf("!!!\n");
+	if (!env_list)
+		return (EXIT_SUCCESS);
 	while (*env_list != NULL)
 	{
-		printf("keyvar: %s\n", (*env_list)->key);
 		tmp = *env_list;
 		*env_list = (*env_list)->next;
 		free(tmp->key);
@@ -74,10 +71,4 @@ int	ft_free_env_list(t_var *mini)
 	}
 	free(env_list);
 	return (EXIT_SUCCESS);
-}
-
-void	ft_free_and_null(void *var)
-{
-	free(var);
-	var = NULL;
 }

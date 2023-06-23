@@ -53,7 +53,6 @@ void	make_env_list(char **envp, t_var *mini)
 	int		i;
 
 	i = 1;
-	ft_print_array(envp);
 	mini->env_list = ft_calloc(sizeof(t_env *), 1);
 	if (!mini->env_list)
 		malloc_protect(mini);
@@ -61,7 +60,6 @@ void	make_env_list(char **envp, t_var *mini)
 	if (!head)
 		malloc_protect(mini);
 	node = head;
-	printf("nodes: %s\n", node->key);
 	while (envp[i])
 	{
 		node->next = ft_envp_node(mini, envp[i]);
@@ -71,9 +69,8 @@ void	make_env_list(char **envp, t_var *mini)
 			malloc_protect(mini);
 		}
 		node = node->next;
-		printf("nodes: %s\n", node->key);
 		i++;
 	}
 	*(mini->env_list) = head;
-	// ft_update_shell(mini->env_list);
+	ft_update_shell(mini->env_list);
 }

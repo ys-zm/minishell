@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 02:32:32 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/23 16:51:21 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/23 17:34:45 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int main(int argc, char **argv, char **envp)
 	// 	ft_printf("signal error!\n");
 	(void)argc;
 	(void)argv;
-	// atexit(f);
+	atexit(f);
 	set_up_struct(&mini, envp);
 	main_loop(mini);
 	ft_free_all(mini);

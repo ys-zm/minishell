@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/23 14:30:00 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/06/23 16:49:11 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/23 17:32:30 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ size_t	ft_list_size_to_print(t_env *env_list)
 			count++;
 		env_list = env_list->next;
 	}
-	printf("count: %zu\n", count);
 	return (count);
 }
 
@@ -55,22 +54,18 @@ char	**ft_list_to_arr(t_var *mini, t_env *env_list)
 		malloc_protect(mini);
 	while (i < size)
 	{
-		printf("keys: %s\n", env_list->key);
 		if (env_list->value)
 			arr[i++] = ft_trip_join(env_list->key, "=", env_list->value);
 		env_list = env_list->next;
 	}
 	arr[i] = NULL;
-	ft_print_array(arr);
 	return (arr);
 }
 
 //ft_env: print env variable char array
 int	ft_env(t_var *mini, int fd_out)
 {
-	printf("first key: %s\n", (*mini->env_list)->key);
 	mini->env_arr = ft_list_to_arr(mini, *mini->env_list);
-	printf("\n\n\n");
 	if (!mini->env_arr)
 		return (EXIT_FAILURE);
 	ft_print_env(mini->env_arr, fd_out);
