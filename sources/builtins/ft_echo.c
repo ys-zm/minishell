@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   ft_echo.c                                          :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: yzaim <marvin@codam.nl>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/06/23 14:25:47 by yzaim         #+#    #+#                 */
+/*   Updated: 2023/06/23 14:31:11 by yzaim         ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_env	*ft_find_node(t_env *env_list, char *key)
@@ -14,6 +26,17 @@ t_env	*ft_find_node(t_env *env_list, char *key)
 		return (NULL);
 }
 
+void	ft_print_echo(char **args, int i, int fd_out)
+{
+	while (args && args[i])
+	{
+		ft_putstr_fd(args[i], fd_out);
+		if (args[i + 1])
+			ft_putstr_fd(" ", fd_out);
+		i++;
+	}
+}
+
 //edge case: echo $?weoiruyfh ours outputs nothing
 //$? outputs
 // minishell: 0: command not found i our one
@@ -21,16 +44,13 @@ t_env	*ft_find_node(t_env *env_list, char *key)
 int	ft_echo(char **args, int fd_out)
 {
 	bool	new_line;
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 
 	i = 1;
 	new_line = 1;
 	if (count_args(args) == 1)
-	{
-		ft_putstr_fd("\n", fd_out);
-		return (EXIT_SUCCESS);
-	}
+		return (ft_putstr_fd("\n", fd_out), EXIT_SUCCESS);
 	while (args[i] && args[i][0] == '-')
 	{
 		j = 1;
@@ -42,13 +62,7 @@ int	ft_echo(char **args, int fd_out)
 			break ;
 		i++;
 	}
-	while (args && args[i])
-	{
-		ft_putstr_fd(args[i], fd_out);
-		if (args[i+1])
-			ft_putstr_fd(" ", fd_out);
-		i++;
-	}
+	ft_print_echo(args, i, fd_out);
 	if (new_line)
 		ft_putstr_fd("\n", fd_out);
 	return (EXIT_SUCCESS);

@@ -1,14 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   ft_env.c                                           :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: yzaim <marvin@codam.nl>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/06/23 14:30:00 by yzaim         #+#    #+#                 */
+/*   Updated: 2023/06/23 14:33:16 by yzaim         ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-void	ft_print_env(char **arr)
+void	ft_print_env(char **arr, int fd_out)
 {
 	int	i;
 
 	i = 0;
 	while (arr[i])
 	{
-		ft_putstr_fd(arr[i], 1); // into fd
-		ft_putstr_fd("\n", 1);
+		ft_putstr_fd(arr[i], fd_out); // into fd
+		ft_putstr_fd("\n", fd_out);
 		i++;
 	}
 }
@@ -51,11 +63,11 @@ char	**ft_list_to_arr(t_var *mini, t_env *env_list)
 }
 
 //ft_env: print env variable char array
-int	ft_env(t_var *mini)
+int	ft_env(t_var *mini, int fd_out)
 {
 	mini->env_arr = ft_list_to_arr(mini, (*mini->env_list));
 	if (!mini->env_arr)
 		return (EXIT_FAILURE);
-	ft_print_env(mini->env_arr);
+	ft_print_env(mini->env_arr, fd_out);
 	return (EXIT_SUCCESS);
 }

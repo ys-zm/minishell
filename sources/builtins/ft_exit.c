@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   ft_exit.c                                          :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: yzaim <marvin@codam.nl>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/06/23 14:34:51 by yzaim         #+#    #+#                 */
+/*   Updated: 2023/06/23 14:36:01 by yzaim         ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	ft_num_of_args(char **args)
@@ -26,9 +38,9 @@ int	ft_ifnum(char *str)
 int	ft_if_sign(char *str)
 {
 	bool	sign;
-	int	num;
-	int	ret;
-	int	sub;
+	int		num;
+	int		ret;
+	int		sub;
 
 	sign = 0;
 	sub = 0;
@@ -59,7 +71,7 @@ int	ft_exit(t_var *mini, char **args)
 	if (count_args(args) == 1)
 	{
 		ft_free_all(mini);
-		exit(g_exit_code); //exit last exitcode
+		exit(g_exit_code);
 	}
 	if (ft_ifnum(args[1]) == 0)
 	{
@@ -81,7 +93,7 @@ int	ft_exit(t_var *mini, char **args)
 		else
 		{
 			ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-			return (EXIT_FAILURE); // dont exit here
+			return (EXIT_FAILURE);
 		}
 	}
 	return (EXIT_SUCCESS);

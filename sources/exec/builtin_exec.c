@@ -29,7 +29,7 @@ int    ft_exec_builtin(t_var *mini, int index, int fd_out)
     if (!ft_strcmp(cmd.cmd_name, "echo"))
         return (ft_echo(cmd.full_cmd, fd_out));
     if (!ft_strcmp(cmd.cmd_name, "env"))
-        return (ft_env(mini));
+        return (ft_env(mini, fd_out));
     if (!ft_strcmp(cmd.cmd_name, "exit"))
         return (ft_exit(mini, cmd.full_cmd));
     if (!ft_strcmp(cmd.cmd_name, "export"))
