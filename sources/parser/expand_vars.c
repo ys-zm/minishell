@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 01:49:19 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/23 12:22:48 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/23 14:42:57 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ char	*expand_tilde(char *input, t_env *env_vars)
 					home_var = get_var_value(env_vars, "HOME");
 					input = ft_insert_str(input, home_var, i, i);
 					i += ft_strlen(home_var) - 1;
-					ft_free(home_var);
 					if (input == NULL)
 						return (NULL);
 				}

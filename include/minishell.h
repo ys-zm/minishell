@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/17 22:02:45 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/23 11:41:40 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/23 14:40:30 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ size_t  count_args(char **args);
 //Builtin Functions --> builtins/ft_funcname.c
 int		ft_pwd(t_var *mini);
 int     ft_cd(t_var *mini, char **args);
-int     ft_env(t_var *mini);
+int     ft_env(t_var *mini, int fd_out);
 int		ft_echo(char **args, int fd_out);
 int		ft_unset(t_var *mini, char **args);
 int		ft_exit(t_var *mini, char **args);
@@ -136,6 +136,19 @@ int		ft_export(t_var *mini, char **args);
 
 char    **ft_list_to_arr(t_var *mini, t_env *env_list);
 void	ft_add_node(t_env **env_list, t_env *new_node);
+
+//Cd Utils
+char	*ft_remove_lastdir(t_var *mini, char *old_path);
+char   	*ft_get_home(t_var *mini);
+t_env	*ft_search_env_var(t_env **env_list, char *which_env);
+void	ft_update_env_var(t_env **env_list, char *which_env, char *new_env);
+int		ft_cd_to_homedir(t_var *mini);
+int		ft_cd_to_oldpwd(t_var *mini);
+int		ft_count_directories(char *arg);
+char	*ft_replace_tilde(t_var *mini, char *str);
+bool	ft_check_for_tilde(char **args);
+
+
 //Export Utils
 int 	ft_find_operator_type(char *env);
 int 	ft_find_operator_pos(char *env);
@@ -165,8 +178,13 @@ int		set_up_struct(t_var **mini, char **envp);
 
 void    fill_up_struct(t_var *mini);
 
-// Exec Functions
+//Shlvl Functions
 
+void	ft_set_shlvl(t_var *mini, char *cmd_name);
+
+void	ft_increment_shlvl(t_var *mini);
+
+// Exec Functions
 void    ft_mem_alloc(t_var *mini);
 
 bool    ft_if_builtin(char *func);

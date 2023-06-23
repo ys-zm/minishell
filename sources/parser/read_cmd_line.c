@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/23 14:31:03 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/23 14:49:15 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,10 @@ t_cmd	*create_new_cmd(char *cmd_str, t_var *depo)
 	exp_var_cmd = expand_tilde(cmd_str, *(depo->env_list));
 	if (exp_var_cmd == NULL)
 		return (NULL);
-	exp_var_cmd = expand_vars(exp_var_cmd, *(depo->env_list));
+	exp_var_cmd = expand_pid(exp_var_cmd);
 	if (exp_var_cmd == NULL)
 		return (NULL);
-	exp_var_cmd = expand_pid(exp_var_cmd);
+	exp_var_cmd = expand_vars(exp_var_cmd, *(depo->env_list));
 	if (exp_var_cmd == NULL)
 		return (NULL);
 	depo->n_cmd = n_cmds(exp_var_cmd);
