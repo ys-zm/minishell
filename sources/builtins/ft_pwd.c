@@ -15,16 +15,19 @@ char	*ft_get_pwd(t_var *mini)
 }
 
 //ft_pwd: print working directory
-int	ft_pwd(t_var *mini)
+//pass fd!
+int	ft_pwd(t_var *mini, char **args, int fd_out)
 {
 	char	*curr_dir;
 
 	(void)mini;
+	if (args[1])
+		return (ft_putstr_fd("pwd: bad option: try pwd with no option\n", 2), EXIT_FAILURE);
 	curr_dir = getcwd(0, 0);
 	if (curr_dir)
 	{
-		ft_putstr_fd(curr_dir, 1);
-		write(1, "\n", 1);
+		ft_putstr_fd(curr_dir, fd_out);
+		ft_putstr_fd("\n", fd_out);
 		free(curr_dir);
 		return (EXIT_SUCCESS);
 	}

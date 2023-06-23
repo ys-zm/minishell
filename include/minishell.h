@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/17 22:02:45 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/23 15:43:48 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/23 18:55:48 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ char    *ft_trip_join(char *str1, char *str2, char *str3);
 size_t  count_args(char **args);
 
 //Builtin Functions --> builtins/ft_funcname.c
-int		ft_pwd(t_var *mini);
+int		ft_pwd(t_var *mini, char **args, int fd_out);
 int     ft_cd(t_var *mini, char **args);
 int     ft_env(t_var *mini, int fd_out);
 int		ft_echo(char **args, int fd_out);

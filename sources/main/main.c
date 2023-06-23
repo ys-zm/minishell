@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 02:32:32 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/23 17:34:45 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/23 20:03:45 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int g_exit_code;
 void f(void)
 {
 	system("leaks -q minishell");
+	// system("lsof -c minishell");
 }
 
 void	signal_handler(int signum)

@@ -1,12 +1,15 @@
 #include "minishell.h"
 
+
 char	*ft_remove_lastdir(t_var *mini, char *old_path)
 {
 	int	len;
-	int	i;
+	int	i = 0;
 	char	*new_path;
 
 	len = ft_strlen(old_path);
+	if (!len)
+		return (NULL);
 	i = len - 1;
 	if (old_path[i] == '/')
 		i--;
@@ -27,9 +30,9 @@ char   	*ft_get_home(t_var *mini)
 	t_env	*env;
 
 	env = *(mini->env_list);
-	while (env && ft_strncmp(env->key, "HOME", 4))
+	while (env)
 	{
-        if (env && !ft_strncmp(env->key, "HOME", 4))
+        if (!ft_strncmp(env->key, "HOME", 4))
             return (env->value); 
         env = env->next;
     }
