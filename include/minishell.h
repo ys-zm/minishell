@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/17 22:02:45 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/23 15:43:48 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/23 18:29:13 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,6 +274,8 @@ char			*get_var_value(t_env *env_vars, char *var_name);
 char			*expand_tilde(char *input, t_env *env_vars);
 
 char			*expand_pid(char *input);
+
+char			*expander(char *input, t_env *env_vars);
 
 
 t_cmd_status	ft_readline(char **buffer, const char *prompt, bool check);

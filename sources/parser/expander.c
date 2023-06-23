@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   expand_vars.c                                      :+:    :+:            */
+/*   expander.c                                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 01:49:19 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/23 15:05:22 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/23 18:33:38 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,8 @@ char	*expand_vars(char *input, t_env *env_vars)
 		if (is_valid_dollar(input, i++))
 		{
 			end = i;
-			while (ft_isalpha(input[end]))
-			{
+			while (ft_isalpha(input[end]) || (input[end] == '?'))
 				end++;
-				if (input[end - 1] == '?')
-					break;
-			}
 			var_name = ft_substr(input, i, end - i);
 			if (var_name == NULL)
 				return (ft_free(input));
@@ -126,4 +122,27 @@ char	*expand_pid(char *input)
 		}
 	}
 	return (input);
+}
+
+char	*expander(char *input, t_env *env_vars)
+{
+	char	*tilde_exp;
+	char	*pid_exp;
+	char	*var_exp;
+
+	ft_printf("first: |%s|\n", input);
+	tilde_exp = expand_tilde(input, env_vars);
+	if (tilde_exp == NULL)
+		return (NULL);
+	ft_printf("before: |%s|\n", tilde_exp);
+	pid_exp = expand_pid(tilde_exp);
+	if (pid_exp == NULL)
+		return (NULL);
+	ft_printf("before: |%s|\n", pid_exp);
+	var_exp = expand_vars(pid_exp, env_vars);
+	ft_printf("after: |%s|\n", var_exp);
+	if (var_exp == NULL)
+		return (NULL);
+	else
+		return (var_exp);
 }

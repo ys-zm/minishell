@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/23 15:35:38 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/23 18:43:59 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,11 @@ t_cmd_status	aquire_cmd(char **cmd)
 	status = ft_readline(&buffer, PROMPT, true);
 	if (status != CMD_OK)
 	{
-		// ft_printf("porco dio\n");
 		if (status == CMD_SIN_ERR)
 		{
 			*cmd = ft_strjoin(*cmd, buffer, "\n", true);
 			if (*cmd == NULL)
-			{
-		// ft_printf("dio cane\n");
 				return (CMD_MEM_ERR);
-			}
 		}
 		return (status);
 	}
@@ -69,40 +65,35 @@ t_cmd_status	aquire_cmd(char **cmd)
 		if ((status == CMD_MEM_ERR) || (status == CMD_EOF))		// <-- check if ctrl+D in piping mode is correct
 			break ;
 	}
-	if (status == CMD_OK)
-	{
-		*cmd = ft_trim(*cmd);
-		if (*cmd == NULL)
-			return (CMD_MEM_ERR);
-		else if (**cmd == '\0')
-			return (CMD_EMPTY);
-		else
-			return (CMD_OK);
-	}
-	else
-		return (status);
+	// if (status == CMD_OK)
+	// {
+	// 	*cmd = ft_trim(*cmd);
+	// 	if (*cmd == NULL)
+	// 		return (CMD_MEM_ERR);
+	// 	else if (**cmd == '\0')
+	// 		return (CMD_EMPTY);
+	// 	else
+	// 		return (CMD_OK);
+	// }
+	// else
+	return (status);
 }
 
 t_cmd	*create_new_cmd(char *cmd_str, t_var *depo)
 {
 	char		**str_cmds;
-	char		*exp_var_cmd;
 	t_cmd		*cmd;
 	t_list		*tokens;
 	uint32_t	i;
 
-	exp_var_cmd = expand_tilde(cmd_str, *(depo->env_list));
-	if (exp_var_cmd == NULL)
+	cmd_str = expander(cmd_str, *(depo->env_list));
+	if (cmd_str == NULL)
 		return (NULL);
-	exp_var_cmd = expand_pid(exp_var_cmd);
-	if (exp_var_cmd == NULL)
+	if (cmd_str == NULL)
 		return (NULL);
-	exp_var_cmd = expand_vars(exp_var_cmd, *(depo->env_list));
-	if (exp_var_cmd == NULL)
-		return (NULL);
-	depo->n_cmd = n_cmds(exp_var_cmd);
-	str_cmds = split_into_cmds(exp_var_cmd);
-	ft_free(exp_var_cmd);
+	depo->n_cmd = n_cmds(cmd_str);
+	str_cmds = split_into_cmds(cmd_str);
+	ft_free(cmd_str);
 	if (str_cmds == NULL)
 		return (NULL);
 	cmd = ft_calloc(depo->n_cmd, sizeof(t_cmd));
@@ -165,7 +156,7 @@ void	main_loop(t_var *depo)
 			ft_free(new_cmd);
 		if (status == CMD_SIN_ERR)
 			ft_printf("syntax error\n");
-		if ((status == CMD_OK) && (is_only_spaces(new_cmd) == false))
+		if (status == CMD_OK)		// && (is_only_spaces(new_cmd) == false))
 		{
 			depo->cmd_data = create_new_cmd(new_cmd, depo);
 			if (depo->cmd_data == NULL)

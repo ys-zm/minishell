@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/19 17:46:55 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/23 14:26:59 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/23 18:13:51 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,6 +206,7 @@ bool remove_here_docs(t_var *mini)
 		j = 0;
 		while (j < mini->cmd_data[i].n_redirect)
 		{
+			ft_printf("halo1!\n");
 			if (mini->cmd_data[i].redirections[j] == RED_IN_DOUBLE)
 			{
 				here_doc_to_drop = create_file_name(HERE_DOC_FIX, i + 1);
