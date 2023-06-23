@@ -4,7 +4,6 @@ void	ft_del_node(t_env **env_list, char *key)
 {
 	t_env	*curr;
 	t_env	*prev;
-	t_env	*save;
 
 	if (!env_list)
 		return ;

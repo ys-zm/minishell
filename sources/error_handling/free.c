@@ -69,7 +69,7 @@ int	ft_free_env_list(t_env **env_list)
 		free(tmp->value);
 		free(tmp);
 	}
-	// free(env_list);
+	free(env_list);
 	return (EXIT_SUCCESS);
 }
 

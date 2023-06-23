@@ -12,10 +12,9 @@ OBJECTS := $(patsubst $(SRC_DIR)%,$(OBJ_DIR)%,$(SOURCES:.c=.o))
 CC  := cc
 IFLAGS := -Iinclude -I$(LIBFT_DIR)/include
 # CFLAGS := -Wall -Wextra -Werror -g3 -fsanitize=address -arch x86_64
-CFLAGS = -Wall -Wextra
-# CFLAGS += -Werror 
+CFLAGS = -Wall -Wextra -Werror
 CFLAGS += -g3 -fsanitize=address
-CFLAGS += -arch x86_64
+# CFLAGS += -arch x86_64
 LFLAGS := -Llibft -lft -lreadline -lhistory 
 
 ifeq ($(shell uname -s),Darwin)			# Mac
