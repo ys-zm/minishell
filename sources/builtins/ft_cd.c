@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/23 14:02:36 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/06/23 14:44:25 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/23 15:11:06 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,6 @@ int ft_cd(t_var *mini, char **args) //update the envp for PWD and OLDPWD, but on
 		ft_putstr_fd(args[1], 2);
 		return (ft_putstr_fd(": No such file or directory\n", 2), EXIT_FAILURE);
     }
+	free(cwd);
 	return (0);
 }

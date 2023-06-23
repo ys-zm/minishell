@@ -13,6 +13,20 @@ void	ft_print_array(char **arr)
 	}
 }
 
+void	ft_update_shell(t_env **env_list)
+{
+	while (*env_list)
+	{
+		if (!ft_strncmp("SHELL", (*env_list)->key, 5))
+		{
+			free((*env_list)->value);
+			(*env_list)->value = getcwd(0, 0);
+			return ;
+		}
+		*env_list = (*env_list)->next;
+	}
+}
+
 // NB this function must resturn NULL/0/... in case of failure
 void    make_env_list(char **envp, t_var *mini)
 {
@@ -40,6 +54,7 @@ void    make_env_list(char **envp, t_var *mini)
 		i++;
 	}
 	*(mini->env_list) = first;
+	ft_update_shell(mini->env_list);
 	// arr = ft_list_to_arr(mini, *(mini->env_list));
 	// ft_print_array(arr);
 	// exit(0);
