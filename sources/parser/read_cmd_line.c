@@ -6,13 +6,13 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/22 17:03:29 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/23 14:31:03 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_cmd_status	ft_readline(char **buffer, const char *prompt, bool sintax)
+t_cmd_status	ft_readline(char **buffer, const char *prompt, bool sintax_check)
 {
 	char	*new_string;
 
@@ -23,7 +23,7 @@ t_cmd_status	ft_readline(char **buffer, const char *prompt, bool sintax)
 	ft_free(new_string);
 	if (*buffer == NULL)
 		return (CMD_MEM_ERR);
-	else if (sintax && (check_sintax(*buffer) == false))
+	else if (sintax_check && (check_sintax(*buffer) == false))
 		return (CMD_SIN_ERR);
 	else
 		return (CMD_OK);
@@ -37,8 +37,20 @@ t_cmd_status	aquire_cmd(char **cmd)
 
 	buffer = NULL;
 	status = ft_readline(&buffer, PROMPT, true);
-	if ((status == CMD_EOF) || (status == CMD_MEM_ERR))
+	if (status != CMD_OK)
+	{
+		// ft_printf("porco dio\n");
+		if (status == CMD_SIN_ERR)
+		{
+			*cmd = ft_strjoin(*cmd, buffer, "\n", true);
+			if (*cmd == NULL)
+			{
+		// ft_printf("dio cane\n");
+				return (CMD_MEM_ERR);
+			}
+		}
 		return (status);
+	}
 	cnt = 0;
 	while (status == CMD_OK)
 	{
@@ -53,7 +65,9 @@ t_cmd_status	aquire_cmd(char **cmd)
 			return (CMD_MEM_ERR);
 		if (has_trailing_pipe(*cmd) == false)
 			break ;
-		status = ft_readline(&buffer, "> ", false);
+		status = ft_readline(&buffer, "> ", true);
+		if ((status == CMD_MEM_ERR) || (status == CMD_EOF))		// <-- check if ctrl+D in piping mode is correct
+			break ;
 	}
 	if (status == CMD_OK)
 	{
@@ -73,12 +87,17 @@ t_cmd	*create_new_cmd(char *cmd_str, t_var *depo)
 {
 	char		**str_cmds;
 	char		*exp_var_cmd;
-	bool		cmd_status;
 	t_cmd		*cmd;
 	t_list		*tokens;
 	uint32_t	i;
 
-	exp_var_cmd = expand_vars(cmd_str, *(depo->env_list));
+	exp_var_cmd = expand_tilde(cmd_str, *(depo->env_list));
+	if (exp_var_cmd == NULL)
+		return (NULL);
+	exp_var_cmd = expand_vars(exp_var_cmd, *(depo->env_list));
+	if (exp_var_cmd == NULL)
+		return (NULL);
+	exp_var_cmd = expand_pid(exp_var_cmd);
 	if (exp_var_cmd == NULL)
 		return (NULL);
 	depo->n_cmd = n_cmds(exp_var_cmd);
@@ -100,15 +119,13 @@ t_cmd	*create_new_cmd(char *cmd_str, t_var *depo)
 			ft_free_cmd_arr(cmd, i);
 			return (ft_free_double((void **) str_cmds, -1));
 		}
-		cmd_status = get_cmd(tokens, cmd + i);
-		if (cmd_status == false)
+		if (get_cmd(tokens, cmd + i) == false)
 		{
 			ft_lstclear(&tokens, ft_free);
 			ft_free_cmd_arr(cmd, i);
 			return (ft_free_double((void **) str_cmds, -1));
 		}
-		cmd_status = get_redirections(tokens, cmd + i, i + 1);
-		if (cmd_status == false)
+		if (get_redirections(tokens, cmd + i, i + 1) == false)
 		{
 			ft_lstclear(&tokens, ft_free);
 			ft_free_cmd_arr(cmd, i);
@@ -137,6 +154,8 @@ void	main_loop(t_var *depo)
 		{
 			if (has_trailing_pipe(new_cmd) == true)
 				ft_printf("syntax error\n");
+			else
+				ft_printf("exit\n");
 			ft_free(new_cmd);
 			break ;
 		}
@@ -149,15 +168,16 @@ void	main_loop(t_var *depo)
 			depo->cmd_data = create_new_cmd(new_cmd, depo);
 			if (depo->cmd_data == NULL)
 				malloc_protect(depo);
-			print_cmd(depo);
+			// print_cmd(depo);
 			ft_exec(depo);
 			if (remove_here_docs(depo) == false)
 				malloc_protect(depo);
 			ft_free_cmd_arr(depo->cmd_data, depo->n_cmd);
 			depo->cmd_data = NULL;
+			depo->n_cmd = 0;
 		}
-		else
-			ft_free(new_cmd);
+		// else
+		// 	ft_free(new_cmd);
 	}
 	clear_history();
 }

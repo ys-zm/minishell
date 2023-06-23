@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/19 17:46:55 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/22 12:54:07 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/23 14:26:59 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,35 +61,6 @@ char	*isolate_eof(char *start)
 		eof[eof_len] = start[eof_len];
 	return (remove_quotes(eof));
 }
-
-// char	*isolate_eof_bk(char *start)
-// {
-// 	char 		start_quote;
-// 	char 		*eof;
-// 	uint32_t	i;
-// 
-// 	i = 0;
-// 	if (is_quote(*start))
-// 	{
-// 		start_quote = *start;
-// 		while (*start && (*start == start_quote))
-// 			start++;
-// 		while (start[i] && (start[i] != start_quote))
-// 			i++;
-// 	}	
-// 	else
-// 	{
-// 		while (start[i] && (! ft_isspace(start[i])) && (! is_arrow(start[i])) && (start[i] != '|'))
-// 			i++;
-// 	}
-// 	eof = ft_calloc((i + 1), sizeof(char));
-// 	if (eof)
-// 	{
-// 		while (i--)
-// 			eof[i] = start[i];
-// 	}
-// 	return (eof);
-// }
 
 t_cmd_status	read_stdin(char *eof, char **here_doc)
 {
@@ -191,14 +162,11 @@ int32_t	fork_here_doc(int cnt, char *delimiter)
 		{
 			if ((WEXITSTATUS(status_procs) == HD_MEM_ERR) || (WEXITSTATUS(status_procs) == HD_FILE_ERR))
 				return (-1);
-			else if (WEXITSTATUS(status_procs) == HD_EOF)
-				ft_printf("minishell: here_doc interrupted\n");
 		}
 	}
 	return (0);
 }
 
-// NB this cat <<halo= | grep h  <--- this is problematic
 int32_t	handle_here_doc(char *cmd, uint32_t *cnt)
 {
 	char	*delimiter;

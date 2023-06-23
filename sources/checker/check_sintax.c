@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   check_sintax.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fra <fra@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/15 21:26:00 by fra               #+#    #+#             */
-/*   Updated: 2023/06/10 22:12:47 by fra              ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   check_sintax.c                                     :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: fra <fra@student.42.fr>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/05/15 21:26:00 by fra           #+#    #+#                 */
+/*   Updated: 2023/06/23 10:44:35 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,13 +87,13 @@ bool	check_redirections(char *cmd)
 
 bool	check_sintax(char *cmd)
 {
-	if (! cmd)
+	if (cmd == NULL)
 		return (false);
-	if (! check_quotes(cmd))
+	else if (check_quotes(cmd) == false)
 		return (false);
-	if (! check_pipes(cmd))
+	else if (check_pipes(cmd) == false)
 		return (false);
-	if (! check_redirections(cmd))
+	else if (check_redirections(cmd) == false)
 		return (false);
 	else
 		return (true);

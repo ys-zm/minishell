@@ -4,6 +4,7 @@ NAME := minishell
 SRC_DIR := sources
 OBJ_DIR := objects
 LIBFT_DIR := libft
+HERE_DOC_DIR := here_doc/
 LIBFT := $(LIBFT_DIR)/libft.a
 HEADERS := $(shell find include -type f -name '*.h')
 SOURCES = $(shell find $(SRC_DIR) -type f -name '*.c')
@@ -11,9 +12,7 @@ OBJECTS := $(patsubst $(SRC_DIR)%,$(OBJ_DIR)%,$(SOURCES:.c=.o))
 
 CC  := cc
 IFLAGS := -Iinclude -I$(LIBFT_DIR)/include
-# CFLAGS := -Wall -Wextra -Werror -g3 -fsanitize=address -arch x86_64
-CFLAGS = -Wall -Wextra
-# CFLAGS += -Werror 
+CFLAGS = -Wall -Wextra -Werror
 CFLAGS += -g3 -fsanitize=address
 # CFLAGS += -arch x86_64
 LFLAGS := -Llibft -lft -lreadline -lhistory 
@@ -23,11 +22,6 @@ ifeq ($(shell uname -s),Darwin)			# Mac
 	LFLAGS := $(LFLAGS) -L$(shell brew --prefix readline)/lib
 endif
 
-# ifeq ($(shell uname -s),Linux)			# Linux
-# 	LFLAGS := $(LFLAGS) -ltermios
-# # furthermore, readline package must be installed (sudo apt install libreadline-dev)
-# endif
-
 GREEN = \x1b[32;01m
 RED = \x1b[31;01m
 BLUE = \x1b[34;01m
@@ -36,10 +30,14 @@ YELLOW = \x1b[33;01m
 
 all: $(LIBFT) $(NAME)
 
+run: all
+	./$(NAME)
+
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR) --quiet
 
 $(NAME): $(OBJ_DIR) $(OBJECTS)
+	@mkdir -p $(HERE_DOC_DIR)
 	@$(CC) $(CFLAGS) $(IFLAGS) $(OBJECTS) $(LFLAGS) -o $(NAME)
 	@clear
 	@printf "(minishell) $(GREEN)Created program $(NAME)$(RESET)\n"
@@ -68,7 +66,5 @@ re: fclean all
 
 .PHONY: all, clean, fclean, re
 
-run: all
-	./minishell
 
 .DEFAULT_GOAL:=all
