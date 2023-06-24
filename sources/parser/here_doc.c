@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/19 17:46:55 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/24 18:35:58 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/24 21:37:25 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,10 +126,7 @@ t_cmd_status	write_here_doc(int cnt, char *delimiter)
 		exit(HD_MEM_ERR);
 	file_name = create_file_name(HERE_DOC_FIX, cnt);
 	if (file_name == NULL)
-	{
-		ft_free(here_doc);
 		exit(HD_MEM_ERR);
-	}
 	fd = open(file_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	ft_free(file_name);
 	if ((fd == -1) || (write(fd, here_doc, ft_strlen(here_doc)) == -1))
@@ -151,13 +148,13 @@ int32_t	fork_here_doc(int cnt, char *delimiter)
 
 	child_id = fork();
 	if (child_id == -1)
-		return (-1);		// NB it's a fail but not related to memoery issues, the return value should tell that
+		return (-2);
 	else if (child_id == 0)
 		write_here_doc(cnt, delimiter);
 	else
 	{
-		if (waitpid(child_id, &status_procs, 0) == -1)		// NB it's a fail but not related to memoery issues, the return value should tell that
-			return (-1);
+		if (waitpid(child_id, &status_procs, 0) == -1)
+			return (-2);
 		if (WIFEXITED(status_procs))
 		{
 			if ((WEXITSTATUS(status_procs) == HD_MEM_ERR) || (WEXITSTATUS(status_procs) == HD_FILE_ERR))
@@ -185,7 +182,7 @@ int32_t	handle_here_doc(char *cmd, uint32_t *cnt)
 			return (-1);
 		status_fork = fork_here_doc(*cnt, delimiter);
 		ft_free(delimiter);
-		if (status_fork == -1)
+		if (status_fork != 0)
 			return (-1);
 		del_pos = find_next_eof_pos(cmd, del_pos);
 	}
@@ -204,22 +201,84 @@ bool remove_here_docs(t_var *mini)
 	while (i < mini->n_cmd)
 	{
 		j = 0;
-		while (j < mini->cmd_data[i].n_redirect)
+		while (mini->cmd_data && (j < mini->cmd_data[i].n_redirect))
 		{
-			if (mini->cmd_data[i].redirections[j] == RED_IN_DOUBLE)
+			if (mini->cmd_data[i].redirections[j++] == RED_IN_DOUBLE)
 			{
 				here_doc_to_drop = create_file_name(HERE_DOC_FIX, i + 1);
-				if (here_doc_to_drop == NULL)
-					return (false);
 				status = unlink(here_doc_to_drop);
 				ft_free(here_doc_to_drop);
 				if (status == -1)
 					return (false);
 				break ;
 			}
-			j++;
 		}
 		i++;
 	}
 	return (true);
+}
+
+void	print_cmd(t_var	*mini)
+{
+	uint32_t	i;
+	uint32_t	j;
+	
+	j = 0;
+	if (mini == NULL)
+		return;
+	while (j < mini->n_cmd)
+	{
+		ft_printf("COMMAND\n\tcmd name: %s\n", mini->cmd_data[j].cmd_name);
+		i = 0;
+		while (mini->cmd_data[j].full_cmd && mini->cmd_data[j].full_cmd[i])
+			ft_printf("\t\targ: %s\n", mini->cmd_data[j].full_cmd[i++]);
+		if (mini->cmd_data[j].redirections)
+		{
+			// ft_printf("\tn. redirections: %u\n", mini->cmd_data[j].n_redirect);
+			i = 0;
+			while (i < mini->cmd_data[j].n_redirect)
+			{
+				if (mini->cmd_data[j].redirections[i] == RED_IN_SINGLE)
+					ft_printf("\t\tred type: %s file: %s\n", "<", mini->cmd_data[j].files[i]);
+				else if (mini->cmd_data[j].redirections[i] == RED_OUT_SINGLE)
+					ft_printf("\t\tred type: %s file: %s\n", ">", mini->cmd_data[j].files[i]);
+				else if (mini->cmd_data[j].redirections[i] == RED_IN_DOUBLE)
+					ft_printf("\t\tred type: %s file: %s\n", "<<", mini->cmd_data[j].files[i]);
+				else if (mini->cmd_data[j].redirections[i] == RED_OUT_DOUBLE)
+					ft_printf("\t\tred type: %s file: %s\n", ">>", mini->cmd_data[j].files[i]);
+				i++;
+			}
+		}
+		j++;
+	}
+}
+
+uint32_t	get_order_cmd(char *str, uint32_t pos)
+{
+	uint32_t	order;
+	char		*next_pipe;
+	uint32_t	pipe_pos;
+
+	order = 1;
+	pipe_pos = 0;
+	while (true)
+	{
+		while (true)
+		{
+			next_pipe = ft_strchr(str + pipe_pos, '|');
+			if (next_pipe == NULL)
+				return (order);
+			pipe_pos = next_pipe - str;
+			if (is_valid_char(str, pipe_pos, '|'))
+				break ;
+		}
+		if (pos > pipe_pos)
+		{
+			order++;
+			pipe_pos++;
+		}
+		else
+			break ;
+	}
+	return (order); 
 }

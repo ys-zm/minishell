@@ -6,28 +6,11 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/20 19:09:49 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/24 19:39:04 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/24 21:07:40 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-uint32_t	skip_redirect_chars(char *cmd, uint32_t pos)
-{
-	uint32_t	start_pos;
-	
-	start_pos = pos;
-	while (is_valid_arrow(cmd, pos))
-	{
-		pos++;
-		pos += is_arrow(cmd[pos]);
-		while (ft_isspace(cmd[pos]))
-			pos++;
-		while (! is_valid_space(cmd, pos) && (! is_valid_arrow(cmd, pos)) && cmd[pos])
-			pos++;
-	}
-	return (pos - start_pos);
-}
 
 bool	is_empty(char	*to_check)
 {
@@ -128,67 +111,26 @@ bool	is_arrow(char to_check)
 	return ((to_check == '<') || (to_check == '>'));
 }
 
-void	print_cmd(t_var	*mini)
+t_red_type	get_type_redirection(char *to_check)
 {
-	uint32_t	i;
-	uint32_t	j;
-	
-	j = 0;
-	if (mini == NULL)
-		return;
-	while (j < mini->n_cmd)
+	if (is_quote(*to_check))
+		to_check++;
+	if (*to_check++ == '<')
 	{
-		ft_printf("COMMAND\n\tcmd name: %s\n", mini->cmd_data[j].cmd_name);
-		i = 0;
-		while (mini->cmd_data[j].full_cmd && mini->cmd_data[j].full_cmd[i])
-			ft_printf("\t\targ: %s\n", mini->cmd_data[j].full_cmd[i++]);
-		if (mini->cmd_data[j].redirections)
-		{
-			// ft_printf("\tn. redirections: %u\n", mini->cmd_data[j].n_redirect);
-			i = 0;
-			while (i < mini->cmd_data[j].n_redirect)
-			{
-				if (mini->cmd_data[j].redirections[i] == RED_IN_SINGLE)
-					ft_printf("\t\tred type: %s file: %s\n", "<", mini->cmd_data[j].files[i]);
-				else if (mini->cmd_data[j].redirections[i] == RED_OUT_SINGLE)
-					ft_printf("\t\tred type: %s file: %s\n", ">", mini->cmd_data[j].files[i]);
-				else if (mini->cmd_data[j].redirections[i] == RED_IN_DOUBLE)
-					ft_printf("\t\tred type: %s file: %s\n", "<<", mini->cmd_data[j].files[i]);
-				else if (mini->cmd_data[j].redirections[i] == RED_OUT_DOUBLE)
-					ft_printf("\t\tred type: %s file: %s\n", ">>", mini->cmd_data[j].files[i]);
-				i++;
-			}
-		}
-		j++;
-	}
-}
-
-uint32_t	get_order_cmd(char *str, uint32_t pos)
-{
-	uint32_t	order;
-	char		*next_pipe;
-	uint32_t	pipe_pos;
-
-	order = 1;
-	pipe_pos = 0;
-	while (true)
-	{
-		while (true)
-		{
-			next_pipe = ft_strchr(str + pipe_pos, '|');
-			if (next_pipe == NULL)
-				return (order);
-			pipe_pos = next_pipe - str;
-			if (is_valid_char(str, pipe_pos, '|'))
-				break ;
-		}
-		if (pos > pipe_pos)
-		{
-			order++;
-			pipe_pos++;
-		}
+		if (is_quote(*to_check))
+			to_check++;
+		if (*to_check == '<')
+			return (RED_IN_DOUBLE);
 		else
-			break ;
+			return (RED_IN_SINGLE);
 	}
-	return (order); 
+	else
+	{
+		if (is_quote(*to_check))
+			to_check++;
+		if (*to_check == '>')
+			return (RED_OUT_DOUBLE);
+		else
+			return (RED_OUT_SINGLE);
+	}
 }

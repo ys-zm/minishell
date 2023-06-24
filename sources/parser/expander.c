@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 01:49:19 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/24 17:04:31 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/24 21:17:08 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,29 @@
 
 char	*get_var_value(t_env *env_vars, char *var_name)
 {
-	while (env_vars)
+	char	*var_value;
+
+	if (var_name == NULL)
+		return (NULL);
+	else if (ft_strncmp(var_name, "?", 1) == 0)
+		var_value = ft_itoa(g_exit_code);
+	else
 	{
-		if (ft_strncmp(env_vars->key, var_name, ft_strlen(var_name)) == 0)
-			return (env_vars->value);
-		env_vars = env_vars->next;
+		var_value = NULL;
+		while (env_vars)
+		{
+			if (ft_strncmp(env_vars->key, var_name, ft_strlen(var_name)) == 0)
+			{
+				var_value = ft_strdup(env_vars->value);
+				break ;
+			}
+			env_vars = env_vars->next;
+		}
+		if (var_value == NULL)
+			var_value = ft_strdup("");
 	}
-	return (NULL);
+	ft_free(var_name);
+	return (var_value);
 }
 
 char	*expand_vars(char *input, t_env *env_vars)
@@ -33,38 +49,20 @@ char	*expand_vars(char *input, t_env *env_vars)
 	i = 0;
 	while (input[i])
 	{
-		if (is_valid_dollar(input, i++))
-		{
-			end = i;
-			while (ft_isalpha(input[end]) || (input[end] == '?'))
-				end++;
-			var_name = ft_substr(input, i, end - i);
-			if (var_name == NULL)
-				return (ft_free(input));
-			if (ft_strncmp(var_name, "?", 1) == 0)
-			{
-				ft_free(var_name);
-				var_value = ft_itoa(g_exit_code);
-				if (var_value == NULL)
-					return (ft_free(input));
-			}
-			else
-			{
-				var_value = get_var_value(env_vars, var_name);
-				ft_free(var_name);
-				if (var_value)
-				{
-					var_value = ft_strdup(var_value);
-					if (var_value == NULL)
-						return (ft_free(input));
-				}
-			}
-			input = ft_insert_str(input, var_value, i, end);
-			i += ft_strlen(var_value) - 1;
-			ft_free(var_value);
-			if (input == NULL)
-				return (NULL);
-		}
+		if (is_valid_dollar(input, i++) == false)
+			continue;
+		end = i;
+		while (ft_isalpha(input[end]) || (input[end] == '?'))
+			end++;
+		var_name = ft_substr(input, i, end - i);
+		var_value = get_var_value(env_vars, var_name);
+		if (var_value == NULL)
+			return (ft_free(input));
+		input = ft_insert_str(input, var_value, i, end);
+		i += ft_strlen(var_value) - 1;
+		ft_free(var_value);
+		if (input == NULL)
+			return (NULL);
 	}
 	return (input);
 }

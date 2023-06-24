@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 02:32:32 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/23 17:58:35 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/24 20:54:18 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,23 @@ void	init_sig_handle(int mode)
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_IGN);
 	}
+}
+
+int	set_up_struct(t_var **mini, char **envp)
+{
+	*mini = ft_calloc(1, sizeof(t_var));
+	if (*mini == NULL)
+		return (EXIT_FAILURE);
+	(*mini)->cmd_data = NULL;
+	(*mini)->n_cmd = 0;
+	(*mini)->env_list = NULL;
+	(void)envp;
+	make_env_list(envp, *mini);		// if make_env_list fails *min must be freed
+	(*mini)->env_arr = NULL;
+	(*mini)->paths = NULL;
+	(*mini)->pipes = NULL;
+	(*mini)->pid = NULL;
+	return (EXIT_SUCCESS);
 }
 
 int main(int argc, char **argv, char **envp)
