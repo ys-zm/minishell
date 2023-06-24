@@ -142,8 +142,8 @@ char	*ft_remove_lastdir(t_var *mini, char *old_path);
 char   	*ft_get_home(t_var *mini);
 t_env	*ft_search_env_var(t_env **env_list, char *which_env);
 void	ft_update_env_var(t_env **env_list, char *which_env, char *new_env);
-int		ft_cd_to_homedir(t_var *mini);
-int		ft_cd_to_oldpwd(t_var *mini);
+int		ft_cd_to_homedir(t_var *mini, char *cwd);
+int		ft_cd_to_oldpwd(t_var *mini, char *cwd);
 int		ft_count_directories(char *arg);
 char	*ft_replace_tilde(t_var *mini, char *str);
 bool	ft_check_for_tilde(char **args);
@@ -164,6 +164,9 @@ void    make_env_list(char **envp, t_var *mini);
 char	*ft_find_value(t_var *mini, char *arg, size_t op_type, size_t op_pos);
 
 t_env	*ft_new_node(char *key, char *value);
+
+// Exec Functions
+void	ft_free_exec_alloc(t_var *mini);
 
 // Functions for ENV Parsing and Export Function
 t_env   *ft_envp_node(t_var *mini, char *envp);

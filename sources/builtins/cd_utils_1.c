@@ -65,7 +65,7 @@ void	ft_update_env_var(t_env **env_list, char *which_env, char *new_env)
 	}
 }
 
-int	ft_cd_to_homedir(t_var *mini)
+int	ft_cd_to_homedir(t_var *mini, char *cwd)
 {
 	char	*new_path;
 	
@@ -76,7 +76,11 @@ int	ft_cd_to_homedir(t_var *mini)
 		return (EXIT_FAILURE);
 	}
 	if (!chdir(new_path))
+	{
+		ft_update_env_var(mini->env_list, "OLDPWD", cwd);
+		ft_update_env_var(mini->env_list, "PWD", new_path);
 		return (EXIT_SUCCESS);
+	}
 	else
 	{
 		ft_putstr_fd("minishell: cd: ", 2);
@@ -85,26 +89,34 @@ int	ft_cd_to_homedir(t_var *mini)
     }
 }
 
-int	ft_cd_to_oldpwd(t_var *mini)
+int	ft_cd_to_oldpwd(t_var *mini, char *cwd)
 {
 	char	*old_pwd;
 	t_env	*env;
 
 	env = *(mini->env_list);
-	while (env && ft_strncmp(env->key, "OLDPWD", 6))
-		env = env->next;
-	if (env && !ft_strncmp(env->key, "OLDPWD", 6))
-		old_pwd = env->value;
-	else
+	while (env)
 	{
-		ft_putstr_fd("minishell: cd: OLDPWD not set", 2);
+		if (env && !ft_strncmp(env->key, "OLDPWD", 6))
+		{
+			old_pwd = env->value;
+			break ;
+		}
+		env = env->next;
+	}
+	if (!env)
+	{
+		ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
 		return (EXIT_FAILURE);
 	}
 	if (!chdir(old_pwd))
+	{
+		ft_update_env_var(mini->env_list, "OLDPWD", cwd);
+		ft_update_env_var(mini->env_list, "PWD", old_pwd);
 		return (EXIT_SUCCESS);
+	}
 	else
 	{
-		write(STDERR_FILENO, "1232", 4);
 		ft_putstr_fd("minishell: cd: ", 2);
 		ft_putstr_fd(old_pwd, 2);
 		return (ft_putstr_fd(": No such file or directory\n", 2), EXIT_FAILURE);

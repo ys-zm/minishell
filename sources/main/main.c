@@ -87,5 +87,7 @@ int main(int argc, char **argv, char **envp)
 	set_up_struct(&mini, envp);
 	main_loop(mini);
 	ft_free_all(mini);
+	// ft_free_env_list(mini);
+	ft_free_exec_alloc(mini);
 	return (EXIT_SUCCESS);
 }

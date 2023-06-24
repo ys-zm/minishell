@@ -54,17 +54,14 @@ int	ft_export_single(t_var *mini, char *arg, size_t op_type, size_t op_pos)
 	{
 		key = ft_substr(arg, 0, op_pos);
 		if (ft_check_key(key))
-		{
-			free(key);
-			return (EXIT_FAILURE);
-		}
+			return (free(key), EXIT_FAILURE);
 		value = ft_find_value(mini, arg, op_type, op_pos);
 	}
 	else
 	{
 		key = ft_substr(arg, 0, ft_strlen(arg));
 		if (ft_check_key(key))
-			return (EXIT_FAILURE);
+			return (free(key), EXIT_FAILURE);
 		value = NULL;
 	}
 	if (*(mini->env_list))
@@ -74,7 +71,7 @@ int	ft_export_single(t_var *mini, char *arg, size_t op_type, size_t op_pos)
 			if (op_type == REPLACE && !ft_check_if_same_value(*(mini->env_list), key, value))
 				ft_replace_value(mini, key, value);
 			else if (op_type == APPEND)
-		ft_append_value(mini, key, value);
+				ft_append_value(mini, key, value);
 		}
 		else
 			ft_add_node(mini->env_list, ft_new_node(key, value));

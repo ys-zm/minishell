@@ -175,11 +175,7 @@ void	main_loop(t_var *depo)
 			if (remove_here_docs(depo) == false)
 				malloc_protect(depo);
 			ft_free_cmd_arr(depo->cmd_data, depo->n_cmd);
-			if (depo->pid)
-			{
-				free(depo->pid);
-				depo->pid = NULL; //FREE ALL STUFF FROM MEM_ALLOC!
-			}
+			ft_free_exec_alloc(depo);
 			depo->cmd_data = NULL;
 			depo->n_cmd = 0;
 		}

@@ -25,3 +25,23 @@ void	ft_mem_alloc(t_var *mini)
 	}
 
 }
+
+void	ft_free_exec_alloc(t_var *mini)
+{
+	u_int32_t	i;;
+	
+	i = 0;
+	if (mini->pid)
+		free(mini->pid);
+	if (mini->n_cmd > 1)
+	{
+		while (mini->pipes && i < mini->n_cmd - 1)
+		{
+			free(mini->pipes[i]);
+			i++;
+		}
+		free(mini->pipes);
+	}
+	mini->pid = NULL;
+	mini->pipes = NULL;
+}
