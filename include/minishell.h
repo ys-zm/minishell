@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/17 22:02:45 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/24 18:34:35 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/24 19:31:24 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,7 +206,7 @@ char    *access_cmd_path(t_var *mini, char *cmd);
 
 void    create_pipes(t_var *mini);
 
-void    ft_exec_multiple(t_var *mini, u_int32_t index);
+void    ft_exec_multiple(t_var *mini, uint32_t index);
 
 void    close_pipes(t_var *mini);
 
@@ -258,7 +258,7 @@ bool			get_cmd(t_list *tokens, t_cmd *cmd);
 
 bool			get_redirections(t_list *tokens, t_cmd *cmd, int32_t order_cmd);
 
-bool			is_redirection(char	*word);
+bool			is_redirection(t_list *token);
 
 bool			split_input(t_cmd *cmd, t_list *tokens, int32_t order_cmd);
 

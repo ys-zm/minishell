@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/20 19:09:49 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/24 18:34:27 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/24 19:39:04 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,21 @@ char	*remove_quotes(char *to_clear, bool free_string)
 			len--;
 		i++;
 	}
-	cleaned_str = ft_calloc(len + 1, sizeof(char));
-	if (cleaned_str)
+	if (i == len)
+		cleaned_str = ft_strdup(to_clear);
+	else
 	{
-		i = 0;
-		j = 0;
-		while (to_clear[j])
+		cleaned_str = ft_calloc(len + 1, sizeof(char));
+		if (cleaned_str)
 		{
-			if (! is_valid_quote(to_clear, j))
-				cleaned_str[i++] = to_clear[j];
-			j++;
+			i = 0;
+			j = 0;
+			while (to_clear[j])
+			{
+				if (! is_valid_quote(to_clear, j))
+					cleaned_str[i++] = to_clear[j];
+				j++;
+			}
 		}
 	}
 	if (free_string == true)

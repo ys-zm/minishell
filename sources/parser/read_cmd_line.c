@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/24 18:48:05 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/24 19:47:27 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,16 +151,17 @@ void	main_loop(t_var *depo)
 		}
 		if (is_empty(new_cmd) == false)
 			add_history(new_cmd);
-		else
-			ft_free(new_cmd);
 		if (status == CMD_SIN_ERR)
-			ft_printf("syntax error\n");
+		{
+			ft_printf("minishell: syntax error\n");
+			ft_free(new_cmd);
+		}
 		else
 		{
 			depo->cmd_data = create_new_cmd(new_cmd, depo);
 			if (depo->cmd_data == NULL)
 				malloc_protect(depo);
-			// print_cmd(depo);
+			// print_cmd(depo);	
 			ft_exec(depo);
 			if (remove_here_docs(depo) == false)
 				malloc_protect(depo);

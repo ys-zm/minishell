@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/27 17:20:39 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/24 18:34:47 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/24 19:39:56 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ uint32_t	count_redirections(t_list *tokens)
 	cnt = 0;
 	while (tokens)
 	{
-		if (is_redirection(tokens->content))
+		if (is_redirection(tokens))
 			cnt++;
 		tokens = tokens->next;
 	}
@@ -112,14 +112,12 @@ bool	get_cmd(t_list *tokens, t_cmd *cmd)
 	i = 0;
 	while (tokens)
 	{
-		if (is_redirection(tokens->content))
+		if (is_redirection(tokens))
 			tokens = tokens->next;
 		else
 		{
-			if ((! ft_strchr(tokens->content, '\'')) || (! ft_strchr(tokens->content, '\"')))
-				cmd->full_cmd[i] = remove_quotes(tokens->content, false);
-			else
-				cmd->full_cmd[i] = ft_strdup(tokens->content);
+			cmd->full_cmd[i] = remove_quotes(tokens->content, false);
+			ft_printf("no quotes: %s\n", cmd->full_cmd[i]);
 			if (cmd->full_cmd[i] == NULL)
 			{
 				ft_free(cmd->full_cmd);
@@ -157,7 +155,7 @@ bool	get_redirections(t_list *tokens, t_cmd *cmd, int32_t order_cmd)
 	i = 0;
 	while (tokens)
 	{
-		if (is_redirection(tokens->content))	// NB need to check if redirection is inside quotes
+		if (is_redirection(tokens))
 		{
 			cmd->redirections[i] = get_type_redirection(tokens->content);
 			tokens = tokens->next;
@@ -173,10 +171,7 @@ bool	get_redirections(t_list *tokens, t_cmd *cmd, int32_t order_cmd)
 				ft_free(tokens->content);
 				tokens->content = here_doc_file;
 			}
-			if (((! ft_strchr(tokens->content, '\'')) || (! ft_strchr(tokens->content, '\"'))))
-				cmd->files[i] = remove_quotes(tokens->content, false);
-			else
-				cmd->files[i] = ft_strdup(tokens->content);
+			cmd->files[i] = remove_quotes(tokens->content, false);
 			if (cmd->files[i] == NULL)
 			{
 				ft_free(cmd->redirections);
@@ -190,8 +185,13 @@ bool	get_redirections(t_list *tokens, t_cmd *cmd, int32_t order_cmd)
 	return (true);
 }
 
-bool	is_redirection(char	*word)
-{
+bool	is_redirection(t_list *token)
+{	
+	char	*word;
+
+	if (token->next == NULL)
+		return (false);
+	word = token->content;
 	if (is_quote(*word))
 		word++;
 	if (! is_arrow(*word++))
