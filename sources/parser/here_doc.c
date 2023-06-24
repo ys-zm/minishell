@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/19 17:46:55 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/23 18:13:51 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/24 18:35:58 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*isolate_eof(char *start)
 		return (NULL);
 	while (eof_len--)
 		eof[eof_len] = start[eof_len];
-	return (remove_quotes(eof));
+	return (remove_quotes(eof, true));
 }
 
 t_cmd_status	read_stdin(char *eof, char **here_doc)
@@ -117,8 +117,8 @@ t_cmd_status	write_here_doc(int cnt, char *delimiter)
 	t_cmd_status	status_cmd;
 	t_hd_status		status_hd;
 	char			*here_doc;
-	int32_t			fd;
 	char			*file_name;
+	int32_t			fd;
 
 	here_doc = NULL;
 	status_cmd = read_stdin(delimiter, &here_doc);
@@ -156,7 +156,7 @@ int32_t	fork_here_doc(int cnt, char *delimiter)
 		write_here_doc(cnt, delimiter);
 	else
 	{
-		if (waitpid(child_id, &status_procs, 0) == -1)
+		if (waitpid(child_id, &status_procs, 0) == -1)		// NB it's a fail but not related to memoery issues, the return value should tell that
 			return (-1);
 		if (WIFEXITED(status_procs))
 		{
@@ -195,10 +195,10 @@ int32_t	handle_here_doc(char *cmd, uint32_t *cnt)
 
 bool remove_here_docs(t_var *mini)
 {
-	uint32_t	i;
-	uint32_t	j;
 	char		*here_doc_to_drop;
 	int32_t		status;
+	uint32_t	i;
+	uint32_t	j;
 
 	i = 0;
 	while (i < mini->n_cmd)
@@ -206,7 +206,6 @@ bool remove_here_docs(t_var *mini)
 		j = 0;
 		while (j < mini->cmd_data[i].n_redirect)
 		{
-			ft_printf("halo1!\n");
 			if (mini->cmd_data[i].redirections[j] == RED_IN_DOUBLE)
 			{
 				here_doc_to_drop = create_file_name(HERE_DOC_FIX, i + 1);

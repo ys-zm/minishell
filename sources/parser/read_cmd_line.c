@@ -6,11 +6,12 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/23 18:43:59 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/24 18:48:05 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 
 t_cmd_status	ft_readline(char **buffer, const char *prompt, bool sintax_check)
 {
@@ -65,17 +66,6 @@ t_cmd_status	aquire_cmd(char **cmd)
 		if ((status == CMD_MEM_ERR) || (status == CMD_EOF))		// <-- check if ctrl+D in piping mode is correct
 			break ;
 	}
-	// if (status == CMD_OK)
-	// {
-	// 	*cmd = ft_trim(*cmd);
-	// 	if (*cmd == NULL)
-	// 		return (CMD_MEM_ERR);
-	// 	else if (**cmd == '\0')
-	// 		return (CMD_EMPTY);
-	// 	else
-	// 		return (CMD_OK);
-	// }
-	// else
 	return (status);
 }
 
@@ -87,8 +77,6 @@ t_cmd	*create_new_cmd(char *cmd_str, t_var *depo)
 	uint32_t	i;
 
 	cmd_str = expander(cmd_str, *(depo->env_list));
-	if (cmd_str == NULL)
-		return (NULL);
 	if (cmd_str == NULL)
 		return (NULL);
 	depo->n_cmd = n_cmds(cmd_str);
@@ -104,26 +92,37 @@ t_cmd	*create_new_cmd(char *cmd_str, t_var *depo)
 	{
 		cmd[i].fd_in = 0;
 		cmd[i].fd_out = 1;
-		tokens = tokenize(str_cmds[i]);
-		if (tokens == NULL)
+		if (is_empty(str_cmds[i]) == true)
 		{
-			ft_free_cmd_arr(cmd, i);
-			return (ft_free_double((void **) str_cmds, -1));
+			cmd[i].cmd_name = NULL;
+			cmd[i].full_cmd = NULL;
+			cmd[i].n_redirect = 0;
+			cmd[i].redirections = NULL;
+			cmd[i].files = NULL;
 		}
-		if (get_cmd(tokens, cmd + i) == false)
+		else
 		{
+			tokens = tokenize(str_cmds[i]);
+			if (tokens == NULL)
+			{
+				ft_free_cmd_arr(cmd, i);
+				return (ft_free_double((void **) str_cmds, -1));
+			}
+			if (get_cmd(tokens, cmd + i) == false)
+			{
+				ft_lstclear(&tokens, ft_free);
+				ft_free_cmd_arr(cmd, i);
+				return (ft_free_double((void **) str_cmds, -1));
+			}
+			if (get_redirections(tokens, cmd + i, i + 1) == false)
+			{
+				ft_lstclear(&tokens, ft_free);
+				ft_free_cmd_arr(cmd, i);
+				ft_free(cmd->full_cmd);
+				return (ft_free_double((void **) str_cmds, -1));
+			}
 			ft_lstclear(&tokens, ft_free);
-			ft_free_cmd_arr(cmd, i);
-			return (ft_free_double((void **) str_cmds, -1));
 		}
-		if (get_redirections(tokens, cmd + i, i + 1) == false)
-		{
-			ft_lstclear(&tokens, ft_free);
-			ft_free_cmd_arr(cmd, i);
-			ft_free(cmd->full_cmd);
-			return (ft_free_double((void **) str_cmds, -1));
-		}
-		ft_lstclear(&tokens, ft_free);
 		i++;
 	}
 	ft_free_double((void **) str_cmds, -1);
@@ -150,18 +149,18 @@ void	main_loop(t_var *depo)
 			ft_free(new_cmd);
 			break ;
 		}
-		if (status != CMD_EMPTY)
+		if (is_empty(new_cmd) == false)
 			add_history(new_cmd);
 		else
 			ft_free(new_cmd);
 		if (status == CMD_SIN_ERR)
 			ft_printf("syntax error\n");
-		if (status == CMD_OK)		// && (is_only_spaces(new_cmd) == false))
+		else
 		{
 			depo->cmd_data = create_new_cmd(new_cmd, depo);
 			if (depo->cmd_data == NULL)
 				malloc_protect(depo);
-			print_cmd(depo);
+			// print_cmd(depo);
 			ft_exec(depo);
 			if (remove_here_docs(depo) == false)
 				malloc_protect(depo);

@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/20 19:09:49 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/22 12:38:08 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/24 18:34:27 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,16 @@ uint32_t	skip_redirect_chars(char *cmd, uint32_t pos)
 	return (pos - start_pos);
 }
 
-bool	is_only_spaces(char	*to_check)
+bool	is_empty(char	*to_check)
 {
+	if (to_check == NULL)
+		return (true);
 	while (ft_isspace(*to_check))
 		to_check++;
 	return (*to_check == '\0');
 }
 
-char	*remove_quotes(char *to_clear)
+char	*remove_quotes(char *to_clear, bool free_string)
 {
 	char		*cleaned_str;
 	uint32_t	len;
@@ -52,16 +54,19 @@ char	*remove_quotes(char *to_clear)
 		i++;
 	}
 	cleaned_str = ft_calloc(len + 1, sizeof(char));
-	if (! cleaned_str)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (to_clear[j])
+	if (cleaned_str)
 	{
-		if (! is_valid_quote(to_clear, j))
-			cleaned_str[i++] = to_clear[j];
-		j++;
+		i = 0;
+		j = 0;
+		while (to_clear[j])
+		{
+			if (! is_valid_quote(to_clear, j))
+				cleaned_str[i++] = to_clear[j];
+			j++;
+		}
 	}
+	if (free_string == true)
+		ft_free(to_clear);
 	return (cleaned_str);
 }
 

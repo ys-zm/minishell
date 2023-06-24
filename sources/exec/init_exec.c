@@ -2,7 +2,7 @@
 
 void	ft_mem_alloc(t_var *mini)
 {
-	u_int32_t i;
+	uint32_t i;
 
 	i = 0;
 	mini->cmd_data->fd_in = 0;

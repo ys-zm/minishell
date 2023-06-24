@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 01:49:19 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/23 18:33:38 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/24 17:04:31 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	*expand_tilde(char *input, t_env *env_vars)
 	i = 0;
 	while (input[i])
 	{
-		if (ft_isspace(input[i]))
+		if (ft_isspace(input[i]) && input[i + 1])
 		{
 			i++;
 			if (is_valid_char(input, i++, '~'))
@@ -130,17 +130,13 @@ char	*expander(char *input, t_env *env_vars)
 	char	*pid_exp;
 	char	*var_exp;
 
-	ft_printf("first: |%s|\n", input);
 	tilde_exp = expand_tilde(input, env_vars);
 	if (tilde_exp == NULL)
 		return (NULL);
-	ft_printf("before: |%s|\n", tilde_exp);
 	pid_exp = expand_pid(tilde_exp);
 	if (pid_exp == NULL)
 		return (NULL);
-	ft_printf("before: |%s|\n", pid_exp);
 	var_exp = expand_vars(pid_exp, env_vars);
-	ft_printf("after: |%s|\n", var_exp);
 	if (var_exp == NULL)
 		return (NULL);
 	else
