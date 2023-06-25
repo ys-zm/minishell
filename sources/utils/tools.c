@@ -6,20 +6,11 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/20 19:09:49 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/24 21:07:40 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/25 02:04:58 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-bool	is_empty(char	*to_check)
-{
-	if (to_check == NULL)
-		return (true);
-	while (ft_isspace(*to_check))
-		to_check++;
-	return (*to_check == '\0');
-}
 
 char	*remove_quotes(char *to_clear, bool free_string)
 {
@@ -58,49 +49,6 @@ char	*remove_quotes(char *to_clear, bool free_string)
 	return (cleaned_str);
 }
 
-bool	has_trailing_pipe(char	*cmd)
-{
-	uint32_t	len_cmd;
-
-	if (! cmd || (*cmd == '\0'))
-		return (false);
-	len_cmd = ft_strlen(cmd) - 1;
-	while (len_cmd && ft_isspace(cmd[len_cmd]))
-		len_cmd--;
-	if (len_cmd <= 1)
-		return (false);
-	else
-		return (cmd[len_cmd] == '|');
-}
-
-bool	is_outside_quotes(char *string, uint32_t pos_to_check)
-{
-	uint32_t	i;
-	char		quotes;
-	bool		open_quotes;
-
-	i = 0;
-	open_quotes = false;
-	while (string[i] && (i < pos_to_check))
-	{
-		if (is_quote(string[i]))
-		{
-			if ((open_quotes == true) && (string[i] == quotes))
-			{
-				quotes = '\0';
-				open_quotes = false;
-			}
-			else if (open_quotes == false)
-			{
-				quotes = string[i];
-				open_quotes = true;
-			}
-		}
-		i++;
-	}
-	return (! open_quotes);
-}
-
 bool	is_quote(char to_check)
 {
 	return ((to_check == '\'') || (to_check == '\"'));
@@ -111,26 +59,78 @@ bool	is_arrow(char to_check)
 	return ((to_check == '<') || (to_check == '>'));
 }
 
-t_red_type	get_type_redirection(char *to_check)
+void	print_cmd(t_var	*mini)
 {
-	if (is_quote(*to_check))
-		to_check++;
-	if (*to_check++ == '<')
+	uint32_t	i;
+	uint32_t	j;
+	
+	j = 0;
+	if (mini == NULL)
+		return;
+	while (j < mini->n_cmd)
 	{
-		if (is_quote(*to_check))
-			to_check++;
-		if (*to_check == '<')
-			return (RED_IN_DOUBLE);
-		else
-			return (RED_IN_SINGLE);
+		ft_printf("COMMAND\n\tcmd name: %s\n", mini->cmd_data[j].cmd_name);
+		i = 0;
+		while (mini->cmd_data[j].full_cmd && mini->cmd_data[j].full_cmd[i])
+			ft_printf("\t\targ: %s\n", mini->cmd_data[j].full_cmd[i++]);
+		if (mini->cmd_data[j].redirections)
+		{
+			// ft_printf("\tn. redirections: %u\n", mini->cmd_data[j].n_redirect);
+			i = 0;
+			while (i < mini->cmd_data[j].n_redirect)
+			{
+				if (mini->cmd_data[j].redirections[i] == RED_IN_SINGLE)
+					ft_printf("\t\tred type: %s file: %s\n", "<", mini->cmd_data[j].files[i]);
+				else if (mini->cmd_data[j].redirections[i] == RED_OUT_SINGLE)
+					ft_printf("\t\tred type: %s file: %s\n", ">", mini->cmd_data[j].files[i]);
+				else if (mini->cmd_data[j].redirections[i] == RED_IN_DOUBLE)
+					ft_printf("\t\tred type: %s file: %s\n", "<<", mini->cmd_data[j].files[i]);
+				else if (mini->cmd_data[j].redirections[i] == RED_OUT_DOUBLE)
+					ft_printf("\t\tred type: %s file: %s\n", ">>", mini->cmd_data[j].files[i]);
+				i++;
+			}
+		}
+		j++;
 	}
-	else
+}
+
+char	*create_file_name(const char *fix_part, int32_t cnt)
+{
+	char			*file_name;
+	char			*char_cnt;
+
+	char_cnt = ft_itoa(cnt);
+	if (char_cnt == NULL)
+		return (NULL);
+	file_name = ft_strjoin((char *) fix_part, char_cnt, "_", false);
+	ft_free(char_cnt);
+	return (file_name);
+}
+
+bool remove_here_docs(t_var *mini)
+{
+	char		*here_doc_to_drop;
+	int32_t		status;
+	uint32_t	i;
+	uint32_t	j;
+
+	i = 0;
+	while (i < mini->n_cmd)
 	{
-		if (is_quote(*to_check))
-			to_check++;
-		if (*to_check == '>')
-			return (RED_OUT_DOUBLE);
-		else
-			return (RED_OUT_SINGLE);
+		j = 0;
+		while (mini->cmd_data && (j < mini->cmd_data[i].n_redirect))
+		{
+			if (mini->cmd_data[i].redirections[j++] == RED_IN_DOUBLE)
+			{
+				here_doc_to_drop = create_file_name(HERE_DOC_FIX, i + 1);
+				status = unlink(here_doc_to_drop);
+				ft_free(here_doc_to_drop);
+				if (status == -1)
+					return (false);
+				break ;
+			}
+		}
+		i++;
 	}
+	return (true);
 }

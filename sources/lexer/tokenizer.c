@@ -6,61 +6,11 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/27 17:20:39 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/24 23:42:20 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/25 01:27:14 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-uint32_t	n_cmds(char *string)
-{
-	uint32_t	cnt;
-	uint32_t	curr_pos;
-
-	cnt = 1;
-	curr_pos = 0;
-	while (string[curr_pos])
-	{
-		if (is_valid_char(string, curr_pos, '|') == true)
-			cnt++;
-		curr_pos++;
-	}
-	return (cnt);
-}
-
-char	**split_into_cmds(char *input_cmd)
-{
-	char		**cmds;
-	uint32_t	i;
-	uint32_t	len;
-
-	cmds = ft_calloc(n_cmds(input_cmd) + 1, sizeof(char *));
-	if (! cmds)
-		return (NULL);
-	i = 0;
-	if (input_cmd[i] == '\0')
-	{
-		cmds[i] = ft_strdup("");
-		if (cmds[i] == NULL)
-			return (ft_free(cmds));
-	}
-	while (*input_cmd)
-	{
-		len = 0;
-		while (input_cmd[len])
-		{
-			if (is_valid_char(input_cmd, len, '|'))
-				break ;
-			len++;
-		}
-		cmds[i] = ft_substr(input_cmd, 0, len);
-		if (cmds[i] == NULL)
-			return (ft_free_double((void **) cmds, i));
-		i++;
-		input_cmd += len + (input_cmd[len] != 0);
-	}
-	return (cmds);
-}
 
 int32_t	isolate_word(char *input, char **new_word)
 {
@@ -94,6 +44,55 @@ int32_t	isolate_word(char *input, char **new_word)
 	return (len);
 }
 
+bool	is_redirection(t_list *token)
+{	
+	char	*word;
+
+	if (token->next == NULL)
+		return (false);
+	word = token->content;
+	if (is_quote(*word))
+		word++;
+	if (! is_arrow(*word++))
+		return (false);
+	if (is_quote(*word))
+		word++;
+	if (*word == '\0')
+		return (true);
+	else if (is_arrow(*word++))
+	{
+		if (is_quote(*word))
+			word++;
+		return (*word == '\0');
+	}
+	else
+		return (false);
+}
+
+t_red_type	get_type_redirection(char *to_check)
+{
+	if (is_quote(*to_check))
+		to_check++;
+	if (*to_check++ == '<')
+	{
+		if (is_quote(*to_check))
+			to_check++;
+		if (*to_check == '<')
+			return (RED_IN_DOUBLE);
+		else
+			return (RED_IN_SINGLE);
+	}
+	else
+	{
+		if (is_quote(*to_check))
+			to_check++;
+		if (*to_check == '>')
+			return (RED_OUT_DOUBLE);
+		else
+			return (RED_OUT_SINGLE);
+	}
+}
+
 t_list	*tokenize(char *input)
 {
 	char	*new_word;
@@ -122,4 +121,3 @@ t_list	*tokenize(char *input)
 	}
 	return (tokens);
 }
-

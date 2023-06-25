@@ -6,111 +6,11 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/19 17:46:55 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/24 21:37:25 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/25 02:04:27 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int32_t	find_next_eof_pos(char *cmd, uint32_t start_pos)
-{
-	while (cmd && cmd[start_pos])
-	{
-		if ((cmd[start_pos] == '<') && is_outside_quotes(cmd, start_pos))
-		{
-			start_pos++;
-			if (cmd[start_pos] == '<')
-			{
-				start_pos++;
-				while (ft_isspace(cmd[start_pos]))
-					start_pos++;
-				return (start_pos);
-			}
-		}
-		else
-			start_pos++;
-	}
-	return (-1);
-}
-
-char	*isolate_eof(char *start)
-{
-	char 		*eof;
-	uint32_t	eof_len;
-
-	eof_len = 0;
-	while (is_valid_space(start, eof_len))
-		start++;
-	while (start[eof_len] != '\0')
-	{
-		if (is_valid_space(start, eof_len))
-			break ;
-		else if (is_valid_arrow(start, eof_len))
-			break ;
-		else if (is_valid_char(start, eof_len, '|'))
-			break ;
-		else if (is_valid_space(start, eof_len))
-			break ;
-		else
-			eof_len++;
-	}
-	eof = ft_calloc((eof_len + 1), sizeof(char));
-	if (eof == NULL)
-		return (NULL);
-	while (eof_len--)
-		eof[eof_len] = start[eof_len];
-	return (remove_quotes(eof, true));
-}
-
-t_cmd_status	read_stdin(char *eof, char **here_doc)
-{
-	char			*new_line;
-	t_cmd_status	status;
-	
-	while (true)
-	{
-		status = ft_readline(&new_line, "> ", false);
-		if (status == CMD_MEM_ERR)
-		{
-			ft_free(*here_doc);
-			return (status);
-		}
-		else if (status == CMD_EOF)
-		{
-			ft_free(*here_doc);
-			*here_doc = ft_strdup("");
-			if (*here_doc == NULL)
-				return (CMD_MEM_ERR);
-			else
-				return (CMD_EOF);
-		}
-		else if (ft_strncmp(new_line, eof, ft_strlen(eof)) == 0)
-		{
-			ft_free(new_line);
-			*here_doc = ft_append_char(*here_doc, '\n');
-			if (*here_doc == NULL)
-				return (CMD_MEM_ERR);
-			else
-				return (CMD_OK);
-		}
-		*here_doc = ft_strjoin(*here_doc, new_line, "\n", true);
-		if (*here_doc == NULL)
-			return (CMD_MEM_ERR);
-	}
-}
-
-char	*create_file_name(const char *fix_part, int32_t cnt)
-{
-	char			*file_name;
-	char			*char_cnt;
-
-	char_cnt = ft_itoa(cnt);
-	if (char_cnt == NULL)
-		return (NULL);
-	file_name = ft_strjoin((char *) fix_part, char_cnt, "_", false);
-	ft_free(char_cnt);
-	return (file_name);
-}
 
 t_cmd_status	write_here_doc(int cnt, char *delimiter)
 {
@@ -121,7 +21,7 @@ t_cmd_status	write_here_doc(int cnt, char *delimiter)
 	int32_t			fd;
 
 	here_doc = NULL;
-	status_cmd = read_stdin(delimiter, &here_doc);
+	status_cmd = aquire_input_hd(delimiter, &here_doc);
 	if (status_cmd == CMD_MEM_ERR)
 		exit(HD_MEM_ERR);
 	file_name = create_file_name(HERE_DOC_FIX, cnt);
@@ -164,6 +64,86 @@ int32_t	fork_here_doc(int cnt, char *delimiter)
 	return (0);
 }
 
+int32_t	find_next_eof_pos(char *cmd, uint32_t start_pos)
+{
+	while (cmd && cmd[start_pos])
+	{
+		if ((cmd[start_pos] == '<') && is_outside_quotes(cmd, start_pos))
+		{
+			start_pos++;
+			if (cmd[start_pos] == '<')
+			{
+				start_pos++;
+				while (ft_isspace(cmd[start_pos]))
+					start_pos++;
+				return (start_pos);
+			}
+		}
+		else
+			start_pos++;
+	}
+	return (-1);
+}
+
+char	*isolate_eof(char *start)
+{
+	char 		*eof;
+	uint32_t	eof_len;
+
+	eof_len = 0;
+	while (is_valid_space(start, eof_len))
+		start++;
+	while (start[eof_len] != '\0')
+	{
+		if (is_valid_space(start, eof_len))
+			break ;
+		else if (is_valid_arrow(start, eof_len))
+			break ;
+		else if (is_valid_symbol(start, eof_len, '|'))
+			break ;
+		else if (is_valid_space(start, eof_len))
+			break ;
+		else
+			eof_len++;
+	}
+	eof = ft_calloc((eof_len + 1), sizeof(char));
+	if (eof == NULL)
+		return (NULL);
+	while (eof_len--)
+		eof[eof_len] = start[eof_len];
+	return (remove_quotes(eof, true));
+}
+
+uint32_t	get_order_cmd(char *str, uint32_t pos)
+{
+	uint32_t	order;
+	char		*next_pipe;
+	uint32_t	pipe_pos;
+
+	order = 1;
+	pipe_pos = 0;
+	while (true)
+	{
+		while (true)
+		{
+			next_pipe = ft_strchr(str + pipe_pos, '|');
+			if (next_pipe == NULL)
+				return (order);
+			pipe_pos = next_pipe - str;
+			if (is_valid_symbol(str, pipe_pos, '|'))
+				break ;
+		}
+		if (pos > pipe_pos)
+		{
+			order++;
+			pipe_pos++;
+		}
+		else
+			break ;
+	}
+	return (order); 
+}
+
 int32_t	handle_here_doc(char *cmd, uint32_t *cnt)
 {
 	char	*delimiter;
@@ -183,102 +163,9 @@ int32_t	handle_here_doc(char *cmd, uint32_t *cnt)
 		status_fork = fork_here_doc(*cnt, delimiter);
 		ft_free(delimiter);
 		if (status_fork != 0)
-			return (-1);
+			return (status_fork);
 		del_pos = find_next_eof_pos(cmd, del_pos);
 	}
 	*cnt += find_next_eof_pos(cmd, 0) != -1;
 	return (0);
-}
-
-bool remove_here_docs(t_var *mini)
-{
-	char		*here_doc_to_drop;
-	int32_t		status;
-	uint32_t	i;
-	uint32_t	j;
-
-	i = 0;
-	while (i < mini->n_cmd)
-	{
-		j = 0;
-		while (mini->cmd_data && (j < mini->cmd_data[i].n_redirect))
-		{
-			if (mini->cmd_data[i].redirections[j++] == RED_IN_DOUBLE)
-			{
-				here_doc_to_drop = create_file_name(HERE_DOC_FIX, i + 1);
-				status = unlink(here_doc_to_drop);
-				ft_free(here_doc_to_drop);
-				if (status == -1)
-					return (false);
-				break ;
-			}
-		}
-		i++;
-	}
-	return (true);
-}
-
-void	print_cmd(t_var	*mini)
-{
-	uint32_t	i;
-	uint32_t	j;
-	
-	j = 0;
-	if (mini == NULL)
-		return;
-	while (j < mini->n_cmd)
-	{
-		ft_printf("COMMAND\n\tcmd name: %s\n", mini->cmd_data[j].cmd_name);
-		i = 0;
-		while (mini->cmd_data[j].full_cmd && mini->cmd_data[j].full_cmd[i])
-			ft_printf("\t\targ: %s\n", mini->cmd_data[j].full_cmd[i++]);
-		if (mini->cmd_data[j].redirections)
-		{
-			// ft_printf("\tn. redirections: %u\n", mini->cmd_data[j].n_redirect);
-			i = 0;
-			while (i < mini->cmd_data[j].n_redirect)
-			{
-				if (mini->cmd_data[j].redirections[i] == RED_IN_SINGLE)
-					ft_printf("\t\tred type: %s file: %s\n", "<", mini->cmd_data[j].files[i]);
-				else if (mini->cmd_data[j].redirections[i] == RED_OUT_SINGLE)
-					ft_printf("\t\tred type: %s file: %s\n", ">", mini->cmd_data[j].files[i]);
-				else if (mini->cmd_data[j].redirections[i] == RED_IN_DOUBLE)
-					ft_printf("\t\tred type: %s file: %s\n", "<<", mini->cmd_data[j].files[i]);
-				else if (mini->cmd_data[j].redirections[i] == RED_OUT_DOUBLE)
-					ft_printf("\t\tred type: %s file: %s\n", ">>", mini->cmd_data[j].files[i]);
-				i++;
-			}
-		}
-		j++;
-	}
-}
-
-uint32_t	get_order_cmd(char *str, uint32_t pos)
-{
-	uint32_t	order;
-	char		*next_pipe;
-	uint32_t	pipe_pos;
-
-	order = 1;
-	pipe_pos = 0;
-	while (true)
-	{
-		while (true)
-		{
-			next_pipe = ft_strchr(str + pipe_pos, '|');
-			if (next_pipe == NULL)
-				return (order);
-			pipe_pos = next_pipe - str;
-			if (is_valid_char(str, pipe_pos, '|'))
-				break ;
-		}
-		if (pos > pipe_pos)
-		{
-			order++;
-			pipe_pos++;
-		}
-		else
-			break ;
-	}
-	return (order); 
 }

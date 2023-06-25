@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 01:49:19 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/24 21:17:08 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/25 01:53:24 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ char	*expand_tilde(char *input, t_env *env_vars)
 		if (ft_isspace(input[i]) && input[i + 1])
 		{
 			i++;
-			if (is_valid_char(input, i++, '~'))
+			if (is_valid_symbol(input, i++, '~'))
 			{
 				if (ft_isspace(input[i]) || (input[i] == '/') || (input[i] == '\0'))
 				{
@@ -104,9 +104,9 @@ char	*expand_pid(char *input)
 	i = 0;
 	while (input[i])
 	{
-		if (is_valid_char(input, i++, '$'))
+		if (is_valid_symbol(input, i++, '$'))
 		{
-			if (is_valid_char(input, i, '$'))
+			if (is_valid_symbol(input, i, '$'))
 			{
 				char_pid = ft_itoa(getpid());
 				if (char_pid == NULL)

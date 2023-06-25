@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   check_symbols.c                                    :+:    :+:            */
+/*   check_char.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/24 00:55:08 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/24 21:01:44 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/25 01:53:11 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 
-bool	is_valid_char(char *string, uint32_t pos_to_check, char symbol)
+bool	is_valid_symbol(char *string, uint32_t pos_to_check, char symbol)
 {
 	if (string[pos_to_check] != symbol)
 		return (false);

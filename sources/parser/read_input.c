@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   read_cmd_line.c                                    :+:    :+:            */
+/*   read_input.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/24 23:48:05 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/25 02:04:53 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 t_cmd_status	ft_readline(char **buffer, const char *prompt, bool sintax_check)
 {
@@ -30,7 +29,44 @@ t_cmd_status	ft_readline(char **buffer, const char *prompt, bool sintax_check)
 		return (CMD_OK);
 }
 
-t_cmd_status	aquire_cmd(char **cmd)
+t_cmd_status	aquire_input_hd(char *eof, char **here_doc)
+{
+	char			*new_line;
+	t_cmd_status	status;
+	
+	while (true)
+	{
+		status = ft_readline(&new_line, "> ", false);
+		if (status == CMD_MEM_ERR)
+		{
+			ft_free(*here_doc);
+			return (status);
+		}
+		else if (status == CMD_EOF)
+		{
+			ft_free(*here_doc);
+			*here_doc = ft_strdup("");
+			if (*here_doc == NULL)
+				return (CMD_MEM_ERR);
+			else
+				return (CMD_EOF);
+		}
+		else if (ft_strncmp(new_line, eof, ft_strlen(eof)) == 0)
+		{
+			ft_free(new_line);
+			*here_doc = ft_append_char(*here_doc, '\n');
+			if (*here_doc == NULL)
+				return (CMD_MEM_ERR);
+			else
+				return (CMD_OK);
+		}
+		*here_doc = ft_strjoin(*here_doc, new_line, "\n", true);
+		if (*here_doc == NULL)
+			return (CMD_MEM_ERR);
+	}
+}
+
+t_cmd_status	aquire_input(char **input)
 {
 	t_cmd_status	status;
 	char			*buffer;
@@ -42,8 +78,8 @@ t_cmd_status	aquire_cmd(char **cmd)
 	{
 		if (status == CMD_SIN_ERR)
 		{
-			*cmd = ft_strjoin(*cmd, buffer, "\n", true);
-			if (*cmd == NULL)
+			*input = ft_strjoin(*input, buffer, "\n", true);
+			if (*input == NULL)
 				return (CMD_MEM_ERR);
 		}
 		return (status);
@@ -51,16 +87,16 @@ t_cmd_status	aquire_cmd(char **cmd)
 	cnt = 0;
 	while (status == CMD_OK)
 	{
-		if (handle_here_doc(buffer, &cnt) == -1)
+		if (handle_here_doc(buffer, &cnt) != 0)
 		{
 			ft_free(buffer);
-			ft_free(*cmd);
+			ft_free(*input);
 			return (CMD_MEM_ERR);
 		}
-		*cmd = ft_strjoin(*cmd, buffer, "\n", true);
-		if (*cmd == NULL)
+		*input = ft_strjoin(*input, buffer, "\n", true);
+		if (*input == NULL)
 			return (CMD_MEM_ERR);
-		if (has_trailing_pipe(*cmd) == false)
+		if (has_trailing_pipe(*input) == false)
 			break ;
 		status = ft_readline(&buffer, "> ", true);
 		if ((status == CMD_MEM_ERR) || (status == CMD_EOF))		// <-- check if ctrl+D in piping mode is correct
@@ -69,96 +105,36 @@ t_cmd_status	aquire_cmd(char **cmd)
 	return (status);
 }
 
-t_cmd	*create_new_cmd(char *cmd_str, t_var *depo)
-{
-	char		**str_cmds;
-	t_cmd		*cmd;
-	t_list		*tokens;
-	uint32_t	i;
-
-	cmd_str = expander(cmd_str, *(depo->env_list));
-	if (cmd_str == NULL)
-		return (NULL);
-	depo->n_cmd = n_cmds(cmd_str);
-	str_cmds = split_into_cmds(cmd_str);
-	ft_free(cmd_str);
-	if (str_cmds == NULL)
-		return (NULL);
-	cmd = ft_calloc(depo->n_cmd, sizeof(t_cmd));
-	if (cmd == NULL)
-		return (ft_free_double((void **) str_cmds, -1));
-	i = 0;
-	while (i < depo->n_cmd)
-	{
-		cmd[i].fd_in = 0;
-		cmd[i].fd_out = 1;
-		if (is_empty(str_cmds[i]) == true)
-		{
-			cmd[i].cmd_name = NULL;
-			cmd[i].full_cmd = NULL;
-			cmd[i].n_redirect = 0;
-			cmd[i].redirections = NULL;
-			cmd[i].files = NULL;
-		}
-		else
-		{
-			tokens = tokenize(str_cmds[i]);
-			if (tokens == NULL)
-			{
-				ft_free_cmd_arr(cmd, i);
-				return (ft_free_double((void **) str_cmds, -1));
-			}
-			if (get_cmd(tokens, cmd + i) == false)
-			{
-				ft_lstclear(&tokens, ft_free);
-				ft_free_cmd_arr(cmd, i);
-				return (ft_free_double((void **) str_cmds, -1));
-			}
-			if (get_redirections(tokens, cmd + i, i + 1) == false)
-			{
-				ft_lstclear(&tokens, ft_free);
-				ft_free_cmd_arr(cmd, i);
-				ft_free(cmd->full_cmd);
-				return (ft_free_double((void **) str_cmds, -1));
-			}
-			ft_lstclear(&tokens, ft_free);
-		}
-		i++;
-	}
-	ft_free_double((void **) str_cmds, -1);
-	return (cmd);
-}
-
 void	main_loop(t_var *depo)
 {
 	t_cmd_status	status;
-	char			*new_cmd;
+	char			*input;
 
 	while (true)
 	{
-		new_cmd = NULL;
-		status = aquire_cmd(&new_cmd);
+		input = NULL;
+		status = aquire_input(&input);
 		if (status == CMD_MEM_ERR)
 			malloc_protect(depo);
 		else if (status == CMD_EOF)
 		{
-			if (has_trailing_pipe(new_cmd) == true)
+			if (has_trailing_pipe(input) == true)
 				ft_printf("syntax error\n");
 			else
 				ft_printf("exit\n");
-			ft_free(new_cmd);
+			ft_free(input);
 			break ;
 		}
-		if (is_empty(new_cmd) == false)
-			add_history(new_cmd);
+		if (is_empty(input) == false)
+			add_history(input);
 		if (status == CMD_SIN_ERR)
 		{
 			ft_printf("minishell: syntax error\n");
-			ft_free(new_cmd);
+			ft_free(input);
 		}
 		else
 		{
-			depo->cmd_data = create_new_cmd(new_cmd, depo);
+			depo->cmd_data = create_new_cmd(input, depo);
 			if (depo->cmd_data == NULL)
 				malloc_protect(depo);
 			// print_cmd(depo);	

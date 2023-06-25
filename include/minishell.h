@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/17 22:02:45 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/24 21:07:53 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/25 02:01:08 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,7 @@ bool    		check_redirections(char *str);
 bool			check_sintax(char *cmd);
 
 
-bool 			is_valid_char(char *string, uint32_t pos_to_check, char check);
+bool 			is_valid_symbol(char *string, uint32_t pos_to_check, char check);
 
 bool			is_valid_space(char *string, uint32_t pos_to_check);
 
@@ -252,9 +252,11 @@ uint32_t		count_words(t_list *tokens);
 
 uint32_t		count_redirections(t_list *tokens);
 
-bool			get_cmd(t_list *tokens, t_cmd *cmd);
+char			**fill_words(t_list *tokens);
 
-bool			get_redirections(t_list *tokens, t_cmd *cmd, int32_t order_cmd);
+t_red_type		*get_redirections(t_list *tokens, uint32_t n_redirect, int32_t order_cmd);
+
+char			**get_files(t_list *tokens, uint32_t n_redirect);
 
 bool			is_redirection(t_list *token);
 
@@ -276,9 +278,11 @@ char			*expander(char *input, t_env *env_vars);
 
 t_cmd_status	ft_readline(char **buffer, const char *prompt, bool check);
 
-t_cmd_status	aquire_cmd(char **cmd);
+t_cmd_status	aquire_input(char **cmd);
 
 t_cmd			*create_new_cmd(char *cmd, t_var *depo);
+
+t_cmd			*build_cmd(t_cmd *cmd, char *curr_cmd, uint32_t order_cmd);
 
 void    		main_loop(t_var	*main_var);
 
@@ -289,7 +293,7 @@ char			*isolate_eof(char *start);
 
 int32_t			handle_here_doc(char *cmd, uint32_t *cnt);
 
-t_cmd_status	read_stdin(char *eof, char **here_doc);
+t_cmd_status	aquire_input_hd(char *eof, char **here_doc);
 
 t_cmd_status	write_here_doc(int cnt, char *delimiter);
 

@@ -7,10 +7,10 @@ int	ft_free_strings(char **arr)
 	i = 0;
 	while (arr && arr[i])
 	{
-		free(arr[i]);
+		ft_free(arr[i]);
 		i++;
 	}
-	free(arr);
+	ft_free(arr);
 	return (EXIT_SUCCESS);
 }
 
@@ -21,10 +21,10 @@ int	ft_free_pipes(int **pipes, int size)
 	i = 0;
 	while (i < size)
 	{
-		free(pipes[i]);
+		ft_free(pipes[i]);
 		i++;
 	}
-	free(pipes);
+	ft_free(pipes);
 	return (EXIT_SUCCESS);
 }
 
@@ -33,7 +33,7 @@ int	ft_free_cmd_struct(t_cmd *cmd)
 	if (cmd->full_cmd)
 		ft_free_strings(cmd->full_cmd);
 	if (cmd->n_redirect)
-		free(cmd->redirections);
+		ft_free(cmd->redirections);
 	if (cmd->files)
 		ft_free_strings(cmd->files);
 	return (EXIT_SUCCESS);
@@ -49,7 +49,7 @@ int ft_free_cmd_arr(t_cmd *cmd_data, uint32_t n_cmds)
 		ft_free_cmd_struct(cmd_data + i);
 		i++;
 	}
-	free(cmd_data);
+	ft_free(cmd_data);
 	return (EXIT_SUCCESS);
 }
 
@@ -65,10 +65,10 @@ int	ft_free_env_list(t_var *mini)
 	{
 		tmp = *env_list;
 		*env_list = (*env_list)->next;
-		free(tmp->key);
-		free(tmp->value);
-		free(tmp);
+		ft_free(tmp->key);
+		ft_free(tmp->value);
+		ft_free(tmp);
 	}
-	free(env_list);
+	ft_free(env_list);
 	return (EXIT_SUCCESS);
 }
