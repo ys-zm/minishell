@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/24 00:55:08 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/25 01:53:11 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/25 02:56:18 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ bool	is_valid_dollar(char *string, uint32_t pos_to_check)
 	open_quotes = false;
 	while (i < pos_to_check)
 	{
-		if (string[i] == '\'')
+		if ((string[i] == '\'') && is_valid_quote(string, i))
 			open_quotes = ! open_quotes;
 		i++;
 	}
