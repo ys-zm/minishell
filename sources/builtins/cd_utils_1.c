@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 11:57:18 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/06/26 12:04:17 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/26 12:05:48 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,6 @@ void	ft_update_env_var(t_env **env_list, char *which_env, char *new_env)
 	{
 		free(env_var->value);
 		env_var->value = ft_strdup(new_env);
-		if (!env_var->value)
-			malloc_protect(mini);
 	}
 }
 
@@ -127,7 +125,7 @@ int	ft_cd_to_oldpwd(t_var *mini, char *cwd)
 	if (!chdir(old_pwd))
 	{
 		ft_update_env_var(mini->env_list, "OLDPWD", cwd);
-		return (ft_update_env_var(mini->env_list, "PWD", old_pwd), EXIT_SUCCESS;
+		return (ft_update_env_var(mini->env_list, "PWD", old_pwd), EXIT_SUCCESS);
 	}
 	else
 	{
