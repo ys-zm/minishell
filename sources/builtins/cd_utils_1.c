@@ -1,12 +1,24 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   cd_utils_1.c                                       :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: yzaim <marvin@codam.nl>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/06/26 11:57:18 by yzaim         #+#    #+#                 */
+/*   Updated: 2023/06/26 12:04:17 by yzaim         ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "minishell.h"
 
 char	*ft_remove_lastdir(t_var *mini, char *old_path)
 {
-	int	len;
-	int	i = 0;
+	int		len;
+	int		i;
 	char	*new_path;
 
+	i = 0;
 	len = ft_strlen(old_path);
 	if (!len)
 		return (NULL);
@@ -25,17 +37,17 @@ char	*ft_remove_lastdir(t_var *mini, char *old_path)
 	return (new_path);
 }
 
-char   	*ft_get_home(t_var *mini)
+char	*ft_get_home(t_var *mini)
 {
 	t_env	*env;
 
 	env = *(mini->env_list);
 	while (env)
 	{
-        if (!ft_strncmp(env->key, "HOME", 4))
-            return (env->value); 
-        env = env->next;
-    }
+		if (!ft_strncmp(env->key, "HOME", 4))
+			return (env->value);
+		env = env->next;
+	}
 	return (NULL);
 }
 
@@ -61,14 +73,16 @@ void	ft_update_env_var(t_env **env_list, char *which_env, char *new_env)
 	if (env_var)
 	{
 		free(env_var->value);
-		env_var->value = ft_strdup(new_env); //malloc being freed was not appointed
+		env_var->value = ft_strdup(new_env);
+		if (!env_var->value)
+			malloc_protect(mini);
 	}
 }
 
 int	ft_cd_to_homedir(t_var *mini, char *cwd)
 {
 	char	*new_path;
-	
+
 	new_path = ft_get_home(mini);
 	if (!new_path)
 	{
@@ -85,8 +99,9 @@ int	ft_cd_to_homedir(t_var *mini, char *cwd)
 	{
 		ft_putstr_fd("minishell: cd: ", 2);
 		ft_putstr_fd(new_path, 2);
-		return (ft_putstr_fd(": No such file or directory\n", 2), EXIT_FAILURE);
-    }
+		ft_putstr_fd(": No such file or directory\n", 2);
+		return (EXIT_FAILURE);
+	}
 }
 
 int	ft_cd_to_oldpwd(t_var *mini, char *cwd)
@@ -107,20 +122,19 @@ int	ft_cd_to_oldpwd(t_var *mini, char *cwd)
 	if (!env)
 	{
 		ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
-		return (EXIT_FAILURE);
+		retrun (EXIT_FAILURE);
 	}
 	if (!chdir(old_pwd))
 	{
 		ft_update_env_var(mini->env_list, "OLDPWD", cwd);
-		ft_update_env_var(mini->env_list, "PWD", old_pwd);
-		return (EXIT_SUCCESS);
+		return (ft_update_env_var(mini->env_list, "PWD", old_pwd), EXIT_SUCCESS;
 	}
 	else
 	{
 		ft_putstr_fd("minishell: cd: ", 2);
 		ft_putstr_fd(old_pwd, 2);
 		return (ft_putstr_fd(": No such file or directory\n", 2), EXIT_FAILURE);
-    }
+	}
 }
 
 int	ft_count_directories(char *arg)
@@ -148,5 +162,4 @@ int	ft_count_directories(char *arg)
 	if (!count)
 		return (1);
 	return (count);
-
 }
