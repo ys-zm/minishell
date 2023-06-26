@@ -26,6 +26,7 @@ void    ft_free_all(t_var *mini)
 	}
 	if (mini->pid)
 	{
+		// printf("comes here!\n");
 		free(mini->pid);
 		mini->pid = NULL;
 	}

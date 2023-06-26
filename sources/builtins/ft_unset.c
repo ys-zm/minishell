@@ -32,18 +32,17 @@ void	ft_del_node(t_env **env_list, char *key)
 }
 
 //ft_unset: remove env variable from list
-//if its the head, set new head
-//if not valid key
 int	ft_unset(t_var *mini, char **args)
 {
-	int	i;
+	int		i;
 	t_env	*env;
 
 	i = 1;
 	if (mini->env_list)
 		env = *(mini->env_list);
-	ft_print_array(args);
-	if (!args || !env)
+	if (!args[1])
+		return (ft_putstr_fd("minishell: unset: not enough arguments\n", 2), EXIT_FAILURE);
+	if (!env)
 		return (EXIT_SUCCESS);
 	while (args && args[i])
 	{

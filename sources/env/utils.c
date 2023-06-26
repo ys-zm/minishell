@@ -14,6 +14,21 @@ int	ft_find_first_equals(char *env)
 	return (i);
 }
 
+bool	ft_key_rules(char c, int index)
+{
+	if (index == 0)
+	{
+		if (ft_isalpha(c) || c == '_')
+			return (true);
+	}
+	if (index > 0)
+	{
+		if (ft_isalnum(c) || c == '_')
+			return (true);
+	}
+	return (false);
+}
+
 int	ft_check_key(char *key)
 {
 	int	i;
@@ -21,15 +36,14 @@ int	ft_check_key(char *key)
 	i = 0;
 	if (key && key[0] == '\0')
 		return (ft_putstr_fd("minishell: export: `': not a valid identifier\n", 2), EXIT_FAILURE);
-
 	while (key && key[i])
 	{
-		if (!ft_isalnum(key[i]) && key[i] != '_')
+		if (!ft_key_rules(key[i], i))
 		{
 			ft_putstr_fd("minishell: export: '", 2);
 			ft_putstr_fd(key, 2);
 			ft_putstr_fd("' : not a valid identifier\n", 2);
-			return (EXIT_FAILURE);
+			return (EXIT_FAILURE);	
 		}
 		i++;
 	}
