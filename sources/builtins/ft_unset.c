@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 13:25:57 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/06/26 13:28:36 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/26 16:43:30 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_del_node(t_env **env_list, char *key)
 				*env_list = curr->next;
 			else
 				prev->next = curr->next;
-			return (free(curr), free(curr->value), free(curr->key));
+			return (free(curr->value), free(curr->key), free(curr));
 		}
 		else
 		{

@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/20 19:09:49 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/26 16:05:43 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/26 16:38:43 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ void	move_chars(char *dest, char *src)
 
 	i = 0;
 	j = 0;
-	while (to_clear[j])
+	while (src[j])
 	{
-		if (! is_valid_quote(to_clear, j))
-			cleaned_str[i++] = to_clear[j];
+		if (! is_valid_quote(src, j))
+			dest[i++] = src[j];
 		j++;
 	}
 }
@@ -32,7 +32,6 @@ char	*remove_quotes(char *to_clear, bool free_string)
 	char		*cleaned_str;
 	uint32_t	len;
 	uint32_t	i;
-	uint32_t	j;
 
 	len = ft_strlen(to_clear);
 	i = 0;
