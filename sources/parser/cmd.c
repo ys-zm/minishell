@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/25 01:18:26 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/25 01:53:16 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/26 16:05:21 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,27 +28,27 @@ uint32_t	n_cmds(char *string)
 	return (cnt);
 }
 
-char	**split_into_cmds(char *input_cmd)
+char	**split_into_cmds(char *input)
 {
 	char		**cmds;
 	uint32_t	i;
 	uint32_t	len;
 
-	cmds = ft_calloc(n_cmds(input_cmd) + 1, sizeof(char *));
+	cmds = ft_calloc(n_cmds(input) + 1, sizeof(char *));
 	if (! cmds)
 		return (NULL);
 	i = 0;
 	while (true)
 	{
 		len = 0;
-		while (input_cmd[len] && (is_valid_symbol(input_cmd, len, '|') == false))
+		while (input[len] && (is_valid_symbol(input, len, '|') == false))
 			len++;
-		cmds[i] = ft_substr(input_cmd, 0, len);
+		cmds[i] = ft_substr(input, 0, len);
 		if (cmds[i] == NULL)
 			return (ft_free_double((void **) cmds, i));
 		i++;
-		input_cmd += len + (input_cmd[len] != 0);
-		if (*input_cmd == '\0')
+		input += len + (input[len] != 0);
+		if (*input == '\0')
 			break ;
 	}
 	return (cmds);
@@ -75,12 +75,38 @@ t_cmd	*create_new_cmd(char *cmd_input, t_var *mini)
 	while (i < mini->n_cmd)
 	{
 		if (build_cmd(cmd + i, str_cmds[i], i + 1) == NULL)
-		{
-			ft_free_cmd_arr(cmd, i + 1);
-			return (ft_free_double((void **) str_cmds, -1));
-		}
+			return (ft_free_cmd_arr(cmd, i + 1), \
+				ft_free_double((void **) str_cmds, -1));
 		i++;
 	}
 	ft_free_double((void **) str_cmds, -1);
 	return (cmd);
+}
+
+bool	remove_here_docs(t_var *mini)
+{
+	char		*here_doc_to_drop;
+	int32_t		status;
+	uint32_t	i;
+	uint32_t	j;
+
+	i = 0;
+	while (i < mini->n_cmd)
+	{
+		j = 0;
+		while (mini->cmd_data && (j < mini->cmd_data[i].n_redirect))
+		{
+			if (mini->cmd_data[i].redirections[j++] == RED_IN_DOUBLE)
+			{
+				here_doc_to_drop = create_file_name(HERE_DOC_FIX, i + 1);
+				status = unlink(here_doc_to_drop);
+				ft_free(here_doc_to_drop);
+				if (status == -1)
+					return (false);
+				break ;
+			}
+		}
+		i++;
+	}
+	return (true);
 }

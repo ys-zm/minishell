@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/27 17:20:39 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/25 01:27:14 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/26 12:57:08 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,26 +23,27 @@ int32_t	isolate_word(char *input, char **new_word)
 	{
 		if (is_valid_space(input, len))
 			break ;
-		else if (is_valid_arrow(input, len) && *new_word && (! is_valid_arrow(*new_word, 0)))
+		else if (is_valid_arrow(input, len) && *new_word && \
+			(! is_valid_arrow(*new_word, 0)))
 			break ;
-		else if (! is_valid_arrow(input, len) && *new_word && is_valid_arrow(input, len - 1))
+		else if (! is_valid_arrow(input, len) && *new_word && \
+			is_valid_arrow(input, len - 1))
 			break ;
 		else
 		{
-			*new_word = ft_append_char(*new_word, input[len]);
+			*new_word = ft_append_char(*new_word, input[len++]);
 			if (*new_word == NULL)
 				return (-1);
-			len++;
 		}
-	}
-	if (*new_word)
-	{
-		*new_word = ft_trim(*new_word);
-		if (*new_word == NULL)
-			return (-1);
 	}
 	return (len);
 }
+// if (*new_word)
+// {
+// 	*new_word = ft_trim(*new_word);
+// 	if (*new_word == NULL)
+// 		return (-1);
+// }
 
 bool	is_redirection(t_list *token)
 {	

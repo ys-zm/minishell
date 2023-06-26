@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 01:49:19 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/26 11:49:28 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/26 14:59:47 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*expand_vars(char *input, t_env *env_vars)
 	while (input[i])
 	{
 		if (is_valid_dollar(input, i++) == false)
-			continue;
+			continue ;
 		end = i;
 		while (ft_isalpha(input[end]) || (input[end] == '?'))
 			end++;
@@ -67,25 +67,25 @@ char	*expand_vars(char *input, t_env *env_vars)
 	return (input);
 }
 
-char	*expand_tilde(char *input, t_env *env_vars)
+char	*expand_tilde(char *str, t_env *env_vars)
 {
 	uint32_t	i;
 	char		*home_var;
 
 	i = 0;
-	while (input[i])
+	while (str[i])
 	{
-		if (ft_isspace(input[i]) && input[i + 1])
+		if (ft_isspace(str[i]) && str[i + 1])
 		{
 			i++;
-			if (is_valid_symbol(input, i++, '~'))
+			if (is_valid_symbol(str, i++, '~'))
 			{
-				if (ft_isspace(input[i]) || (input[i] == '/') || (input[i] == '\0'))
+				if (ft_isspace(str[i]) || (str[i] == '/') || (! str[i]))
 				{
 					home_var = get_var_value(env_vars, "HOME");
-					input = ft_insert_str(input, home_var, i, i);
+					str = ft_insert_str(str, home_var, i, i);
 					i += ft_strlen(home_var) - 1;
-					if (input == NULL)
+					if (str == NULL)
 						return (NULL);
 				}
 			}
@@ -93,7 +93,7 @@ char	*expand_tilde(char *input, t_env *env_vars)
 		else
 			i++;
 	}
-	return (input);
+	return (str);
 }
 
 char	*expand_pid(char *input)

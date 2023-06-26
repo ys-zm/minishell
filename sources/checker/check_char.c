@@ -6,12 +6,11 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/24 00:55:08 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/25 02:56:18 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/26 12:11:31 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 bool	is_valid_symbol(char *string, uint32_t pos_to_check, char symbol)
 {
@@ -41,10 +40,10 @@ bool	is_valid_dollar(char *string, uint32_t pos_to_check)
 {
 	uint32_t	i;
 	bool		open_quotes;
-	
+
 	if (string[pos_to_check] != '$')
 		return (false);
-	if ((string[pos_to_check + 1] == '\0' ) || ft_isspace(string[pos_to_check + 1]))
+	if ((! string[pos_to_check + 1]) || ft_isspace(string[pos_to_check + 1]))
 		return (false);
 	i = 0;
 	open_quotes = false;

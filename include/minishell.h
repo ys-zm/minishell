@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/17 22:02:45 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/26 12:06:05 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/26 16:04:17 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # define BOLD_RESET			"\033[0m"
 # define HERE_DOC_FIX		"here_doc/here_doc"
 # define PROMPT				BOLD YEL "MI" MAG "NI" RED "HELL-> "  COL_RESET BOLD_RESET 
+
 # include "libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
@@ -227,15 +228,6 @@ int		process_management(t_var *mini);
 
 //==============================================================
 
-bool			check_quotes(char *cmd);
-
-bool    		check_pipes(char *cmd);
-
-bool    		check_redirections(char *str);
-
-bool			check_sintax(char *cmd);
-
-
 bool 			is_valid_symbol(char *string, uint32_t pos_to_check, char check);
 
 bool			is_valid_space(char *string, uint32_t pos_to_check);
@@ -245,6 +237,22 @@ bool 			is_valid_arrow(char *string, uint32_t pos_to_check);
 bool			is_valid_dollar(char *string, uint32_t pos_to_check);
 
 bool 			is_valid_quote(char *string, uint32_t pos_to_check);
+
+
+bool			check_quotes(char *cmd);
+
+bool    		check_pipes(char *cmd);
+
+bool    		check_redirections(char *str);
+
+bool			check_sintax(char *cmd);
+
+
+bool			is_empty(char *to_check);
+
+bool			has_trailing_pipe(char	*cmd);
+
+bool			is_outside_quotes(char *string, uint32_t pos_to_check);
 
 
 uint32_t		n_cmds(char *string);
@@ -257,7 +265,7 @@ uint32_t		count_redirections(t_list *tokens);
 
 char			**fill_words(t_list *tokens);
 
-t_red_type		*get_redirections(t_list *tokens, uint32_t n_redirect, int32_t order_cmd);
+t_red_type		*get_redirections(t_list *tokens, uint32_t n_redirect, int order);
 
 char			**get_files(t_list *tokens, uint32_t n_redirect);
 
@@ -304,16 +312,12 @@ int32_t			fork_here_doc(int cnt, char *delimiter);
 
 char			*create_file_name(const char *fix_part, int32_t cnt);
 
+void			exit_shell(char *input);
 
-// uint32_t		skip_redirect_chars(char *cmd, uint32_t pos);
+void			run_cmd(char *input, t_var *mini);
 
-bool			is_empty(char *to_check);
 
 char			*remove_quotes(char *to_clear, bool free_string);
-
-bool			has_trailing_pipe(char	*cmd);
-
-bool			is_outside_quotes(char *string, uint32_t pos_to_check);
 
 bool			is_quote(char to_check);
 
@@ -324,5 +328,7 @@ void			print_cmd(t_var *depo);
 uint32_t		get_order_cmd(char *str, uint32_t pos);
 
 bool			remove_here_docs(t_var *mini);
+
+void			move_chars(char *dest, char *src);
 
 #endif

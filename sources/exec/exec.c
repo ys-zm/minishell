@@ -52,5 +52,10 @@ void	ft_exec(t_var *mini)
 		g_exit_code = single_cmd(mini);
 	else
 		g_exit_code = multiple_cmds(mini);
+	if (remove_here_docs(mini) == false)
+		malloc_protect(mini);
+	ft_free_cmd_arr(mini->cmd_data, mini->n_cmd);
+	mini->cmd_data = NULL;
+	mini->n_cmd = 0;
 }
 

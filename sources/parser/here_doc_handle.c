@@ -1,68 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   here_doc.c                                         :+:    :+:            */
+/*   here_doc_handle.c                                  :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: fra <fra@student.42.fr>                      +#+                     */
+/*   By: faru <faru@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/05/19 17:46:55 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/25 02:04:27 by fra           ########   odam.nl         */
+/*   Created: 2023/06/26 14:15:31 by faru          #+#    #+#                 */
+/*   Updated: 2023/06/26 15:58:50 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_cmd_status	write_here_doc(int cnt, char *delimiter)
-{
-	t_cmd_status	status_cmd;
-	t_hd_status		status_hd;
-	char			*here_doc;
-	char			*file_name;
-	int32_t			fd;
-
-	here_doc = NULL;
-	status_cmd = aquire_input_hd(delimiter, &here_doc);
-	if (status_cmd == CMD_MEM_ERR)
-		exit(HD_MEM_ERR);
-	file_name = create_file_name(HERE_DOC_FIX, cnt);
-	if (file_name == NULL)
-		exit(HD_MEM_ERR);
-	fd = open(file_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
-	ft_free(file_name);
-	if ((fd == -1) || (write(fd, here_doc, ft_strlen(here_doc)) == -1))
-		status_hd = HD_FILE_ERR;
-	else if (status_cmd == CMD_EOF)
-		status_hd = HD_EOF;
-	else
-		status_hd = HD_OK;
-	if (fd != -1)
-		close(fd);
-	ft_free(here_doc);
-	exit(status_hd);
-}
-
-int32_t	fork_here_doc(int cnt, char *delimiter)
-{
-	pid_t	child_id;
-	int32_t	status_procs;
-
-	child_id = fork();
-	if (child_id == -1)
-		return (-2);
-	else if (child_id == 0)
-		write_here_doc(cnt, delimiter);
-	else
-	{
-		if (waitpid(child_id, &status_procs, 0) == -1)
-			return (-2);
-		if (WIFEXITED(status_procs))
-		{
-			if ((WEXITSTATUS(status_procs) == HD_MEM_ERR) || (WEXITSTATUS(status_procs) == HD_FILE_ERR))
-				return (-1);
-		}
-	}
-	return (0);
-}
 
 int32_t	find_next_eof_pos(char *cmd, uint32_t start_pos)
 {
@@ -87,7 +35,7 @@ int32_t	find_next_eof_pos(char *cmd, uint32_t start_pos)
 
 char	*isolate_eof(char *start)
 {
-	char 		*eof;
+	char		*eof;
 	uint32_t	eof_len;
 
 	eof_len = 0;
@@ -114,36 +62,6 @@ char	*isolate_eof(char *start)
 	return (remove_quotes(eof, true));
 }
 
-uint32_t	get_order_cmd(char *str, uint32_t pos)
-{
-	uint32_t	order;
-	char		*next_pipe;
-	uint32_t	pipe_pos;
-
-	order = 1;
-	pipe_pos = 0;
-	while (true)
-	{
-		while (true)
-		{
-			next_pipe = ft_strchr(str + pipe_pos, '|');
-			if (next_pipe == NULL)
-				return (order);
-			pipe_pos = next_pipe - str;
-			if (is_valid_symbol(str, pipe_pos, '|'))
-				break ;
-		}
-		if (pos > pipe_pos)
-		{
-			order++;
-			pipe_pos++;
-		}
-		else
-			break ;
-	}
-	return (order); 
-}
-
 int32_t	handle_here_doc(char *cmd, uint32_t *cnt)
 {
 	char	*delimiter;
@@ -168,4 +86,39 @@ int32_t	handle_here_doc(char *cmd, uint32_t *cnt)
 	}
 	*cnt += find_next_eof_pos(cmd, 0) != -1;
 	return (0);
+}
+
+t_cmd_status	eof_here_doc(char **here_doc, t_cmd_status status)
+{
+	ft_free(*here_doc);
+	*here_doc = ft_strdup("");
+	if (*here_doc == NULL)
+		status = CMD_MEM_ERR;
+	return (status);
+}
+
+t_cmd_status	aquire_input_hd(char *eof, char **here_doc)
+{
+	char			*new_line;
+	t_cmd_status	status;
+
+	while (true)
+	{
+		status = ft_readline(&new_line, "> ", false);
+		if (status == CMD_MEM_ERR)
+			return (ft_free(*here_doc), status);
+		else if (status == CMD_EOF)
+			return (eof_here_doc(here_doc, status));
+		else if (ft_strncmp(new_line, eof, ft_strlen(eof)) == 0)
+		{
+			ft_free(new_line);
+			*here_doc = ft_append_char(*here_doc, '\n');
+			if (*here_doc == NULL)
+				status = CMD_MEM_ERR;
+			return (status);
+		}
+		*here_doc = ft_strjoin(*here_doc, new_line, "\n", true);
+		if (*here_doc == NULL)
+			return (CMD_MEM_ERR);
+	}
 }

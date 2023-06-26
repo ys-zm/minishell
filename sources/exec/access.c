@@ -118,7 +118,6 @@ char	*access_cmd_path(t_var *mini, char *cmd)
 		ft_command_not_found(mini, cmd);
 	if (ft_is_path(cmd))
 		return (cmd);
-	exit(0);
 	if (ft_if_path_exists(mini))
 	{
 		ft_split_path(mini);
