@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/17 22:02:45 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/26 15:27:46 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/26 16:07:18 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,75 +109,111 @@ void    ft_print_array(char **arr);
 
 //Free Functions for Data Types --> error_handling/free.c
 int 	ft_free_strings(char **arr);
-int 	ft_free_pipes(int **pipes, int size);
-int 	ft_free_cmd_struct(t_cmd *cmd);
-int 	ft_free_cmd_arr(t_cmd *cmd_data, u_int32_t n_cmds);
-int		ft_free_env_list(t_var *mini);
-void    ft_free_and_null(void *var);
-//Error Handling Functions --> error_handling/error.c
 
+int 	ft_free_pipes(int **pipes, int size);
+
+int 	ft_free_cmd_struct(t_cmd *cmd);
+
+int 	ft_free_cmd_arr(t_cmd *cmd_data, u_int32_t n_cmds);
+
+int		ft_free_env_list(t_var *mini);
+
+void    ft_free_and_null(void *var);
+
+//Error Handling Functions --> error_handling/error.c
 void	ft_free_all(t_var *mini);
+
 void	ft_error_msg(t_var *mini, char *str, int error);
+
 int		malloc_protect(t_var *mini);
 
 // Util Functions --> builtins/utils.c
 int	    ft_strcmp(const char *s1, const char *s2);
+
 char    *ft_trip_join(char *str1, char *str2, char *str3);
+
 size_t  count_args(char **args);
 
 //Builtin Functions --> builtins/ft_funcname.c
 int		ft_pwd(t_var *mini, char **args, int fd_out);
-int     ft_cd(t_var *mini, char **args);
-int     ft_env(t_var *mini, int fd_out);
-int		ft_echo(char **args, int fd_out);
-int		ft_unset(t_var *mini, char **args);
-int		ft_exit(t_var *mini, char **args);
-int		ft_export(t_var *mini, char **args);
 
-char    **ft_list_to_arr(t_var *mini, t_env *env_list);
-void	ft_add_node(t_env **env_list, t_env *new_node);
+int     ft_cd(t_var *mini, char **args);
+
+int     ft_env(t_var *mini, int fd_out);
+
+int		ft_echo(char **args, int fd_out);
+
+int		ft_unset(t_var *mini, char **args);
+
+int		ft_exit(t_var *mini, char **args);
+
+int		ft_export(t_var *mini, char **args);
 
 //Cd Utils
 char	*ft_remove_lastdir(t_var *mini, char *old_path);
+
 char   	*ft_get_home(t_var *mini);
+
 t_env	*ft_search_env_var(t_env **env_list, char *which_env);
+
 void	ft_update_env_var(t_var *mini, t_env **env_list, char *which_env, char *new_env);
+
 int		ft_cd_to_homedir(t_var *mini, char *cwd);
+
 int		ft_cd_to_oldpwd(t_var *mini, char *cwd);
+
 int		ft_count_directories(char *arg);
+
 void	ft_write_error(int fd, char *func, char *str, char *msg);
 
 //Export Utils
 int 	ft_find_operator_type(char *env);
+
 int 	ft_find_operator_pos(char *env);
+
 int 	ft_same(t_env *env_list, char *key, char *value);
+
 int 	ft_check_if_key_exists(t_env *env_list, char *key);
+
 int 	ft_find_first_equals(char *env);
+
 int		ft_check_key(char *key);
+
 int		ft_redir_type(t_var *mini, int index);
+
 void    ft_replace_value(t_var *mini, char *key, char *new_value);
+
 void    ft_append_value(t_var *mini, char *key, char *to_add);
+
 void    make_env_list(char **envp, t_var *mini);
+
 void	ft_print_export(t_env **env_list);
 
 char	*ft_find_value(t_var *mini, char *arg, size_t op_type, size_t op_pos);
 
+char    **ft_list_to_arr(t_var *mini, t_env *env_list);
+
+void	ft_add_node(t_env **env_list, t_env *new_node);
+
 t_env	*ft_new_node(char *key, char *value);
+
+t_env   *ft_envp_node(t_var *mini, char *envp);
+
+t_env	*ft_create_node(t_var *mini, char *envp, int pos);
 
 // Exec Functions
 void	ft_free_exec_alloc(t_var *mini);
 
-//Access Utils
 bool	ft_if_path_exists(t_var *mini);
+
 bool	ft_is_path(char *cmd);
+
 void	ft_call_error(t_var *mini, char *cmd, char *cmd_path, int found);
 
-// Functions for ENV Parsing and Export Function
-t_env   *ft_envp_node(t_var *mini, char *envp);
-t_env	*ft_create_node(t_var *mini, char *envp, int pos);
-
 void    ft_exec(t_var *mini);
+
 void    ft_command_not_found(t_var *mini, char *cmd);
+
 void    ft_permission_denied(t_var *mini, char *cmd);
 
 //Main functions
