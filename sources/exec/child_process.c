@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 13:41:41 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/06/26 15:32:41 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/26 16:13:00 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	ft_exec_child_single(t_var *mini)
 void	ft_call_execve(t_var *mini, t_cmd cmd)
 {
 	char	*cmd_path;
-	
+
 	cmd_path = access_cmd_path(mini, cmd.cmd_name);
 	g_exit_code = 0;
 	execve(cmd_path, cmd.full_cmd, mini->env_arr);
@@ -49,7 +49,6 @@ void	ft_call_execve(t_var *mini, t_cmd cmd)
 
 int	ft_exec_child_multiple(t_var *mini, int index)
 {
-	
 	t_cmd	cmd;
 	int		status_check;
 
