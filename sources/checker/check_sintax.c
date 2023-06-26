@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/15 21:26:00 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/23 10:44:35 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/26 12:12:06 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ bool	check_quotes(char *cmd)
 	return (s_quotes_closed && d_quotes_closed);
 }
 
-bool    check_pipes(char *cmd)
+bool	check_pipes(char *cmd)
 {
 	uint32_t	i;
 	int32_t		last_pipe_pos;
@@ -41,13 +41,13 @@ bool    check_pipes(char *cmd)
 	if (cmd[i] == '|')
 		return (false);
 	last_pipe_pos = -1;
-	while(cmd[i])
+	while (cmd[i])
 	{
 		if ((cmd[i] == '|') && is_outside_quotes(cmd, i))
 		{
 			if (last_pipe_pos != -1)
 			{
-				while(ft_isspace(cmd[++last_pipe_pos]))
+				while (ft_isspace(cmd[++last_pipe_pos]))
 					;
 				if (last_pipe_pos == (int32_t) i)
 					return (false);

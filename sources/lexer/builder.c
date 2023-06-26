@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/25 00:26:11 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/25 01:27:30 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/26 12:39:49 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ bool	set_cmd(t_list *tokens, t_cmd *cmd)
 	return (true);
 }
 
-bool	set_reds(t_list *tokens, t_cmd *cmd, uint32_t order_cmd)
+bool	set_reds(t_list *tokens, t_cmd *cmd, uint32_t order)
 {
 	cmd->n_redirect = count_redirections(tokens);
 	if (cmd->n_redirect != 0)
 	{
-		cmd->redirections = get_redirections(tokens, cmd->n_redirect, order_cmd);
+		cmd->redirections = get_redirections(tokens, cmd->n_redirect, order);
 		if (cmd->redirections == NULL)
 			return (false);
 		cmd->files = get_files(tokens, cmd->n_redirect);
