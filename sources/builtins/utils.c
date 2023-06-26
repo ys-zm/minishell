@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   utils.c                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: yzaim <marvin@codam.nl>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/06/26 13:28:49 by yzaim         #+#    #+#                 */
+/*   Updated: 2023/06/26 13:29:15 by yzaim         ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	ft_strcmp(const char *s1, const char *s2)
@@ -32,5 +44,5 @@ size_t	count_args(char **args)
 	count = 0;
 	while (args[count])
 		count++;
-	return(count);
+	return (count);
 }

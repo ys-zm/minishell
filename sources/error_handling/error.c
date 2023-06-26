@@ -1,56 +1,64 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   error.c                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: yzaim <marvin@codam.nl>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/06/26 14:14:36 by yzaim         #+#    #+#                 */
+/*   Updated: 2023/06/26 14:58:22 by yzaim         ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 // free all allocated memory
-void    ft_free_all(t_var *mini)
+void	ft_set_to_null(t_var *mini)
+{
+	mini->cmd_data = NULL;
+	mini->pipes = NULL;
+	mini->paths = NULL;
+	mini->env_arr = NULL;
+	mini->pid = NULL;
+	mini->env_list = NULL;
+}
+
+void	ft_free_all(t_var *mini)
 {
 	if (mini->cmd_data)
-	{
 		ft_free_cmd_arr(mini->cmd_data, mini->n_cmd);
-		mini->cmd_data = NULL;
-	}
 	ft_free_env_list(mini);
 	if (mini->pipes)
 	{	
 		ft_free_pipes(mini->pipes, mini->n_cmd - 1);
-		mini->pipes = NULL;	
 	}	
 	if (mini->paths)
 	{
 		ft_free_strings(mini->paths);
-		mini->paths = NULL;
 	}
 	if (mini->env_arr)
-	{
-		ft_free_strings(mini->env_arr);	
-		mini->env_arr = NULL;
-	}
+		ft_free_strings(mini->env_arr);
 	if (mini->pid)
-	{
-		// printf("comes here!\n");
 		free(mini->pid);
-		mini->pid = NULL;
-	}
 	free(mini);
+	ft_set_to_null(mini);
 }
 
 // print error message from minishell and set g_exit_code
 // function does not exit
 void	ft_error_msg(t_var *mini, char *str, int error)
 {
-    // it prints 'Success' when the function is called mistakenly, shall we decide to use a fixed error msg, like 'minishell: Memory fault'?
-    (void)error;
 	(void)mini;
-    ft_putstr_fd("minishell: ", 2);
-    // fti_putstr_fd(str, 2);
+	ft_putstr_fd("minishell: ", 2);
 	perror(str);
 	g_exit_code = error;
 }
 
 // kill program when malloc fails, sets exit code to 1
-int    malloc_protect(t_var *mini)
+int	malloc_protect(t_var *mini)
 {
-    remove_here_docs(mini);
+	remove_here_docs(mini);
 	ft_free_all(mini);
-	ft_error_msg(mini, "", 1);
+	ft_error_msg(mini, "", 137);
 	exit(g_exit_code);
 }

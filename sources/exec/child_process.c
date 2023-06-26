@@ -1,6 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   child_process.c                                    :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: yzaim <marvin@codam.nl>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/06/26 13:41:41 by yzaim         #+#    #+#                 */
+/*   Updated: 2023/06/26 15:32:41 by yzaim         ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-// Execution of single command using execve(). Global variable g_exit_code is set to 0. 
+// Execution of single command using execve(). 
+// Global variable g_exit_code is set to 0. 
 // If it fails, g_exit_code is switched to 127 with ft_error_msg() function.
 int	ft_exec_child_single(t_var *mini)
 {
@@ -18,57 +31,53 @@ int	ft_exec_child_single(t_var *mini)
 	execve(cmd_path, cmd.full_cmd, mini->env_arr);
 	g_exit_code = 127;
 	ft_error_msg(mini, "", g_exit_code);
-	ft_free_all(mini);	
-	exit(g_exit_code);
-}
-
-int	ft_exec_child_multiple(t_var *mini, int index)
-{
-	char    *cmd_path;
-	t_cmd   cmd;
-	int	status_check;
-
-	status_check = 0;
-	cmd_path = NULL;
-	cmd = mini->cmd_data[index];
-	if (!cmd.cmd_name)
-		exit(EXIT_SUCCESS);
-	if (!ft_if_builtin(cmd.cmd_name))
-	{
-		cmd_path = access_cmd_path(mini, cmd.cmd_name);
-		ft_set_shlvl(mini, cmd.cmd_name);
-		mini->env_arr = ft_list_to_arr(mini, *(mini->env_list));
-		g_exit_code = 0;
-		execve(cmd_path, cmd.full_cmd, mini->env_arr);
-		free(cmd_path);
-		g_exit_code = 127;
-		ft_error_msg(mini, "", g_exit_code);
-	}
-	else
-	{
-		g_exit_code = 0;
-		status_check = ft_exec_builtin(mini, index, STDOUT_FILENO);
-		if (status_check)
-			g_exit_code = status_check;
-		else
-		{
-			ft_free_all(mini);
-			exit(status_check);
-		}
-	}
 	ft_free_all(mini);
 	exit(g_exit_code);
 }
 
-
-void ft_exec_multiple(t_var *mini, u_int32_t index)
+void	ft_call_execve(t_var *mini, t_cmd cmd)
 {
-    if (index > 0)
+	char	*cmd_path;
+	
+	cmd_path = access_cmd_path(mini, cmd.cmd_name);
+	g_exit_code = 0;
+	execve(cmd_path, cmd.full_cmd, mini->env_arr);
+	free(cmd_path);
+	g_exit_code = 127;
+	ft_error_msg(mini, "", g_exit_code);
+}
+
+int	ft_exec_child_multiple(t_var *mini, int index)
+{
+	
+	t_cmd	cmd;
+	int		status_check;
+
+	status_check = 0;
+	cmd = mini->cmd_data[index];
+	if (!cmd.cmd_name)
+		exit(EXIT_SUCCESS);
+	if (!ft_if_builtin(cmd.cmd_name))
+		ft_call_execve(mini, cmd);
+	else
+	{
+		status_check = ft_exec_builtin(mini, index, STDOUT_FILENO);
+		if (status_check)
+			g_exit_code = status_check;
+		else
+			exit(status_check);
+	}
+	exit(g_exit_code);
+}
+
+void	ft_exec_multiple(t_var *mini, u_int32_t index)
+{
+	if (index > 0)
 		dup2(mini->pipes[index - 1][READ], STDIN_FILENO);
-    if (index < mini->n_cmd - 1)
+	if (index < mini->n_cmd - 1)
 		dup2(mini->pipes[index][WRITE], STDOUT_FILENO);
 	if (ft_if_redir(mini, index))
 		ft_redirect(mini, index);
-    close_pipes(mini);
-    ft_exec_child_multiple(mini, index);
+	close_pipes(mini);
+	ft_exec_child_multiple(mini, index);
 }

@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/25 02:04:53 by fra           ########   odam.nl         */
+/*   Updated: 2023/06/26 14:25:33 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,11 +137,12 @@ void	main_loop(t_var *depo)
 			depo->cmd_data = create_new_cmd(input, depo);
 			if (depo->cmd_data == NULL)
 				malloc_protect(depo);
-			// print_cmd(depo);	
+			//print_cmd(depo);	
 			ft_exec(depo);
 			if (remove_here_docs(depo) == false)
 				malloc_protect(depo);
 			ft_free_cmd_arr(depo->cmd_data, depo->n_cmd);
+			ft_free_exec_alloc(depo);
 			depo->cmd_data = NULL;
 			depo->n_cmd = 0;
 		}

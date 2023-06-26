@@ -1,7 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   exec.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: yzaim <marvin@codam.nl>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/06/26 13:54:26 by yzaim         #+#    #+#                 */
+/*   Updated: 2023/06/26 14:58:16 by yzaim         ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-//how do the processes work if it is a sinlge command? don't you have to create a child process?
-//how should I deal with builtin vs execve cmds?
+void	ft_do_redirections(t_var *mini, int index)
+{
+	if (ft_if_redir(mini, index))
+	{
+		if (ft_redirect(mini, index))
+		{
+			ft_free_all(mini);
+			exit(EXIT_FAILURE);
+		}
+	}
+}
+
 int	single_cmd(t_var *mini)
 {
 	t_cmd	*cmd;
@@ -18,23 +40,16 @@ int	single_cmd(t_var *mini)
 	}
 	(mini)->pid[0] = fork();
 	if ((mini)->pid[0] < 0)
-		return (ft_error_msg(mini, "Fork failed.", 1), mini->status = -1, -1);
+		return (ft_error_msg(mini, "Fork failed", 1), 1);
 	if (mini->pid[0] == 0)
 	{
-		if (ft_if_redir(mini, 0))
-		{
-			if (ft_redirect(mini, 0))
-				{
-					ft_free_all(mini);
-					exit(EXIT_FAILURE);
-				}
-		}
+		ft_do_redirections(mini, 0);
 		ft_exec_child_single(mini);
 	}
 	waitpid(mini->pid[0], &exit_status, 0);
 	if (WIFEXITED(exit_status))
 		return (WEXITSTATUS(exit_status));
-	return (EXIT_FAILURE);   
+	return (EXIT_FAILURE);
 }
 
 int	multiple_cmds(t_var *mini)
@@ -52,5 +67,6 @@ void	ft_exec(t_var *mini)
 		g_exit_code = single_cmd(mini);
 	else
 		g_exit_code = multiple_cmds(mini);
+	if (g_exit_code == 137)
+		malloc_protect(mini);
 }
-

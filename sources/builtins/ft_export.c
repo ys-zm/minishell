@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   ft_export.c                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: yzaim <marvin@codam.nl>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/06/26 12:52:50 by yzaim         #+#    #+#                 */
+/*   Updated: 2023/06/26 13:17:22 by yzaim         ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_env	*ft_new_node(char *key, char *value)
@@ -13,7 +25,6 @@ t_env	*ft_new_node(char *key, char *value)
 	return (node);
 }
 
-
 void	ft_add_node(t_env **env_list, t_env *new_node)
 {
 	t_env	*env;
@@ -24,25 +35,22 @@ void	ft_add_node(t_env **env_list, t_env *new_node)
 	env->next = new_node;
 }
 
-void	ft_print_export(t_env **env_list)
+void	ft_update_env_list(t_var *mini, char *key, char *value, size_t op_type)
 {
-	t_env	*env;
-
-	env = *env_list;
-	while (env)
+	if (*(mini->env_list))
 	{
-		ft_putstr_fd("declare -x ", 1);
-		ft_putstr_fd(env->key, 1);
-		if (env->value)
+		if (ft_check_if_key_exists(*(mini->env_list), key))
 		{
-			ft_putstr_fd("=\"", 1);
-			ft_putstr_fd(env->value, 1);
-			ft_putstr_fd("\"\n", 1);
+			if (op_type == REPLACE && !ft_same(*(mini->env_list), key, value))
+				ft_replace_value(mini, key, value);
+			else if (op_type == APPEND)
+				ft_append_value(mini, key, value);
 		}
 		else
-			ft_putstr_fd("\n", 1);
-		env = env->next;
+			ft_add_node(mini->env_list, ft_new_node(key, value));
 	}
+	else
+		*(mini->env_list) = ft_new_node(key, value);
 }
 
 int	ft_export_single(t_var *mini, char *arg, size_t op_type, size_t op_pos)
@@ -64,20 +72,7 @@ int	ft_export_single(t_var *mini, char *arg, size_t op_type, size_t op_pos)
 			return (free(key), EXIT_FAILURE);
 		value = NULL;
 	}
-	if (*(mini->env_list))
-	{
-		if (ft_check_if_key_exists(*(mini->env_list), key))
-		{
-			if (op_type == REPLACE && !ft_check_if_same_value(*(mini->env_list), key, value))
-				ft_replace_value(mini, key, value);
-			else if (op_type == APPEND)
-				ft_append_value(mini, key, value);
-		}
-		else
-			ft_add_node(mini->env_list, ft_new_node(key, value));
-	}
-	else
-		*(mini->env_list) = ft_new_node(key, value);
+	ft_update_env_list(mini, key, value, op_type);
 	return (EXIT_SUCCESS);
 }
 
@@ -88,7 +83,7 @@ int	ft_export(t_var *mini, char **args)
 {
 	size_t	op_type;
 	size_t	op_pos;
-	int	i;
+	int		i;
 
 	i = 1;
 	op_type = 0;

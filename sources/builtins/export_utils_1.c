@@ -6,13 +6,13 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/23 14:01:18 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/06/23 14:01:54 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/26 12:55:38 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_check_if_same_value(t_env *env_list, char *key, char *value)
+int	ft_same(t_env *env_list, char *key, char *value)
 {
 	t_env	*list;
 

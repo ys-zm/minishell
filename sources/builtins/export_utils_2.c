@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/23 14:01:25 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/06/23 14:02:28 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/26 13:17:14 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,25 @@ int	ft_find_operator_pos(char *env)
 	if (env[i] == '=')
 		return (i);
 	return (0);
+}
+
+void	ft_print_export(t_env **env_list)
+{
+	t_env	*env;
+
+	env = *env_list;
+	while (env)
+	{
+		ft_putstr_fd("declare -x ", 1);
+		ft_putstr_fd(env->key, 1);
+		if (env->value)
+		{
+			ft_putstr_fd("=\"", 1);
+			ft_putstr_fd(env->value, 1);
+			ft_putstr_fd("\"\n", 1);
+		}
+		else
+			ft_putstr_fd("\n", 1);
+		env = env->next;
+	}
 }

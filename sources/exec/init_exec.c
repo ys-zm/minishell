@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   init_exec.c                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: yzaim <marvin@codam.nl>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/06/26 13:47:59 by yzaim         #+#    #+#                 */
+/*   Updated: 2023/06/26 13:48:42 by yzaim         ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	ft_mem_alloc(t_var *mini)
 {
-	uint32_t i;
+	uint32_t	i;
 
 	i = 0;
 	mini->cmd_data->fd_in = 0;
@@ -23,13 +35,12 @@ void	ft_mem_alloc(t_var *mini)
 			i++;
 		}
 	}
-
 }
 
 void	ft_free_exec_alloc(t_var *mini)
 {
-	u_int32_t	i;;
-	
+	u_int32_t	i;
+
 	i = 0;
 	if (mini->pid)
 		free(mini->pid);

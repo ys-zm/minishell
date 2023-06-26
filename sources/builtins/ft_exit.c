@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/23 14:34:51 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/06/23 14:36:01 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/26 13:21:10 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,8 @@ int	ft_exit(t_var *mini, char **args)
 	}
 	if (ft_ifnum(args[1]) == 0)
 	{
-		ft_putstr_fd("minishell: exit: ", 2);
-		ft_putstr_fd(args[1], 2);
-		ft_putstr_fd(": numeric argument required\n", 2);
+		ft_write_error(2, "exit", args[1], "numeric argument required");
 		g_exit_code = 255;
-		ft_free_all(mini);
 		exit(g_exit_code);
 	}
 	else
@@ -87,14 +84,11 @@ int	ft_exit(t_var *mini, char **args)
 		if (ft_num_of_args(args) == 2)
 		{
 			g_exit_code = ft_if_sign(args[1]);
-			ft_free_all(mini);
 			exit(g_exit_code);
 		}
 		else
-		{
-			ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-			return (EXIT_FAILURE);
-		}
+			return (ft_putstr_fd("minishell: exit: too many arguments\n", 2), \
+			EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
 }

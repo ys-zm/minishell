@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/23 14:30:00 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/06/23 17:32:30 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/26 12:52:30 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_print_env(char **arr, int fd_out)
 	i = 0;
 	while (arr[i])
 	{
-		ft_putstr_fd(arr[i], fd_out); // into fd
+		ft_putstr_fd(arr[i], fd_out);
 		ft_putstr_fd("\n", fd_out);
 		i++;
 	}
@@ -45,7 +45,7 @@ char	**ft_list_to_arr(t_var *mini, t_env *env_list)
 	size_t	size;
 	char	**arr;
 
-	i = 0; 
+	i = 0;
 	size = ft_list_size_to_print(env_list);
 	if (!size)
 		return (NULL);

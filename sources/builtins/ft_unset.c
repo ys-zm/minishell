@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   ft_unset.c                                         :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: yzaim <marvin@codam.nl>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/06/26 13:25:57 by yzaim         #+#    #+#                 */
+/*   Updated: 2023/06/26 13:28:36 by yzaim         ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	ft_del_node(t_env **env_list, char *key)
@@ -7,7 +19,6 @@ void	ft_del_node(t_env **env_list, char *key)
 
 	if (!env_list)
 		return ;
-
 	curr = *env_list;
 	prev = NULL;
 	while (curr)
@@ -18,10 +29,7 @@ void	ft_del_node(t_env **env_list, char *key)
 				*env_list = curr->next;
 			else
 				prev->next = curr->next;
-			free(curr->key);
-			free(curr->value);
-			free(curr);
-			return ;
+			return (free(curr), free(curr->value), free(curr->key));
 		}
 		else
 		{
@@ -41,7 +49,8 @@ int	ft_unset(t_var *mini, char **args)
 	if (mini->env_list)
 		env = *(mini->env_list);
 	if (!args[1])
-		return (ft_putstr_fd("minishell: unset: not enough arguments\n", 2), EXIT_FAILURE);
+		return (ft_write_error(2, "unset", NULL, "not enough arguments"), \
+			EXIT_FAILURE);
 	if (!env)
 		return (EXIT_SUCCESS);
 	while (args && args[i])

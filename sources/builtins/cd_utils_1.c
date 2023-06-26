@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 11:57:18 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/06/26 12:07:28 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/26 12:26:41 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,32 +51,6 @@ char	*ft_get_home(t_var *mini)
 	return (NULL);
 }
 
-t_env	*ft_search_env_var(t_env **env_list, char *which_env)
-{
-	t_env	*env;
-
-	env = *env_list;
-	while (env)
-	{
-		if (!ft_strncmp(which_env, env->key, ft_strlen(which_env)))
-			break ;
-		env = env->next;
-	}
-	return (env);
-}
-
-void	ft_update_env_var(t_env **env_list, char *which_env, char *new_env)
-{
-	t_env	*env_var;
-
-	env_var = ft_search_env_var(env_list, which_env);
-	if (env_var)
-	{
-		free(env_var->value);
-		env_var->value = ft_strdup(new_env);
-	}
-}
-
 int	ft_cd_to_homedir(t_var *mini, char *cwd)
 {
 	char	*new_path;
@@ -89,15 +63,13 @@ int	ft_cd_to_homedir(t_var *mini, char *cwd)
 	}
 	if (!chdir(new_path))
 	{
-		ft_update_env_var(mini->env_list, "OLDPWD", cwd);
-		ft_update_env_var(mini->env_list, "PWD", new_path);
+		ft_update_env_var(mini, mini->env_list, "OLDPWD", cwd);
+		ft_update_env_var(mini, mini->env_list, "PWD", new_path);
 		return (EXIT_SUCCESS);
 	}
 	else
 	{
-		ft_putstr_fd("minishell: cd: ", 2);
-		ft_putstr_fd(new_path, 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
+		ft_write_error(2, "cd", new_path, "No such file or directory");
 		return (EXIT_FAILURE);
 	}
 }
@@ -118,46 +90,14 @@ int	ft_cd_to_oldpwd(t_var *mini, char *cwd)
 		env = env->next;
 	}
 	if (!env)
-	{
-		ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
-		return (EXIT_FAILURE);
-	}
+		return (ft_write_error(2, "cd", NULL, "OLDPWD not set"), \
+		EXIT_FAILURE);
 	if (!chdir(old_pwd))
 	{
-		ft_update_env_var(mini->env_list, "OLDPWD", cwd);
-		return (ft_update_env_var(mini->env_list, "PWD", old_pwd), EXIT_SUCCESS);
+		return (ft_update_env_var(mini, mini->env_list, "OLDPWD", cwd), \
+		ft_update_env_var(mini, mini->env_list, "PWD", old_pwd), EXIT_SUCCESS);
 	}
 	else
-	{
-		ft_putstr_fd("minishell: cd: ", 2);
-		ft_putstr_fd(old_pwd, 2);
-		return (ft_putstr_fd(": No such file or directory\n", 2), EXIT_FAILURE);
-	}
-}
-
-int	ft_count_directories(char *arg)
-{
-	int	count;
-	int	flag;
-
-	flag = 1;
-	count = 0;
-	while (*arg == '/')
-		arg++;
-	while (arg && *arg)
-	{
-		if (*arg != '/')
-			flag = 1;
-		if (*arg == '/' && flag == 1)
-		{
-			flag = 0;
-			count++;
-		}
-		arg++;
-	}
-	if (flag == 1 && !*arg)
-		count++;
-	if (!count)
-		return (1);
-	return (count);
+		return (ft_write_error(2, "cd", old_pwd, "No such file or directory"), \
+		EXIT_FAILURE);
 }

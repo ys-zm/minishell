@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   env_parsing.c                                      :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: yzaim <marvin@codam.nl>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/06/26 14:06:07 by yzaim         #+#    #+#                 */
+/*   Updated: 2023/06/26 15:27:08 by yzaim         ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	ft_print_array(char **arr)
@@ -30,7 +42,7 @@ void	ft_update_shell(t_env **env_list)
 	}
 }
 
-void	ft_free_prev(t_env* head)
+void	ft_free_prev(t_env *head)
 {
 	t_env	*tmp;
 
@@ -43,6 +55,16 @@ void	ft_free_prev(t_env* head)
 		free(tmp->value);
 		free(tmp);
 	}
+}
+
+t_env	*ft_envp_node(t_var *mini, char *envp)
+{
+	int		pos;
+	t_env	*new_node;
+
+	pos = ft_find_first_equals(envp);
+	new_node = ft_create_node(mini, envp, pos);
+	return (new_node);
 }
 
 // NB this function must resturn NULL/0/... in case of failure
