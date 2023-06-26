@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 11:57:18 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/06/26 12:05:48 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/26 12:07:28 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int	ft_cd_to_oldpwd(t_var *mini, char *cwd)
 	if (!env)
 	{
 		ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
-		retrun (EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	}
 	if (!chdir(old_pwd))
 	{
