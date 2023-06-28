@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 02:32:32 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/26 17:00:50 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/28 12:07:58 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,39 +14,21 @@
 
 int	g_exit_code;
 
-void	signal_handler(int signum)
+void	exit_shell(char *input)
 {
-	if (signum == SIGINT)
-	{
-		ft_printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
+	if (has_trailing_pipe(input) == true)
+		ft_printf("syntax error\n");
+	else
+		ft_printf("exit\n");
+	ft_free(input);
 }
 
-void	init_sig_handle(int mode)
+void	run_cmd(char *input, t_var *mini)
 {
-	if (mode == 0)
-	{
-		signal(SIGINT, signal_handler);
-		signal(SIGQUIT, SIG_IGN);
-	}
-	else if (mode == 1)
-	{
-		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
-	}
-	else if (mode == 2)
-	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
-	}
-	else if (mode == 3)
-	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_IGN);
-	}
+	mini->cmd_data = create_new_cmd(input, mini);
+	if (mini->cmd_data == NULL)
+		malloc_protect(mini);
+	ft_exec(mini);
 }
 
 void	main_loop(t_var *mini)
@@ -57,7 +39,7 @@ void	main_loop(t_var *mini)
 	while (true)
 	{
 		input = NULL;
-		status = aquire_input(&input);
+		status = aquire_input(&input, *mini->env_list);
 		if (status == CMD_MEM_ERR)
 			malloc_protect(mini);
 		else if (status == CMD_EOF)
@@ -86,7 +68,6 @@ int	set_up_struct(t_var **mini, char **envp)
 	(*mini)->cmd_data = NULL;
 	(*mini)->n_cmd = 0;
 	(*mini)->env_list = NULL;
-	(void)envp;
 	make_env_list(envp, *mini);
 	(*mini)->env_arr = NULL;
 	(*mini)->paths = NULL;

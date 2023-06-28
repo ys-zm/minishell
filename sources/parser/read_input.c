@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/26 16:13:22 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/28 12:03:55 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_cmd_status	input_error(char **input, char *buffer, t_cmd_status status)
 	return (status);
 }
 
-t_cmd_status	aquire_input(char **input)
+t_cmd_status	aquire_input(char **input, t_env *vars)
 {
 	t_cmd_status	status;
 	char			*buffer;
@@ -53,7 +53,7 @@ t_cmd_status	aquire_input(char **input)
 	cnt = 0;
 	while (status == CMD_OK)
 	{
-		if (handle_here_doc(buffer, &cnt) != 0)
+		if (handle_here_doc(buffer, &cnt, vars) != 0)
 			return (ft_free(buffer), ft_free(*input), CMD_MEM_ERR);
 		*input = ft_strjoin(*input, buffer, "\n", true);
 		if (*input == NULL)
@@ -67,19 +67,3 @@ t_cmd_status	aquire_input(char **input)
 	return (status);
 }
 
-void	exit_shell(char *input)
-{
-	if (has_trailing_pipe(input) == true)
-		ft_printf("syntax error\n");
-	else
-		ft_printf("exit\n");
-	ft_free(input);
-}
-
-void	run_cmd(char *input, t_var *mini)
-{
-	mini->cmd_data = create_new_cmd(input, mini);
-	if (mini->cmd_data == NULL)
-		malloc_protect(mini);
-	ft_exec(mini);
-}

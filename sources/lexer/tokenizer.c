@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/27 17:20:39 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/28 10:01:43 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/28 10:20:25 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,12 @@ bool	is_redirection(t_list *token)
 	if (token->next == NULL)
 		return (false);
 	word = token->content;
-	if (is_quote(*word))
-		word++;
-	if (! is_arrow(*word++))
+	if (is_arrow(*word++) == false)
 		return (false);
-	if (is_quote(*word))
-		word++;
 	if (*word == '\0')
 		return (true);
 	else if (is_arrow(*word++))
-	{
-		if (is_quote(*word))
-			word++;
 		return (*word == '\0');
-	}
 	else
 		return (false);
 }

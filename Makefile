@@ -42,6 +42,7 @@ SOURCES = sources/builtins/cd_utils_1.c \
 			sources/lexer/lexer.c \
 			sources/lexer/tokenizer.c \
 			sources/main/main.c \
+			sources/main/signals.c \
 			sources/parser/cmd.c \
 			sources/parser/expander.c \
 			sources/parser/here_doc_handle.c \
@@ -53,7 +54,7 @@ OBJECTS := $(patsubst $(SRC_DIR)%,$(OBJ_DIR)%,$(SOURCES:.c=.o))
 
 CC  := cc
 IFLAGS := -Iinclude -I$(LIBFT_DIR)/include
-CFLAGS = -Wall -Wextra -Werror
+# CFLAGS = -Wall -Wextra -Werror
 # CFLAGS += -g3 -fsanitize=address
 # CFLAGS += -arch x86_64
 LFLAGS := -Llibft -lft -lreadline -lhistory 

@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/17 22:02:45 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/26 16:49:42 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/06/28 12:44:29 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,8 +222,6 @@ void			ft_permission_denied(t_var *mini, char *cmd);
 
 int				set_up_struct(t_var **mini, char **envp);
 
-void			fill_up_struct(t_var *mini);
-
 //Shlvl Functions
 
 void			ft_set_shlvl(t_var *mini, char *cmd_name);
@@ -328,7 +326,7 @@ char			*expander(char *input, t_env *env_vars);
 
 t_cmd_status	ft_readline(char **buffer, const char *prompt, bool check);
 
-t_cmd_status	aquire_input(char **cmd);
+t_cmd_status	aquire_input(char **cmd, t_env *vars);
 
 t_cmd			*create_new_cmd(char *cmd, t_var *depo);
 
@@ -340,13 +338,15 @@ int32_t			find_next_eof_pos(char *cmd, uint32_t start_pos);
 
 char			*isolate_eof(char *start);
 
-int32_t			handle_here_doc(char *cmd, uint32_t *cnt);
+int32_t			handle_here_doc(char *cmd, uint32_t *cnt, t_env *vars);
 
 t_cmd_status	aquire_input_hd(char *eof, char **here_doc);
 
-t_cmd_status	write_here_doc(int cnt, char *delimiter);
+t_cmd_status	write_here_doc(int cnt, char *del, bool exp_vars, t_env *vars);
 
-int32_t			fork_here_doc(int cnt, char *delimiter);
+int32_t			fork_here_doc(int cnt, char *del, bool exp_vars, t_env *vars);
+
+int32_t			open_and_expand(bool exp, int32_t cnt, char **hd, t_env *vars);
 
 char			*create_file_name(const char *fix_part, int32_t cnt);
 
@@ -360,12 +360,14 @@ bool			is_quote(char to_check);
 
 bool			is_arrow(char to_check);
 
-void			print_cmd(t_var *depo);
-
 uint32_t		get_order_cmd(char *str, uint32_t pos);
 
 bool			remove_here_docs(t_var *mini);
 
 void			move_chars(char *dest, char *src);
+
+void			init_sig_handle(int mode);
+
+void			signal_handler(int signum);
 
 #endif
