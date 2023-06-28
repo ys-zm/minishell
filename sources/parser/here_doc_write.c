@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/19 17:46:55 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/28 12:51:20 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/28 14:24:45 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ int32_t	open_and_expand(bool expand, int32_t cnt, char **here_doc, t_env *vars)
 	int32_t	fd;
 	char	*file_name;
 
-	file_name = create_file_name(HERE_DOC_FIX, cnt);\
+	file_name = create_file_name(HERE_DOC_FIX, cnt);
 	fd = open(file_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
-	if (fd != -1)
+	if (fd == -1)
 	{
 		free(*here_doc);
 		if (file_name == NULL)

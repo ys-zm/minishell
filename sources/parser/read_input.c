@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/28 12:03:55 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/28 14:21:11 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,3 @@ t_cmd_status	aquire_input(char **input, t_env *vars)
 	}
 	return (status);
 }
-
