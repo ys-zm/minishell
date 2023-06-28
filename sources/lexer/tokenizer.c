@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/27 17:20:39 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/26 12:57:08 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/28 10:01:43 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,6 @@ int32_t	isolate_word(char *input, char **new_word)
 	}
 	return (len);
 }
-// if (*new_word)
-// {
-// 	*new_word = ft_trim(*new_word);
-// 	if (*new_word == NULL)
-// 		return (-1);
-// }
 
 bool	is_redirection(t_list *token)
 {	
