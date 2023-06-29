@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/25 01:18:26 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/29 12:38:02 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/29 17:56:30 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,29 +83,35 @@ t_cmd	*create_new_cmd(char *cmd_input, t_var *mini)
 	return (cmd);
 }
 
-void	remove_here_docs(t_var *mini)
+bool	remove_here_docs(t_var *mini)
 {
-	char		*here_doc_to_drop;
-	// int32_t		status;
-	uint32_t	i;
-	uint32_t	j;
+	DIR *dir;
+    struct dirent *entry;
+	char	*file_name;
 
-	i = 0;
-	while (i < mini->n_cmd)
+    dir = opendir(HERE_DOC_FOLDER);
+    if (dir == NULL)
+		return (false);
+    while ((entry = readdir(dir)) != NULL) 
 	{
-		j = 0;
-		while (mini->cmd_data && (j < mini->cmd_data[i].n_redirect))
+		if ((ft_strncmp(entry->d_name, ".", 1) == 0) || (ft_strncmp(entry->d_name, "..", 2) == 0))
+			continue ;
+		file_name = ft_strjoin(HERE_DOC_FOLDER, entry->d_name, "", false);
+		if (file_name == NULL)
 		{
-			if (mini->cmd_data[i].redirections[j++] == RED_IN_DOUBLE)
-			{
-				here_doc_to_drop = create_file_name(HERE_DOC_FIX, i + 1);
-				unlink(here_doc_to_drop);
-				ft_free(here_doc_to_drop);
-				// if (status == -1)
-				// 	return (false);
-				break ;
-			}
+			closedir(dir);
+			return (false);
 		}
-		i++;
-	}
+        printf("%s\n", file_name);
+		if (unlink(file_name) == -1)
+		{
+			continue ;
+			// ft_free(file_name);
+			// closedir(dir);
+			// return (false);
+		}
+		ft_free(file_name);
+    }
+    closedir(dir);
+	return (true);
 }
