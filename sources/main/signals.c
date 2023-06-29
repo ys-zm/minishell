@@ -6,7 +6,7 @@
 /*   By: faru <faru@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/28 11:57:18 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/28 15:28:27 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/29 11:53:13 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	init_sig_handle(int mode)
 	{
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
-		// g_exit_code = 128 + ;
 	}
 	else if (mode == 2)		// inside child (in child while forking)
 	{

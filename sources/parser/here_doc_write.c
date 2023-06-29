@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/19 17:46:55 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/28 14:24:45 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/29 11:54:19 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ t_cmd_status	write_here_doc(int cnt, char *del, bool exp_vars, t_env *vars)
 	char			*here_doc;
 	int32_t			fd;
 
+	init_sig_handle(2);
 	here_doc = NULL;
 	status_cmd = aquire_input_hd(del, &here_doc);
 	if (status_cmd == CMD_MEM_ERR)
@@ -110,6 +111,7 @@ int32_t	fork_here_doc(int cnt, char *delimiter, bool exp_vars, t_env *vars)
 		write_here_doc(cnt, delimiter, exp_vars, vars);
 	else
 	{
+		init_sig_handle(1);
 		if (waitpid(child_id, &status_procs, 0) == -1)
 			return (-2);
 		if (WIFEXITED(status_procs))

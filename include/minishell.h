@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/17 22:02:45 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/28 12:44:29 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/29 12:45:30 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # define BOLD_RESET			"\033[0m"
 # define HERE_DOC_FIX		"here_doc/here_doc"
 # define PROMPT				"minishell-> "
+// # define PROMPT				BOLD GRN "MINI" RED "HELL" COL_RESET BOLD_RESET
 
 # include "libft.h"
 # include <stdio.h>
@@ -362,7 +363,7 @@ bool			is_arrow(char to_check);
 
 uint32_t		get_order_cmd(char *str, uint32_t pos);
 
-bool			remove_here_docs(t_var *mini);
+void			remove_here_docs(t_var *mini);
 
 void			move_chars(char *dest, char *src);
 

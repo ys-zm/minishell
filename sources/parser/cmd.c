@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/25 01:18:26 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/26 16:05:21 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/29 12:38:02 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,10 @@ t_cmd	*create_new_cmd(char *cmd_input, t_var *mini)
 	return (cmd);
 }
 
-bool	remove_here_docs(t_var *mini)
+void	remove_here_docs(t_var *mini)
 {
 	char		*here_doc_to_drop;
-	int32_t		status;
+	// int32_t		status;
 	uint32_t	i;
 	uint32_t	j;
 
@@ -99,14 +99,13 @@ bool	remove_here_docs(t_var *mini)
 			if (mini->cmd_data[i].redirections[j++] == RED_IN_DOUBLE)
 			{
 				here_doc_to_drop = create_file_name(HERE_DOC_FIX, i + 1);
-				status = unlink(here_doc_to_drop);
+				unlink(here_doc_to_drop);
 				ft_free(here_doc_to_drop);
-				if (status == -1)
-					return (false);
+				// if (status == -1)
+				// 	return (false);
 				break ;
 			}
 		}
 		i++;
 	}
-	return (true);
 }

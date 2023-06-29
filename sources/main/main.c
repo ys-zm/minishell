@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 02:32:32 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/28 12:07:58 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/29 11:57:41 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ int	g_exit_code;
 void	exit_shell(char *input)
 {
 	if (has_trailing_pipe(input) == true)
-		ft_printf("syntax error\n");
+		ft_printf("minishell: syntax error\n");
 	else
-		ft_printf("exit\n");
+		ft_printf("minishell: exit\n");
 	ft_free(input);
 }
 
