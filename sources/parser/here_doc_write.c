@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/19 17:46:55 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/29 11:54:19 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/30 15:50:33 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_cmd_status	aquire_input_hd(char *eof, char **here_doc)
 		status = ft_readline(&new_line, "> ", false);
 		if (status == CMD_MEM_ERR)
 			return (ft_free(*here_doc), status);
-		else if (status == CMD_EOF)
+		else if (status == CMD_CTRL_D)
 			return (eof_here_doc(here_doc, status));
 		else if (ft_strncmp(new_line, eof, ft_strlen(eof)) == 0)
 		{
@@ -58,9 +58,9 @@ int32_t	open_and_expand(bool expand, int32_t cnt, char **here_doc, t_env *vars)
 	{
 		free(*here_doc);
 		if (file_name == NULL)
-			exit(HD_MEM_ERR);
+			exit(CMD_MEM_ERR);
 		else
-			exit(HD_FILE_ERR);
+			exit(CMD_FILE_ERR);
 	}
 	ft_free(file_name);
 	if (expand)
@@ -69,7 +69,7 @@ int32_t	open_and_expand(bool expand, int32_t cnt, char **here_doc, t_env *vars)
 		if (*here_doc == NULL)
 		{
 			close(fd);
-			exit(HD_MEM_ERR);
+			exit(CMD_MEM_ERR);
 		}
 	}
 	return (fd);
@@ -77,49 +77,45 @@ int32_t	open_and_expand(bool expand, int32_t cnt, char **here_doc, t_env *vars)
 
 t_cmd_status	write_here_doc(int cnt, char *del, bool exp_vars, t_env *vars)
 {
-	t_cmd_status	status_cmd;
-	t_hd_status		status_hd;
+	t_cmd_status	status;
 	char			*here_doc;
 	int32_t			fd;
 
 	init_sig_handle(2);
 	here_doc = NULL;
-	status_cmd = aquire_input_hd(del, &here_doc);
-	if (status_cmd == CMD_MEM_ERR)
-		exit(HD_MEM_ERR);
+	status = aquire_input_hd(del, &here_doc);
+	if (status == CMD_MEM_ERR)
+		exit(status);
 	fd = open_and_expand(exp_vars, cnt, &here_doc, vars);
 	if (write(fd, here_doc, ft_strlen(here_doc)) == -1)
-		status_hd = HD_FILE_ERR;
-	else if (status_cmd == CMD_EOF)
-		status_hd = HD_EOF;
-	else
-		status_hd = HD_OK;
+		status = CMD_FILE_ERR;
 	close(fd);
 	ft_free(here_doc);
-	exit(status_hd);
+	exit(status);
 }
 
-int32_t	fork_here_doc(int cnt, char *delimiter, bool exp_vars, t_env *vars)
+t_cmd_status	fork_here_doc(int cnt, char *del, bool exp_vars, t_env *vars)
 {
-	pid_t	child_id;
-	int32_t	status_procs;
+	t_cmd_status	status;
+	int32_t			status_procs;
+	pid_t			child_id;
 
+	status = CMD_OK;
 	child_id = fork();
 	if (child_id == -1)
-		return (-2);
+		status = CMD_PROC_ERR;
 	else if (child_id == 0)
-		write_here_doc(cnt, delimiter, exp_vars, vars);
+		write_here_doc(cnt, del, exp_vars, vars);
 	else
 	{
 		init_sig_handle(1);
 		if (waitpid(child_id, &status_procs, 0) == -1)
-			return (-2);
-		if (WIFEXITED(status_procs))
-		{
-			if ((WEXITSTATUS(status_procs) == HD_MEM_ERR) || \
-				(WEXITSTATUS(status_procs) == HD_FILE_ERR))
-				return (-1);
-		}
+			status = CMD_PROC_ERR;
+		else if (WIFSIGNALED(status_procs))
+			status = CMD_CTRL_C;
+		else
+			status = WEXITSTATUS(status_procs);
 	}
-	return (0);
+	init_sig_handle(0);
+	return (status);
 }

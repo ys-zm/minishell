@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/28 14:21:11 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/30 15:46:41 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_cmd_status	ft_readline(char **buffer, const char *prompt, bool sin_check)
 
 	new_string = readline(prompt);
 	if (! new_string)
-		return (CMD_EOF);
+		return (CMD_CTRL_D);
 	*buffer = ft_strdup(new_string);
 	ft_free(new_string);
 	if (*buffer == NULL)
@@ -47,21 +47,23 @@ t_cmd_status	aquire_input(char **input, t_env *vars)
 	uint32_t		cnt;
 
 	buffer = NULL;
+	rl_outstream = stderr;
 	status = ft_readline(&buffer, PROMPT, true);
 	if (status != CMD_OK)
 		return (input_error(input, buffer, status));
 	cnt = 0;
 	while (status == CMD_OK)
 	{
-		if (handle_here_doc(buffer, &cnt, vars) != 0)
-			return (ft_free(buffer), ft_free(*input), CMD_MEM_ERR);
+		status = handle_here_doc(buffer, &cnt, vars);
+		if ((status != CMD_OK) && (status != CMD_CTRL_C))
+			return (ft_free(buffer), ft_free(*input), status);
 		*input = ft_strjoin(*input, buffer, "\n", true);
 		if (*input == NULL)
 			return (CMD_MEM_ERR);
 		if (has_trailing_pipe(*input) == false)
 			break ;
 		status = ft_readline(&buffer, "> ", true);
-		if ((status == CMD_MEM_ERR) || (status == CMD_EOF))
+		if ((status == CMD_MEM_ERR) || (status == CMD_CTRL_D))
 			break ;
 	}
 	return (status);

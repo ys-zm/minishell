@@ -6,7 +6,7 @@
 /*   By: faru <faru@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:15:31 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/28 12:12:51 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/30 15:37:44 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,12 +89,13 @@ uint32_t	get_order_cmd(char *str, uint32_t pos)
 	return (order);
 }
 
-int32_t	handle_here_doc(char *cmd, uint32_t *cnt, t_env *vars)
+t_cmd_status	handle_here_doc(char *cmd, uint32_t *cnt, t_env *vars)
 {
-	char	*del;
-	int32_t	del_pos;
-	int32_t	status_fork;
+	t_cmd_status	status;
+	int32_t			del_pos;
+	char			*del;
 
+	status = CMD_OK;
 	del_pos = find_next_eof_pos(cmd, 0);
 	while (del_pos != -1)
 	{
@@ -104,13 +105,15 @@ int32_t	handle_here_doc(char *cmd, uint32_t *cnt, t_env *vars)
 			*cnt += get_order_cmd(cmd, del_pos);
 		del = isolate_eof((cmd + del_pos));
 		if (del == NULL)
-			return (-1);
-		status_fork = fork_here_doc(*cnt, del, ! is_quote(cmd[del_pos]), vars);
+			return (CMD_MEM_ERR);
+		status = fork_here_doc(*cnt, del, ! is_quote(cmd[del_pos]), vars);
 		ft_free(del);
-		if (status_fork != 0)
-			return (status_fork);
+		if ((status != CMD_OK) && (status != CMD_CTRL_D))
+			break ;
 		del_pos = find_next_eof_pos(cmd, del_pos);
 	}
 	*cnt += find_next_eof_pos(cmd, 0) != -1;
-	return (0);
+	if (status == CMD_CTRL_D)
+		status = CMD_OK;
+	return (status);
 }

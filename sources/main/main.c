@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 02:32:32 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/29 16:18:20 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/30 16:30:42 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,44 +22,7 @@ void	exit_shell(char *input)
 		ft_printf("minishell: exit\n");
 	ft_free(input);
 }
-void	print_cmd(t_var	*mini)
-{
-	uint32_t	i;
-	uint32_t	j;
 
-	j = 0;
-	if (mini == NULL)
-		return;
-	while (j < mini->n_cmd)
-	{
-		ft_printf("COMMAND\n\tcmd name: %s\n", mini->cmd_data[j].cmd_name);
-		i = 0;
-		while (mini->cmd_data[j].full_cmd && mini->cmd_data[j].full_cmd[i])
-			ft_printf("\t\targ: %s\n", mini->cmd_data[j].full_cmd[i++]);
-		if (mini->cmd_data[j].redirections)
-		{
-			// ft_printf("\tn. redirections: %u\n", mini->cmd_data[j].n_redirect);
-			i = 0;
-			while (i < mini->cmd_data[j].n_redirect)
-			{
-				if (mini->cmd_data[j].redirections[i] == RED_IN_SINGLE)
-					ft_printf("\t\tred type: %s file: %s\n", "<", \ 
-						mini->cmd_data[j].files[i]);
-				else if (mini->cmd_data[j].redirections[i] == RED_OUT_SINGLE)
-					ft_printf("\t\tred type: %s file: %s\n", ">", \
-						mini->cmd_data[j].files[i]);
-				else if (mini->cmd_data[j].redirections[i] == RED_IN_DOUBLE)
-					ft_printf("\t\tred type: %s file: %s\n", "<<", \
-						mini->cmd_data[j].files[i]);
-				else if (mini->cmd_data[j].redirections[i] == RED_OUT_DOUBLE)
-					ft_printf("\t\tred type: %s file: %s\n", ">>", \
-					mini->cmd_data[j].files[i]);
-				i++;
-			}
-		}
-		j++;
-	}
-}
 void	run_cmd(char *input, t_var *mini)
 {
 	mini->cmd_data = create_new_cmd(input, mini);
@@ -77,22 +40,22 @@ void	main_loop(t_var *mini)
 	{
 		input = NULL;
 		status = aquire_input(&input, *mini->env_list);
-		if (status == CMD_MEM_ERR)
+		if ((status == CMD_MEM_ERR) || (status == CMD_FILE_ERR)
+			|| (status == CMD_PROC_ERR))
 			malloc_protect(mini);
-		else if (status == CMD_EOF)
+		else if (status == CMD_CTRL_D)
 		{
 			exit_shell(input);
 			break ;
 		}
 		if (is_empty(input) == false)
 			add_history(input);
-		if (status == CMD_SIN_ERR)
-		{
-			ft_printf("minishell: syntax error\n");
-			ft_free(input);
-		}
-		else
+		if (status == CMD_OK)
 			run_cmd(input, mini);
+		else
+			ft_free(input);
+		if (status == CMD_SIN_ERR)
+			ft_printf("minishell: syntax error\n");
 	}
 	clear_history();
 }

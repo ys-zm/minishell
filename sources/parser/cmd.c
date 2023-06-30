@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/25 01:18:26 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/29 17:56:30 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/30 11:18:24 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,35 +83,40 @@ t_cmd	*create_new_cmd(char *cmd_input, t_var *mini)
 	return (cmd);
 }
 
-bool	remove_here_docs(t_var *mini)
+bool	is_actual_file(char *file_name)
 {
-	DIR *dir;
-    struct dirent *entry;
-	char	*file_name;
-
-    dir = opendir(HERE_DOC_FOLDER);
-    if (dir == NULL)
+	if ((ft_strncmp(file_name, ".", 1) != 0) && \
+		(ft_strncmp(file_name, "..", 2) != 0))
+		return (true);
+	else
 		return (false);
-    while ((entry = readdir(dir)) != NULL) 
+}
+
+bool	remove_here_docs(void)
+{
+	struct dirent	*entry;
+	DIR				*dir;
+	char			*file_name;
+	int32_t			status;
+	bool			success;
+
+	dir = opendir(HERE_DOC_FOLDER);
+	if (dir == NULL)
+		return (false);
+	entry = readdir(dir);
+	success = true;
+	while ((entry != NULL) && (success == true))
 	{
-		if ((ft_strncmp(entry->d_name, ".", 1) == 0) || (ft_strncmp(entry->d_name, "..", 2) == 0))
-			continue ;
-		file_name = ft_strjoin(HERE_DOC_FOLDER, entry->d_name, "", false);
-		if (file_name == NULL)
+		if (is_actual_file(entry->d_name) == true)
 		{
-			closedir(dir);
-			return (false);
+			success = false;
+			file_name = ft_strjoin(HERE_DOC_FOLDER, entry->d_name, "", false);
+			status = unlink(file_name);
+			ft_free(file_name);
+			success = status != -1;
 		}
-        printf("%s\n", file_name);
-		if (unlink(file_name) == -1)
-		{
-			continue ;
-			// ft_free(file_name);
-			// closedir(dir);
-			// return (false);
-		}
-		ft_free(file_name);
-    }
-    closedir(dir);
-	return (true);
+		entry = readdir(dir);
+	}
+	closedir(dir);
+	return (success);
 }

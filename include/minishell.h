@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/17 22:02:45 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/29 17:39:56 by faru          ########   odam.nl         */
+/*   Updated: 2023/06/30 16:29:52 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,9 @@
 # define WRITE				1
 # define REPLACE			2
 # define APPEND				3
-# define RED   				"\x1B[31m"	// colors for the messages on the stdout
-# define GRN   				"\x1B[32m"
-# define YEL   				"\x1B[33m"
-# define BLU   				"\x1B[34m"
-# define MAG   				"\x1B[35m"
-# define COL_RESET 			"\x1B[0m"
-# define BOLD				"\033[1m"
-# define BOLD_RESET			"\033[0m"
 # define HERE_DOC_FOLDER	"here_doc/"
 # define HERE_DOC_FIX		"here_doc/here_doc"
 # define PROMPT				"minishell-> "
-// # define PROMPT				BOLD GRN "MINI" RED "HELL" COL_RESET BOLD_RESET
 # include "libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
@@ -51,28 +42,20 @@ extern int	g_exit_code;
 typedef enum s_cmd_status
 {
 	CMD_OK,
-	CMD_SIN_ERR,
+	CMD_CTRL_C,
+	CMD_CTRL_D,
 	CMD_MEM_ERR,
+	CMD_SIN_ERR,
+	CMD_FILE_ERR,
 	CMD_PROC_ERR,
-	CMD_EOF,
-	CMD_EMPTY,
 }	t_cmd_status;
-
-typedef enum s_hd_status
-{
-	HD_OK,
-	HD_EOF,
-	HD_MEM_ERR,
-	HD_FILE_ERR,
-}	t_hd_status;
 
 typedef enum s_red_type
 {
-	RED_IN_SINGLE,
+	RED_IN_SINGLE,	
 	RED_OUT_SINGLE,
 	RED_IN_DOUBLE,
 	RED_OUT_DOUBLE,
-	RED_ERROR,
 }	t_red_type;
 
 typedef struct s_env
@@ -339,13 +322,13 @@ int32_t			find_next_eof_pos(char *cmd, uint32_t start_pos);
 
 char			*isolate_eof(char *start);
 
-int32_t			handle_here_doc(char *cmd, uint32_t *cnt, t_env *vars);
+t_cmd_status	handle_here_doc(char *cmd, uint32_t *cnt, t_env *vars);
 
 t_cmd_status	aquire_input_hd(char *eof, char **here_doc);
 
 t_cmd_status	write_here_doc(int cnt, char *del, bool exp_vars, t_env *vars);
 
-int32_t			fork_here_doc(int cnt, char *del, bool exp_vars, t_env *vars);
+t_cmd_status	fork_here_doc(int cnt, char *del, bool exp_vars, t_env *vars);
 
 int32_t			open_and_expand(bool exp, int32_t cnt, char **hd, t_env *vars);
 
@@ -363,7 +346,9 @@ bool			is_arrow(char to_check);
 
 uint32_t		get_order_cmd(char *str, uint32_t pos);
 
-bool			remove_here_docs(t_var *mini);
+bool			is_actual_file(char *file_name);
+
+bool			remove_here_docs(void);
 
 void			move_chars(char *dest, char *src);
 
