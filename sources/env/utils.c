@@ -41,21 +41,21 @@ bool	ft_key_rules(char c, int index)
 	return (false);
 }
 
-int	ft_check_key(char *key)
+int	ft_check_key(char *key, char *cmd)
 {
 	int	i;
 
 	i = 0;
 	if (key && key[0] == '\0')
-		return (ft_putstr_fd("minishell: export: `': not a valid identifier\n", \
-				2), EXIT_FAILURE);
+		return (ft_write_error(2, cmd, "`'", "not a valid identifer"), EXIT_FAILURE);
 	while (key && key[i])
 	{
 		if (!ft_key_rules(key[i], i))
 		{
-			ft_putstr_fd("minishell: export: '", 2);
-			ft_putstr_fd(key, 2);
-			ft_putstr_fd("' : not a valid identifier\n", 2);
+			ft_write_error(2, cmd, key, "not a valid identifier");
+			// ft_putstr_fd("minishell: export: '", 2);
+			// ft_putstr_fd(key, 2);
+			// ft_putstr_fd("' : not a valid identifier\n", 2);
 			return (EXIT_FAILURE);
 		}
 		i++;
@@ -68,7 +68,7 @@ int	ft_find_data_if_no_pos(t_var *mini, char *envp, char **key, char **value)
 	*key = ft_substr(envp, 0, ft_strlen(envp));
 	if (!*key)
 		malloc_protect(mini);
-	if (ft_check_key(*key))
+	if (ft_check_key(*key, ""))
 		return (free(*key), EXIT_FAILURE);
 	*value = NULL;
 	return (EXIT_SUCCESS);
@@ -84,7 +84,7 @@ t_env	*ft_create_node(t_var *mini, char *envp, int pos)
 		key = ft_substr(envp, 0, pos);
 		if (!key)
 			malloc_protect(mini);
-		if (ft_check_key(key))
+		if (ft_check_key(key, ""))
 			return (free(key), NULL);
 		value = ft_substr(envp, pos + 1, ft_strlen(envp));
 		if (!value)

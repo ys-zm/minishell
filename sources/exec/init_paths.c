@@ -21,7 +21,7 @@ char	*ft_find_path(t_var *mini)
 	if (*(mini->env_list) == NULL)
 		exit(0);
 	env_list = *(mini->env_list);
-	while (env_list && env_list->next != NULL)
+	while (env_list)
 	{
 		if (!ft_strncmp(env_list->key, "PATH", 4))
 			return (env_list->value);

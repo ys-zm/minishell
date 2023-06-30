@@ -81,5 +81,6 @@ void	run_cmd(char *input, t_var *mini)
 	mini->cmd_data = create_new_cmd(input, mini);
 	if (mini->cmd_data == NULL)
 		malloc_protect(mini);
+	print_cmd(mini);
 	ft_exec(mini);
 }

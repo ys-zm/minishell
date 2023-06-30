@@ -101,10 +101,13 @@ typedef struct s_var
 	char		**paths;
 	int			**pipes;
 	pid_t		*pid;
-	int			status;
+	char		*shell_loc;
 }	t_var;
 
 void			ft_print_array(char **arr);
+
+//To Remove
+void	print_cmd(t_var	*mini);
 
 //Free Functions for Data Types --> error_handling/free.c
 int				ft_free_strings(char **arr);
@@ -177,7 +180,7 @@ int				ft_check_if_key_exists(t_env *env_list, char *key);
 
 int				ft_find_first_equals(char *env);
 
-int				ft_check_key(char *key);
+int				ft_check_key(char *key, char *cmd);
 
 int				ft_redir_type(t_var *mini, int index);
 

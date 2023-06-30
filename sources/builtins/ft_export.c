@@ -61,14 +61,14 @@ int	ft_export_single(t_var *mini, char *arg, size_t op_type, size_t op_pos)
 	if (op_type)
 	{
 		key = ft_substr(arg, 0, op_pos);
-		if (ft_check_key(key))
+		if (ft_check_key(key, "export"))
 			return (free(key), EXIT_FAILURE);
 		value = ft_find_value(mini, arg, op_type, op_pos);
 	}
 	else
 	{
 		key = ft_substr(arg, 0, ft_strlen(arg));
-		if (ft_check_key(key))
+		if (ft_check_key(key, "export"))
 			return (free(key), EXIT_FAILURE);
 		value = NULL;
 	}

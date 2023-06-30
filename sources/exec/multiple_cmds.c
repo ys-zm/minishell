@@ -45,16 +45,17 @@ int	wait_for_children(t_var *mini)
 {
 	u_int32_t	i;
 	int			exit_status;
+	int			status;
 
 	i = 0;
 	while (i < mini->n_cmd)
 	{
 		waitpid(mini->pid[i], &exit_status, 0);
 		if (WIFEXITED(exit_status))
-			mini->status = WEXITSTATUS(exit_status);
+			status = WEXITSTATUS(exit_status);
 		i++;
 	}
-	return (mini->status);
+	return (status);
 }
 
 int	process_management(t_var *mini)

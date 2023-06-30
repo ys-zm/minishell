@@ -55,7 +55,7 @@ int	ft_unset(t_var *mini, char **args)
 		return (EXIT_SUCCESS);
 	while (args && args[i])
 	{
-		if (!ft_check_key(args[i]))
+		if (!ft_check_key(args[i], "unset"))
 			ft_del_node(mini->env_list, args[i]);
 		i++;
 	}

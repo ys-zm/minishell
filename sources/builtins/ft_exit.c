@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "limits.h"
 
 int	ft_num_of_args(char **args)
 {
@@ -61,6 +62,43 @@ int	ft_if_sign(char *str)
 	return (ret);
 }
 
+
+bool	ft_check_atoll(char *arg)
+{
+	uint64_t	tmp;
+	int32_t	sign;
+	uint32_t	i;
+
+	sign = 1;
+	i = 0;
+	tmp = 0;
+	if (arg[i] == '-' || arg[i] == '+')
+	{
+		if (arg[i] == '-')
+			sign *= -1;
+		i++;
+	}
+	while (arg && arg[i])
+	{
+		tmp *= 10;
+		tmp += arg[i] - '0';
+		i++;
+	}
+	if (tmp > __LONG_LONG_MAX__ && !(tmp - __LONG_LONG_MAX__ == 1 && sign == -1))
+		return (false);
+	return (true);
+}
+
+bool	ft_check_if_numeric(char *arg)
+{
+	if (!ft_ifnum(arg))
+		return (false);
+	if (!ft_check_atoll(arg))
+		return (false);
+	return (true);
+}
+
+
 //ft_exit // only hapens in curr process if using pipes!
 //sometimes its an exit code1 or 255 when int too long, or non numeric
 //if SHLVL exists, decrement shlvl
@@ -73,7 +111,7 @@ int	ft_exit(t_var *mini, char **args)
 		ft_free_all(mini);
 		exit(g_exit_code);
 	}
-	if (ft_ifnum(args[1]) == 0)
+	if (!ft_check_if_numeric(args[1]))
 	{
 		ft_write_error(2, "exit", args[1], "numeric argument required");
 		g_exit_code = 255;

@@ -21,6 +21,7 @@ void	ft_set_to_null(t_var *mini)
 	mini->env_arr = NULL;
 	mini->pid = NULL;
 	mini->env_list = NULL;
+	mini->shell_loc = NULL;
 }
 
 void	ft_free_all(t_var *mini)
@@ -28,6 +29,7 @@ void	ft_free_all(t_var *mini)
 	if (mini->cmd_data)
 		ft_free_cmd_arr(mini->cmd_data, mini->n_cmd);
 	ft_free_env_list(mini);
+	free(mini->shell_loc);
 	if (mini->pipes)
 	{	
 		ft_free_pipes(mini->pipes, mini->n_cmd - 1);
@@ -40,8 +42,8 @@ void	ft_free_all(t_var *mini)
 		ft_free_strings(mini->env_arr);
 	if (mini->pid)
 		free(mini->pid);
-	free(mini);
 	ft_set_to_null(mini);
+	free(mini);
 }
 
 // print error message from minishell and set g_exit_code
@@ -58,6 +60,7 @@ void	ft_error_msg(t_var *mini, char *str, int error)
 int	malloc_protect(t_var *mini)
 {
 	remove_here_docs(mini);
+	printf("MALLOC!\n");
 	ft_free_all(mini);
 	ft_error_msg(mini, "", 137);
 	exit(g_exit_code);

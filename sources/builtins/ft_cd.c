@@ -39,8 +39,7 @@ char	*ft_path_finder(t_var *mini, char *curr_path, char **args)
 		{
 			new_path = ft_strjoin(curr_path, args[i], "/", 0);
 			if (!ft_check_err_new_path(mini, new_path))
-				return (ft_free_strings(args), free(curr_path), \
-				free(new_path), NULL);
+				return (free(curr_path), free(new_path), NULL);
 			free(curr_path);
 			curr_path = new_path;
 		}
@@ -75,6 +74,7 @@ int	ft_cd(t_var *mini, char **args)
 	char	*new_path;
 
 	cwd = getcwd(0, 0);
+	printf("cwd: %s\n", cwd);
 	if (args[1] && !ft_strcmp(args[1], "."))
 		return (free(cwd), EXIT_SUCCESS);
 	if (count_args(args) == 1)

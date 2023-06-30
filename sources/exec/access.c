@@ -46,6 +46,8 @@ char	*check_env_paths(t_var *mini, char *cmd)
 
 	i = 0;
 	cmd_path = NULL;
+
+
 	while (mini->paths && mini->paths[i])
 	{
 		cmd_path = ft_trip_join(mini->paths[i], "/", cmd);
@@ -117,9 +119,9 @@ char	*access_cmd_path(t_var *mini, char *cmd)
 
 	ft_split_path(mini);
 	cmd_path = find_cmd_path(mini, cmd);
-	ft_free_strings(mini->paths);
 	if (cmd_path)
 	{
+		printf("CMD: %s\n", cmd_path);
 		ft_set_shlvl(mini, cmd);
 		mini->env_arr = ft_list_to_arr(mini, *(mini->env_list));
 	}

@@ -87,6 +87,7 @@ int	set_up_struct(t_var **mini, char **envp)
 	(*mini)->n_cmd = 0;
 	(*mini)->env_list = NULL;
 	(void)envp;
+	(*mini)->shell_loc = NULL;
 	make_env_list(envp, *mini);
 	(*mini)->env_arr = NULL;
 	(*mini)->paths = NULL;
@@ -95,10 +96,16 @@ int	set_up_struct(t_var **mini, char **envp)
 	return (EXIT_SUCCESS);
 }
 
+void	f(void)
+{
+	system("leaks -q minishell");
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_var	*mini;
 
+	//atexit(&f);
 	init_sig_handle(0);
 	(void)argc;
 	(void)argv;

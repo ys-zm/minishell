@@ -25,8 +25,6 @@ int	ft_exec_child_single(t_var *mini)
 	if (!cmd.cmd_name)
 		exit(EXIT_SUCCESS);
 	cmd_path = access_cmd_path(mini, cmd.cmd_name);
-	ft_set_shlvl(mini, cmd.cmd_name);
-	mini->env_arr = ft_list_to_arr(mini, *(mini->env_list));
 	g_exit_code = 0;
 	execve(cmd_path, cmd.full_cmd, mini->env_arr);
 	g_exit_code = 127;

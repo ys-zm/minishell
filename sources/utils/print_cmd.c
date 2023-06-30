@@ -33,17 +33,13 @@ void	print_cmd(t_var	*mini)
 			while (i < mini->cmd_data[j].n_redirect)
 			{
 				if (mini->cmd_data[j].redirections[i] == RED_IN_SINGLE)
-					ft_printf("\t\tred type: %s file: %s\n", "<", \
-						mini->cmd_data[j].files[i]);
+					ft_printf("\t\tred type: %s file: %s\n", "<", mini->cmd_data[j].files[i]);
 				else if (mini->cmd_data[j].redirections[i] == RED_OUT_SINGLE)
-					ft_printf("\t\tred type: %s file: %s\n", ">", \
-						mini->cmd_data[j].files[i]);
+					ft_printf("\t\tred type: %s file: %s\n", ">", mini->cmd_data[j].files[i]);
 				else if (mini->cmd_data[j].redirections[i] == RED_IN_DOUBLE)
-					ft_printf("\t\tred type: %s file: %s\n", "<<", \
-						mini->cmd_data[j].files[i]);
+					ft_printf("\t\tred type: %s file: %s\n", "<<", mini->cmd_data[j].files[i]);
 				else if (mini->cmd_data[j].redirections[i] == RED_OUT_DOUBLE)
-					ft_printf("\t\tred type: %s file: %s\n", ">>", \
-					mini->cmd_data[j].files[i]);
+					ft_printf("\t\tred type: %s file: %s\n", ">>", mini->cmd_data[j].files[i]);
 				i++;
 			}
 		}
