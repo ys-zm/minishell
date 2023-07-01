@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/25 01:18:26 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/01 01:48:21 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/01 02:41:36 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,40 +83,3 @@ t_cmd	*create_new_cmd(char *cmd_input, t_var *mini)
 	return (cmd);
 }
 
-bool	is_actual_file(char *file_name)
-{
-	if ((ft_strncmp(file_name, ".", 1) != 0) && \
-		(ft_strncmp(file_name, "..", 2) != 0))
-		return (true);
-	else
-		return (false);
-}
-
-bool	remove_here_docs(void)
-{
-	struct dirent	*entry;
-	DIR				*dir;
-	char			*file_name;
-	int32_t			status;
-	bool			success;
-
-	dir = opendir(HERE_DOC_FOLDER);
-	if (dir == NULL)
-		return (false);
-	entry = readdir(dir);
-	success = true;
-	while ((entry != NULL) && (success == true))
-	{
-		if (is_actual_file(entry->d_name) == true)
-		{
-			success = false;
-			file_name = ft_strjoin(HERE_DOC_FOLDER, entry->d_name, "", false);
-			status = unlink(file_name);
-			ft_free(file_name);
-			success = status != -1;
-		}
-		entry = readdir(dir);
-	}
-	closedir(dir);
-	return (success);
-}

@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 02:23:12 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/01 02:26:09 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/01 02:36:01 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ char			*isolate_eof(char *start);
 uint32_t		get_order_cmd(char *str, uint32_t pos);
 
 t_cmd_status	handle_here_doc(char *cmd, uint32_t *cnt, t_env *vars);
+
+bool			remove_here_docs(void);
 
 // here-doc_write.c
 t_cmd_status	eof_here_doc(char **here_doc, t_cmd_status status);

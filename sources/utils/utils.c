@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   tools.c                                            :+:    :+:            */
+/*   utils.c                                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/20 19:09:49 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/01 01:48:21 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/01 02:41:51 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,6 @@ char	*remove_quotes(char *to_clear, bool free_string)
 	return (cleaned_str);
 }
 
-bool	is_quote(char to_check)
-{
-	return ((to_check == '\'') || (to_check == '\"'));
-}
-
-bool	is_arrow(char to_check)
-{
-	return ((to_check == '<') || (to_check == '>'));
-}
 
 char	*create_file_name(const char *fix_part, int32_t cnt)
 {
@@ -75,4 +66,13 @@ char	*create_file_name(const char *fix_part, int32_t cnt)
 	file_name = ft_strjoin((char *) fix_part, char_cnt, "_", false);
 	ft_free(char_cnt);
 	return (file_name);
+}
+
+bool	is_actual_file(char *file_name)
+{
+	if ((ft_strncmp(file_name, ".", 1) != 0) && \
+		(ft_strncmp(file_name, "..", 2) != 0))
+		return (true);
+	else
+		return (false);
 }

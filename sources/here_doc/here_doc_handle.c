@@ -6,7 +6,7 @@
 /*   By: faru <faru@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:15:31 by faru          #+#    #+#                 */
-/*   Updated: 2023/07/01 01:48:21 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/01 02:35:39 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,4 +116,33 @@ t_cmd_status	handle_here_doc(char *cmd, uint32_t *cnt, t_env *vars)
 	if (status == CMD_CTRL_D)
 		status = CMD_OK;
 	return (status);
+}
+
+bool	remove_here_docs(void)
+{
+	struct dirent	*entry;
+	DIR				*dir;
+	char			*file_name;
+	int32_t			status;
+	bool			success;
+
+	dir = opendir(HERE_DOC_FOLDER);
+	if (dir == NULL)
+		return (false);
+	entry = readdir(dir);
+	success = true;
+	while ((entry != NULL) && (success == true))
+	{
+		if (is_actual_file(entry->d_name) == true)
+		{
+			success = false;
+			file_name = ft_strjoin(HERE_DOC_FOLDER, entry->d_name, "", false);
+			status = unlink(file_name);
+			ft_free(file_name);
+			success = status != -1;
+		}
+		entry = readdir(dir);
+	}
+	closedir(dir);
+	return (success);
 }

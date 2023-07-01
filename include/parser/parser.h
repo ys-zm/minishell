@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 02:06:12 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/01 02:25:02 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/01 02:44:46 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,12 @@
 # define PARSER_H
 # include "minishell/minishell.h"
 
-// cmd.c
+// command.c
 uint32_t		n_cmds(char *string);
 
 char			**split_into_cmds(char *input_cmd);
 
 t_cmd			*create_new_cmd(char *cmd, t_var *depo);
-
-bool			is_actual_file(char *file_name);
-
-bool			remove_here_docs(void);
 
 // expander.c
 char			*expand_vars(char *input, t_env *env_vars);
@@ -36,7 +32,7 @@ char			*expand_pid(char *input);
 
 char			*expander(char *input, t_env *env_vars);
 
-// read_input.c
+// parser.c
 t_cmd_status	ft_readline(char **buffer, const char *prompt, bool check);
 
 t_cmd_status	input_error(char **input, char *buffer, t_cmd_status status);
