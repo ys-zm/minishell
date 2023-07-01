@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:06:07 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/01 01:48:21 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/01 20:11:02 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	ft_update_shell(t_var *mini, t_env **env_list)
 	env = *env_list;
 	cwd = getcwd(0, 0);
 	check_file = ft_strjoin(cwd, "Makefile", "/", 0);
+	ft_printf("cwd: %s, file: %s\n", cwd, check_file);
 	while (env && !access(check_file, F_OK))
 	{
 		if (!ft_strncmp("SHELL", env->key, 5))
@@ -75,7 +76,7 @@ t_env	*ft_envp_node(t_var *mini, char *envp)
 	return (new_node);
 }
 
-// NB this function must resturn NULL/0/... in case of failure
+// NB this function must return NULL/0/... in case of failure
 void	make_env_list(char **envp, t_var *mini)
 {
 	t_env	*head;
