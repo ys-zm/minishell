@@ -6,11 +6,11 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 13:48:59 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/06/26 13:49:00 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/01 01:48:12 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell/minishell.h"
 
 char	*ft_find_path(t_var *mini)
 {

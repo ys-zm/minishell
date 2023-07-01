@@ -6,8 +6,8 @@ OBJ_DIR := objects
 LIBFT_DIR := libft
 HERE_DOC_DIR := here_doc/
 LIBFT := $(LIBFT_DIR)/libft.a
-HEADERS := include/minishell.h
-#$(shell find include -type f -name '*.h')
+HEADERS := $(shell find include -type f -name '*.h')
+#include/minishell.h
 SOURCES = sources/builtins/cd_utils_1.c \
 			sources/builtins/cd_utils_2.c \
 			sources/builtins/export_utils_1.c \
@@ -38,6 +38,8 @@ SOURCES = sources/builtins/cd_utils_1.c \
 			sources/exec/path_utils.c \
 			sources/exec/redirections.c \
 			sources/exec/shlvl.c \
+			sources/here_doc/here_doc_handle.c \
+			sources/here_doc/here_doc_write.c \
 			sources/lexer/builder.c \
 			sources/lexer/lexer.c \
 			sources/lexer/tokenizer.c \
@@ -45,17 +47,15 @@ SOURCES = sources/builtins/cd_utils_1.c \
 			sources/main/signals.c \
 			sources/parser/cmd.c \
 			sources/parser/expander.c \
-			sources/parser/here_doc_handle.c \
-			sources/parser/here_doc_write.c \
 			sources/parser/read_input.c \
-			sources/utils/tools.c
+			sources/utils/utils.c
 #$(shell find $(SRC_DIR) -type f -name '*.c')
 OBJECTS := $(patsubst $(SRC_DIR)%,$(OBJ_DIR)%,$(SOURCES:.c=.o))	
 
 CC  := cc
 IFLAGS := -Iinclude -I$(LIBFT_DIR)/include
 CFLAGS = -Wall -Wextra -Werror
-# CFLAGS += -g3 -fsanitize=address
+CFLAGS += -g3 -fsanitize=address
 # CFLAGS += -arch x86_64
 LFLAGS := -Llibft -lft -lreadline -lhistory 
 

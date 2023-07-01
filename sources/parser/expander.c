@@ -6,11 +6,11 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 01:49:19 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/28 12:10:41 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/01 01:48:21 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell/minishell.h"
 
 char	*get_var_value(t_env *env_vars, char *var_name)
 {
@@ -52,7 +52,8 @@ char	*expand_vars(char *input, t_env *env_vars)
 		if (is_valid_dollar(input, i++) == false)
 			continue ;
 		end = i;
-		while (ft_isalpha(input[end]) || ft_strchr("?_", input[end]))
+		while (input[end] &&  \
+			(ft_isalpha(input[end]) || ft_strchr("?_", input[end])))
 			end++;
 		var_name = ft_substr(input, i, end - i);
 		var_value = get_var_value(env_vars, var_name);
@@ -82,11 +83,11 @@ char	*expand_tilde(char *str, t_env *env_vars)
 			{
 				if (ft_isspace(str[i]) || (str[i] == '/') || (! str[i]))
 				{
-					home_var = get_var_value(env_vars, "HOME");
+					home_var = get_var_value(env_vars, ft_strdup("HOME"));
 					str = ft_insert_str(str, home_var, i, i);
-					i += ft_strlen(home_var) - 1;
 					if (str == NULL)
 						return (NULL);
+					i += ft_strlen(home_var) - 1;
 				}
 			}
 		}
