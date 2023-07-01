@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 13:47:59 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/01 01:48:12 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/01 13:59:52 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	ft_mem_alloc(t_var *mini)
 
 void	ft_free_exec_alloc(t_var *mini)
 {
-	u_int32_t	i;
+	uint32_t	i;
 
 	i = 0;
 	if (mini->pid)
