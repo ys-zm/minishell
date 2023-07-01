@@ -102,3 +102,15 @@ void	ft_set_shlvl(t_var *mini, char *cmd_name)
 			ft_add_node(mini->env_list, ft_new_node("SHLVL", "1"));
 	}
 }
+
+//previuos version
+// void	ft_set_shlvl(t_var *mini, char *cmd_name)
+// {
+// 	if (cmd_name && !ft_strcmp("./minishell", cmd_name))
+// 	{
+// 		if (ft_check_if_key_exists(*(mini->env_list), "SHLVL"))
+// 			ft_increment_shlvl(mini);
+// 		else
+// 			ft_add_node(mini->env_list, ft_new_node("SHLVL", "1"));
+// 	}
+// }
