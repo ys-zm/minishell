@@ -105,7 +105,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_var	*mini;
 
-	atexit(&f);
+	// atexit(&f);
 	init_sig_handle(0);
 	(void)argc;
 	(void)argv;

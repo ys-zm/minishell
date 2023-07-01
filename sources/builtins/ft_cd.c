@@ -74,7 +74,8 @@ int	ft_cd(t_var *mini, char **args)
 	char	*new_path;
 
 	cwd = getcwd(0, 0);
-	printf("cwd: %s\n", cwd);
+	if (!cwd)
+		ft_error_msg(mini, "cd", 0);
 	if (args[1] && !ft_strcmp(args[1], "."))
 		return (free(cwd), EXIT_SUCCESS);
 	if (count_args(args) == 1)

@@ -60,7 +60,6 @@ void	ft_error_msg(t_var *mini, char *str, int error)
 int	malloc_protect(t_var *mini)
 {
 	remove_here_docs(mini);
-	printf("MALLOC!\n");
 	ft_free_all(mini);
 	ft_error_msg(mini, "", 137);
 	exit(g_exit_code);
