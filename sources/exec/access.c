@@ -6,11 +6,11 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 13:29:37 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/06/26 16:46:15 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/01 01:48:12 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell/minishell.h"
 
 void	ft_find_error(t_var *mini, char *cmd)
 {

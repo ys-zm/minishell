@@ -6,11 +6,11 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/23 14:30:00 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/06/26 12:52:30 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/01 01:48:21 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell/minishell.h"
 
 void	ft_print_env(char **arr, int fd_out)
 {

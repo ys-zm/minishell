@@ -6,11 +6,11 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 13:22:13 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/06/26 13:25:52 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/01 01:48:21 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell/minishell.h"
 
 //pwd wroks with: mkdir a | mkdir a/b | cd a/b | rm -rf ../../a | pwd
 //even when you unset PWD and OLD 

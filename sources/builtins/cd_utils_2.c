@@ -6,11 +6,11 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 12:31:00 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/06/26 12:31:35 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/01 01:48:21 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell/minishell.h"
 
 int	ft_count_directories(char *arg)
 {

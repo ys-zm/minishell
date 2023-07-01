@@ -6,11 +6,11 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/24 00:55:08 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/26 12:11:31 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/01 01:48:21 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell/minishell.h"
 
 bool	is_valid_symbol(char *string, uint32_t pos_to_check, char symbol)
 {

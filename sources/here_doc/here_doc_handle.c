@@ -6,11 +6,11 @@
 /*   By: faru <faru@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:15:31 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/26 15:58:50 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/01 02:35:39 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell/minishell.h"
 
 int32_t	find_next_eof_pos(char *cmd, uint32_t start_pos)
 {
@@ -62,12 +62,40 @@ char	*isolate_eof(char *start)
 	return (remove_quotes(eof, true));
 }
 
-int32_t	handle_here_doc(char *cmd, uint32_t *cnt)
+uint32_t	get_order_cmd(char *str, uint32_t pos)
 {
-	char	*delimiter;
-	int32_t	del_pos;
-	int32_t	status_fork;
+	char		*next_pipe;
+	uint32_t	pipe_pos;
+	uint32_t	order;
 
+	pipe_pos = 0;
+	order = 1;
+	while (true)
+	{
+		while (true)
+		{
+			next_pipe = ft_strchr(str + pipe_pos, '|');
+			if (next_pipe == NULL)
+				return (order);
+			pipe_pos = next_pipe - str;
+			if (is_valid_symbol(str, pipe_pos, '|'))
+				break ;
+		}
+		order += pos > pipe_pos;
+		pipe_pos += pos > pipe_pos;
+		if (pos <= pipe_pos)
+			break ;
+	}
+	return (order);
+}
+
+t_cmd_status	handle_here_doc(char *cmd, uint32_t *cnt, t_env *vars)
+{
+	t_cmd_status	status;
+	int32_t			del_pos;
+	char			*del;
+
+	status = CMD_OK;
 	del_pos = find_next_eof_pos(cmd, 0);
 	while (del_pos != -1)
 	{
@@ -75,50 +103,46 @@ int32_t	handle_here_doc(char *cmd, uint32_t *cnt)
 			*cnt = get_order_cmd(cmd, del_pos);
 		else
 			*cnt += get_order_cmd(cmd, del_pos);
-		delimiter = isolate_eof((cmd + del_pos));
-		if (delimiter == NULL)
-			return (-1);
-		status_fork = fork_here_doc(*cnt, delimiter);
-		ft_free(delimiter);
-		if (status_fork != 0)
-			return (status_fork);
+		del = isolate_eof((cmd + del_pos));
+		if (del == NULL)
+			return (CMD_MEM_ERR);
+		status = fork_here_doc(*cnt, del, ! is_quote(cmd[del_pos]), vars);
+		ft_free(del);
+		if ((status != CMD_OK) && (status != CMD_CTRL_D))
+			break ;
 		del_pos = find_next_eof_pos(cmd, del_pos);
 	}
 	*cnt += find_next_eof_pos(cmd, 0) != -1;
-	return (0);
-}
-
-t_cmd_status	eof_here_doc(char **here_doc, t_cmd_status status)
-{
-	ft_free(*here_doc);
-	*here_doc = ft_strdup("");
-	if (*here_doc == NULL)
-		status = CMD_MEM_ERR;
+	if (status == CMD_CTRL_D)
+		status = CMD_OK;
 	return (status);
 }
 
-t_cmd_status	aquire_input_hd(char *eof, char **here_doc)
+bool	remove_here_docs(void)
 {
-	char			*new_line;
-	t_cmd_status	status;
+	struct dirent	*entry;
+	DIR				*dir;
+	char			*file_name;
+	int32_t			status;
+	bool			success;
 
-	while (true)
+	dir = opendir(HERE_DOC_FOLDER);
+	if (dir == NULL)
+		return (false);
+	entry = readdir(dir);
+	success = true;
+	while ((entry != NULL) && (success == true))
 	{
-		status = ft_readline(&new_line, "> ", false);
-		if (status == CMD_MEM_ERR)
-			return (ft_free(*here_doc), status);
-		else if (status == CMD_EOF)
-			return (eof_here_doc(here_doc, status));
-		else if (ft_strncmp(new_line, eof, ft_strlen(eof)) == 0)
+		if (is_actual_file(entry->d_name) == true)
 		{
-			ft_free(new_line);
-			*here_doc = ft_append_char(*here_doc, '\n');
-			if (*here_doc == NULL)
-				status = CMD_MEM_ERR;
-			return (status);
+			success = false;
+			file_name = ft_strjoin(HERE_DOC_FOLDER, entry->d_name, "", false);
+			status = unlink(file_name);
+			ft_free(file_name);
+			success = status != -1;
 		}
-		*here_doc = ft_strjoin(*here_doc, new_line, "\n", true);
-		if (*here_doc == NULL)
-			return (CMD_MEM_ERR);
+		entry = readdir(dir);
 	}
+	closedir(dir);
+	return (success);
 }

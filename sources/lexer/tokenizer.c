@@ -6,11 +6,11 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/27 17:20:39 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/26 12:57:08 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/01 01:48:21 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell/minishell.h"
 
 int32_t	isolate_word(char *input, char **new_word)
 {
@@ -38,12 +38,6 @@ int32_t	isolate_word(char *input, char **new_word)
 	}
 	return (len);
 }
-// if (*new_word)
-// {
-// 	*new_word = ft_trim(*new_word);
-// 	if (*new_word == NULL)
-// 		return (-1);
-// }
 
 bool	is_redirection(t_list *token)
 {	
@@ -52,20 +46,12 @@ bool	is_redirection(t_list *token)
 	if (token->next == NULL)
 		return (false);
 	word = token->content;
-	if (is_quote(*word))
-		word++;
-	if (! is_arrow(*word++))
+	if (is_arrow(*word++) == false)
 		return (false);
-	if (is_quote(*word))
-		word++;
 	if (*word == '\0')
 		return (true);
 	else if (is_arrow(*word++))
-	{
-		if (is_quote(*word))
-			word++;
 		return (*word == '\0');
-	}
 	else
 		return (false);
 }

@@ -6,12 +6,11 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/23 14:34:51 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/06/26 13:21:10 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/01 16:30:11 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "limits.h"
+#include "minishell/minishell.h"
 
 int	ft_num_of_args(char **args)
 {

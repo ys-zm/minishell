@@ -6,11 +6,11 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/25 01:18:26 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/26 16:05:21 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/01 02:41:36 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell/minishell.h"
 
 uint32_t	n_cmds(char *string)
 {
@@ -83,30 +83,3 @@ t_cmd	*create_new_cmd(char *cmd_input, t_var *mini)
 	return (cmd);
 }
 
-bool	remove_here_docs(t_var *mini)
-{
-	char		*here_doc_to_drop;
-	int32_t		status;
-	uint32_t	i;
-	uint32_t	j;
-
-	i = 0;
-	while (i < mini->n_cmd)
-	{
-		j = 0;
-		while (mini->cmd_data && (j < mini->cmd_data[i].n_redirect))
-		{
-			if (mini->cmd_data[i].redirections[j++] == RED_IN_DOUBLE)
-			{
-				here_doc_to_drop = create_file_name(HERE_DOC_FIX, i + 1);
-				status = unlink(here_doc_to_drop);
-				ft_free(here_doc_to_drop);
-				if (status == -1)
-					return (false);
-				break ;
-			}
-		}
-		i++;
-	}
-	return (true);
-}

@@ -6,11 +6,11 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 13:49:24 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/06/26 13:54:15 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/01 01:48:12 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell/minishell.h"
 
 bool	ft_if_redir(t_var *mini, int index)
 {

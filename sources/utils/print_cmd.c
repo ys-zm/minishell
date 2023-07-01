@@ -6,11 +6,11 @@
 /*   By: faru <faru@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 19:22:21 by faru          #+#    #+#                 */
-/*   Updated: 2023/06/26 19:22:25 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/01 19:33:15 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell/minishell.h"
 
 void	print_cmd(t_var	*mini)
 {

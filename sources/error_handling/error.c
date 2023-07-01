@@ -6,11 +6,11 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:14:36 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/06/26 14:58:22 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/01 16:30:39 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell/minishell.h"
 
 // free all allocated memory
 void	ft_set_to_null(t_var *mini)
@@ -19,7 +19,7 @@ void	ft_set_to_null(t_var *mini)
 	mini->pipes = NULL;
 	mini->paths = NULL;
 	mini->env_arr = NULL;
-	mini->pid = NULL;
+	// mini->pid = NULL;
 	mini->env_list = NULL;
 	mini->shell_loc = NULL;
 }
@@ -59,8 +59,8 @@ void	ft_error_msg(t_var *mini, char *str, int error)
 // kill program when malloc fails, sets exit code to 1
 int	malloc_protect(t_var *mini)
 {
-	remove_here_docs(mini);
-	printf("MALLOC!\n");
+	remove_here_docs();
+	ft_free_exec_alloc(mini);
 	ft_free_all(mini);
 	ft_error_msg(mini, "", 137);
 	exit(g_exit_code);

@@ -6,11 +6,11 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/25 00:26:11 by fra           #+#    #+#                 */
-/*   Updated: 2023/06/26 12:39:49 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/01 01:48:21 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell/minishell.h"
 
 bool	set_cmd(t_list *tokens, t_cmd *cmd)
 {
