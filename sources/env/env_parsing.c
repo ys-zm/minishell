@@ -34,7 +34,6 @@ void	ft_update_shell(t_var *mini, t_env **env_list)
 	env = *env_list;
 	cwd = getcwd(0, 0);
 	check_file = ft_strjoin(cwd, "Makefile", "/", 0);
-	printf("check file: %s\n", check_file);
 	while (env && !access(check_file, F_OK))
 	{
 		if (!ft_strncmp("SHELL", env->key, 5))
