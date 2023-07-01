@@ -103,6 +103,7 @@ bool	ft_check_if_numeric(char *arg)
 //if SHLVL exists, decrement shlvl
 int	ft_exit(t_var *mini, char **args)
 {
+	printf("comes here!\n");
 	if (mini->n_cmd == 1)
 		ft_putstr_fd("exit\n", 1);
 	if (count_args(args) == 1)

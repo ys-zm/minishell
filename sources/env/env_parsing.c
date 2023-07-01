@@ -39,12 +39,15 @@ void	ft_update_shell(t_var *mini, t_env **env_list)
 		if (!ft_strncmp("SHELL", env->key, 5))
 		{
 			free(env->value);
-			env->value = getcwd(0, 0);
+			free(check_file);
+			env->value = cwd;
 			mini->shell_loc = ft_strdup(env->value);
 			return ;
 		}
 		env = env->next;
 	}
+	free(cwd);
+	free(check_file);
 }
 
 void	ft_free_prev(t_env *head)
