@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/25 00:26:11 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/01 01:48:21 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/02 21:01:05 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_cmd	*build_cmd(t_cmd *cmd, char *curr_cmd, uint32_t order_cmd)
 	cmd->n_redirect = 0;
 	cmd->redirections = NULL;
 	cmd->files = NULL;
-	if (is_empty(curr_cmd) == false)
+	if (ft_is_empty_str(curr_cmd) == false)
 	{
 		tokens = tokenize(curr_cmd);
 		if (tokens == NULL)

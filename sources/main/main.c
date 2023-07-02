@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 02:32:32 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/01 19:35:25 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/02 21:01:08 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	main_loop(t_var *mini)
 			exit_shell(input);
 			break ;
 		}
-		if (is_empty(input) == false)
+		if (ft_is_empty_str(input) == false)
 			add_history(input);
 		if (status == CMD_OK)
 			run_cmd(input, mini);

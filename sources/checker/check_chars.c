@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/25 01:54:31 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/01 02:40:51 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/02 21:00:49 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,6 @@ bool	is_quote(char to_check)
 bool	is_arrow(char to_check)
 {
 	return ((to_check == '<') || (to_check == '>'));
-}
-
-bool	is_empty(char	*to_check)
-{
-	if (to_check == NULL)
-		return (true);
-	while (ft_isspace(*to_check))
-		to_check++;
-	return (*to_check == '\0');
 }
 
 bool	has_trailing_pipe(char	*cmd)

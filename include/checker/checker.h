@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 02:03:25 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/01 02:41:08 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/02 21:00:45 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ bool    check_sintax(char *cmd);
 bool	is_quote(char to_check);
 
 bool	is_arrow(char to_check);
-
-bool    is_empty(char *to_check);
 
 bool    has_trailing_pipe(char	*cmd);
 
