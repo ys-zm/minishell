@@ -71,8 +71,8 @@ void	exit_shell(char *input)
 {
 	if (has_trailing_pipe(input) == true)
 		ft_printf("syntax error\n");
-	else
-		ft_printf("exit\n");
+	// else
+		// ft_printf("exit\n");
 	ft_free(input);
 }
 
