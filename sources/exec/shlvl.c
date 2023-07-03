@@ -95,7 +95,6 @@ void	ft_set_shlvl(t_var *mini, char *cmd_name)
 {
 	if (cmd_name && ft_check_if_minishell(mini, cmd_name))
 	{
-		printf("should set shelllvl!\n");
 		if (ft_check_if_key_exists(*(mini->env_list), "SHLVL"))
 			ft_increment_shlvl(mini);
 		else
