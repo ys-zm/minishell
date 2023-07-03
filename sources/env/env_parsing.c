@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:06:07 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/01 21:10:24 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/03 16:31:06 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	ft_update_shell(t_var *mini, t_env **env_list)
 	env = *env_list;
 	cwd = getcwd(0, 0);
 	check_file = ft_strjoin(cwd, "Makefile", "/", 0);
-	ft_printf("cwd: %s, file: %s\n", cwd, check_file);
 	while (env && !access(check_file, F_OK))
 	{
 		if (!ft_strncmp("SHELL", env->key, 5))

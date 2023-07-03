@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/23 14:02:36 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/01 01:48:21 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/03 16:31:09 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ int	ft_cd(t_var *mini, char **args)
 	char	*new_path;
 
 	cwd = getcwd(0, 0);
-	printf("cwd: %s\n", cwd);
 	if (args[1] && !ft_strcmp(args[1], "."))
 		return (free(cwd), EXIT_SUCCESS);
 	if (count_args(args) == 1)
