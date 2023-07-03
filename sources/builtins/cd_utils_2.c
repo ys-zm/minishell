@@ -67,17 +67,3 @@ void	ft_update_env_var(t_var *mini, t_env **env_list, \
 			malloc_protect(mini);
 	}
 }
-
-void	ft_write_error(int fd, char *func, char *str, char *msg)
-{
-	ft_putstr_fd("minishell: ", fd);
-	ft_putstr_fd(func, fd);
-	ft_putstr_fd(": ", fd);
-	if (str)
-	{
-		ft_putstr_fd(str, fd);
-		ft_putstr_fd(": ", fd);
-	}
-	ft_putstr_fd(msg, fd);
-	ft_putstr_fd("\n", fd);
-}

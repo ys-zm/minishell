@@ -121,7 +121,6 @@ char	*access_cmd_path(t_var *mini, char *cmd)
 	cmd_path = find_cmd_path(mini, cmd);
 	if (cmd_path)
 	{
-		printf("CMD: %s\n", cmd_path);
 		ft_set_shlvl(mini, cmd);
 		mini->env_arr = ft_list_to_arr(mini, *(mini->env_list));
 	}

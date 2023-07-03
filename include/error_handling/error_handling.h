@@ -13,4 +13,28 @@
 #ifndef ERROR_HANDLING_H
 # define ERROR_HANDLING_H
 
+//Free Functions for Data Types --> error_handling/free.c
+int		ft_free_strings(char **arr);
+
+int		ft_free_pipes(int **pipes, int size);
+
+int		ft_free_cmd_struct(t_cmd *cmd);
+
+int		ft_free_cmd_arr(t_cmd *cmd_data, u_int32_t n_cmds);
+
+int		ft_free_env_list(t_var *mini);
+
+
+//Error Handling Functions --> error_handling/error.c
+
+void	ft_set_to_null(t_var *mini);
+
+void	ft_free_all(t_var *mini);
+
+void	ft_error_msg(t_var *mini, char *str, int error);
+
+int		malloc_protect(t_var *mini);
+
+void	ft_write_error(int fd, char *func, char *str, char *msg);
+
 #endif

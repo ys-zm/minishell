@@ -12,16 +12,6 @@
 
 #include "minishell/minishell.h"
 
-int	ft_num_of_args(char **args)
-{
-	int	count;
-
-	count = 0;
-	while (args[count])
-		count++;
-	return (count);
-}
-
 int	ft_ifnum(char *str)
 {
 	if (*str == '-' || *str == '+')
@@ -103,7 +93,6 @@ bool	ft_check_if_numeric(char *arg)
 //if SHLVL exists, decrement shlvl
 int	ft_exit(t_var *mini, char **args)
 {
-	printf("comes here!\n");
 	if (mini->n_cmd == 1)
 		ft_putstr_fd("exit\n", 1);
 	if (count_args(args) == 1)
@@ -119,7 +108,7 @@ int	ft_exit(t_var *mini, char **args)
 	}
 	else
 	{
-		if (ft_num_of_args(args) == 2)
+		if (count_args(args) == 2)
 		{
 			g_exit_code = ft_if_sign(args[1]);
 			exit(g_exit_code);

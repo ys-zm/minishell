@@ -67,7 +67,7 @@ CC  := cc
 IFLAGS := -Iinclude -I$(LIBFT_DIR)/include
 CFLAGS = -Wall -Wextra
 CFLAGS += -g3 -fsanitize=address
-# CFLAGS += -arch x86_64
+ CFLAGS += -arch x86_64
 LFLAGS := -Llibft -lft -lreadline -lhistory 
 
 ifeq ($(shell uname -s),Darwin)			# Mac
