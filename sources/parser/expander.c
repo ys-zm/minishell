@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 01:49:19 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/07 11:59:02 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/07 13:40:34 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,6 @@ char	*expander(char *input, t_env *env_vars)
 	pid_exp = expand_pid(tilde_exp);
 	if (pid_exp == NULL)
 		return (NULL);
-	ft_printf("after pid exp: %s\n", pid_exp);
 	var_exp = expand_vars(pid_exp, env_vars);
 	if (var_exp == NULL)
 		return (NULL);

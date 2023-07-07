@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 02:32:32 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/07 11:44:20 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/07 13:55:04 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,14 @@ int	set_up_struct(t_var **mini, char **envp)
 	return (EXIT_SUCCESS);
 }
 
+void	f(void)
+{
+	system("leaks --list minishell");
+}
 int	main(int argc, char **argv, char **envp)
 {
 	t_var	*mini;
-
+	// f();
 	init_sig_handle(0);
 	(void)argc;
 	(void)argv;

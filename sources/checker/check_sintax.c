@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/15 21:26:00 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/01 14:54:01 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/07 12:23:59 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,17 +87,10 @@ bool	check_redirections(char *cmd)
 
 bool	check_sintax(char *cmd)
 {
-	bool	null_test;
 	bool	quotes;
 	bool	pipes;
 	bool	redirections;
 
-	null_test = cmd != NULL;
-	if (null_test == false)
-	{
-		g_exit_code = 1;
-		return (false);
-	}
 	quotes = check_quotes(cmd);
 	pipes = check_pipes(cmd);
 	redirections = check_redirections(cmd);
@@ -105,7 +98,7 @@ bool	check_sintax(char *cmd)
 		return (true);
 	else
 	{
-		g_exit_code = 1;
+		g_exit_code = 258;
 		return (false);
 	}
 }
