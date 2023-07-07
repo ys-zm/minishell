@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/20 19:09:49 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/01 02:41:51 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/07 11:45:15 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ char	*remove_quotes(char *to_clear, bool free_string)
 		ft_free(to_clear);
 	return (cleaned_str);
 }
-
 
 char	*create_file_name(const char *fix_part, int32_t cnt)
 {

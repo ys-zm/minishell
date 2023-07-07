@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 01:49:19 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/01 01:48:21 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/07 11:59:02 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*expand_vars(char *input, t_env *env_vars)
 		if (is_valid_dollar(input, i++) == false)
 			continue ;
 		end = i;
-		while (input[end] &&  \
+		while (input[end] && \
 			(ft_isalpha(input[end]) || ft_strchr("?_", input[end])))
 			end++;
 		var_name = ft_substr(input, i, end - i);
@@ -105,9 +105,9 @@ char	*expand_pid(char *input)
 	i = 0;
 	while (input[i])
 	{
-		if (is_valid_symbol(input, i++, '$'))
+		if (is_valid_dollar(input, i++))
 		{
-			if (is_valid_symbol(input, i, '$'))
+			if (input[i] == '$')
 			{
 				char_pid = ft_itoa(getpid());
 				if (char_pid == NULL)
@@ -135,6 +135,7 @@ char	*expander(char *input, t_env *env_vars)
 	pid_exp = expand_pid(tilde_exp);
 	if (pid_exp == NULL)
 		return (NULL);
+	ft_printf("after pid exp: %s\n", pid_exp);
 	var_exp = expand_vars(pid_exp, env_vars);
 	if (var_exp == NULL)
 		return (NULL);
