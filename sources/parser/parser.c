@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/07/01 19:37:44 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/07 14:31:23 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,13 @@ t_cmd_status	ft_readline(char **buffer, const char *prompt, bool sin_check)
 		return (CMD_OK);
 }
 
+bool	update_status(t_cmd_status to_check)
+{
+	if (to_check == CMD_CTRL_D)
+		to_check = CMD_SIN_ERR;
+	return (to_check);
+
+}
 t_cmd_status	input_error(char **input, char *buffer, t_cmd_status status)
 {
 	if (status == CMD_SIN_ERR)
@@ -63,8 +70,8 @@ t_cmd_status	aquire_input(char **input, t_env *vars)
 		if (has_trailing_pipe(*input) == false)
 			break ;
 		status = ft_readline(&buffer, "> ", true);
-		if ((status == CMD_MEM_ERR) || (status == CMD_CTRL_D))
-			break ;
+		if (status != CMD_OK)
+			return (update_status(status));
 	}
 	return (status);
 }

@@ -6,7 +6,7 @@
 /*   By: faru <faru@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:15:31 by faru          #+#    #+#                 */
-/*   Updated: 2023/07/01 02:35:39 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/07 15:43:08 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,10 +123,17 @@ bool	remove_here_docs(void)
 	struct dirent	*entry;
 	DIR				*dir;
 	char			*file_name;
-	int32_t			status;
+	char			*here_doc_path;
 	bool			success;
 
-	dir = opendir(HERE_DOC_FOLDER);
+	here_doc_path = ft_strdup(HERE_DOC_FOLDER);
+	if (here_doc_path == NULL)
+		return (false);
+	here_doc_path = ft_strjoin(getcwd(NULL, 0), here_doc_path, "/", true);
+	if (here_doc_path == NULL)
+		return (false);
+	ft_printf("haloo .. %s\n", here_doc_path);
+	dir = opendir(here_doc_path);
 	if (dir == NULL)
 		return (false);
 	entry = readdir(dir);
@@ -135,14 +142,17 @@ bool	remove_here_docs(void)
 	{
 		if (is_actual_file(entry->d_name) == true)
 		{
+			ft_printf("file to check; %s\n", entry->d_name);
 			success = false;
-			file_name = ft_strjoin(HERE_DOC_FOLDER, entry->d_name, "", false);
-			status = unlink(file_name);
+			ft_printf("str: %s\n", getcwd(NULL, 0));
+			file_name = ft_strjoin(here_doc_path, entry->d_name, "", false);
+			success = unlink(file_name) == 0;
 			ft_free(file_name);
-			success = status != -1;
 		}
 		entry = readdir(dir);
 	}
+	ft_printf("status: %d\n", success);
 	closedir(dir);
+	ft_free(here_doc_path);
 	return (success);
 }

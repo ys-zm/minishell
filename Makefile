@@ -4,7 +4,7 @@ NAME := minishell
 SRC_DIR := sources
 OBJ_DIR := objects
 LIBFT_DIR := libft
-HERE_DOC_DIR := here_doc/
+HERE_DOC_DIR := hd/
 LIBFT := $(LIBFT_DIR)/libft.a
 HEADERS := $(shell find include -type f -name '*.h')
 # include/main/main.h \
@@ -65,7 +65,7 @@ OBJECTS := $(patsubst $(SRC_DIR)%,$(OBJ_DIR)%,$(SOURCES:.c=.o))
 
 CC  := cc
 IFLAGS := -Iinclude -I$(LIBFT_DIR)/include
-CFLAGS = -Wall -Wextra
+CFLAGS = -Wall -Wextra -Werror
 # CFLAGS += -g3 -fsanitize=address
  CFLAGS += -arch x86_64
 LFLAGS := -Llibft -lft -lreadline -lhistory 

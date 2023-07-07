@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 01:56:43 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/01 19:30:42 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/07 15:54:01 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_var
 	pid_t		*pid;
 	int			status;
 	char		*shell_loc;
+	char		*here
 }	t_var;
 
 #endif

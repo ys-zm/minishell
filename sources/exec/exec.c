@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 13:54:26 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/01 14:13:29 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/07 15:06:37 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,12 @@ void	ft_exec(t_var *mini)
 		g_exit_code = multiple_cmds(mini);
 	if (g_exit_code == 137)
 		malloc_protect(mini);
-	if (remove_here_docs() == false)
+	else if (remove_here_docs() == false)
+	{
+		ft_printf("cheerio\n");
 		malloc_protect(mini);
+	}
+	ft_printf("endo!\n");
 	ft_free_cmd_arr(mini->cmd_data, mini->n_cmd);
 	ft_free_exec_alloc(mini);
 	mini->cmd_data = NULL;
