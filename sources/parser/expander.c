@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 01:49:19 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/07 13:40:34 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/08 01:14:31 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,20 @@
 
 char	*get_var_value(t_env *env_vars, char *var_name)
 {
-	char	*var_value;
-
-	if (var_name == NULL)
+	if ((var_name == NULL) || (env_vars == NULL))
 		return (NULL);
 	else if (ft_strncmp(var_name, "?", 1) == 0)
-		var_value = ft_itoa(g_exit_code);
+		return (ft_itoa(g_exit_code));
 	else
 	{
-		var_value = NULL;
 		while (env_vars)
 		{
 			if (ft_strncmp(env_vars->key, var_name, ft_strlen(var_name)) == 0)
-			{
-				var_value = ft_strdup(env_vars->value);
-				break ;
-			}
+				return (ft_strdup(env_vars->value));
 			env_vars = env_vars->next;
 		}
-		if (var_value == NULL)
-			var_value = ft_strdup("");
+		return (ft_strdup(""));
 	}
-	ft_free(var_name);
-	return (var_value);
 }
 
 char	*expand_vars(char *input, t_env *env_vars)
@@ -57,6 +48,7 @@ char	*expand_vars(char *input, t_env *env_vars)
 			end++;
 		var_name = ft_substr(input, i, end - i);
 		var_value = get_var_value(env_vars, var_name);
+		ft_free(var_name);
 		if (var_value == NULL)
 			return (ft_free(input));
 		input = ft_insert_str(input, var_value, i, end);
@@ -83,11 +75,14 @@ char	*expand_tilde(char *str, t_env *env_vars)
 			{
 				if (ft_isspace(str[i]) || (str[i] == '/') || (! str[i]))
 				{
-					home_var = get_var_value(env_vars, ft_strdup("HOME"));
+					home_var = get_var_value(env_vars, "HOME");
+					if (home_var == NULL)
+						return (ft_free(str));
 					str = ft_insert_str(str, home_var, i, i);
+					i += ft_strlen(home_var) - 1;
+					ft_free(home_var);
 					if (str == NULL)
 						return (NULL);
-					i += ft_strlen(home_var) - 1;
 				}
 			}
 		}

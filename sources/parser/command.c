@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/25 01:18:26 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/07 11:44:50 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/08 00:52:46 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ t_cmd	*create_new_cmd(char *cmd_input, t_var *mini)
 	i = 0;
 	while (i < mini->n_cmd)
 	{
-		if (build_cmd(cmd + i, str_cmds[i], i + 1) == NULL)
+		if (build_cmd(mini, cmd + i, str_cmds[i], i + 1) == NULL)
 			return (ft_free_cmd_arr(cmd, i + 1), \
 				ft_free_double((void **) str_cmds, -1));
 		i++;

@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 01:37:15 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/01 02:06:03 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/07 23:48:01 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,16 @@ char		**fill_words(t_list *tokens);
 
 uint32_t	count_redirections(t_list *tokens);
 
-t_red_type	*get_redirections(t_list *tokens, uint32_t n_redirect, int order);
+t_red_type	*get_redirections(t_list *tokens, uint32_t n, int order, char *hd);
 
 char		**get_files(t_list *tokens, uint32_t n_redirect);
 
 //builder.c
 bool	    set_cmd(t_list *tokens, t_cmd *cmd);
 
-bool	    set_reds(t_list *tokens, t_cmd *cmd, uint32_t order);
+bool	    set_reds(t_list *tokens, t_cmd *cmd, uint32_t order, char *hd);
 
-t_cmd	    *build_cmd(t_cmd *cmd, char *curr_cmd, uint32_t order_cmd);
+t_cmd	    \
+    *build_cmd(t_var *mini, t_cmd *cmd, char *curr_cmd, uint32_t order_cmd);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 02:00:55 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/01 02:06:06 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/07 23:22:14 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # include "minishell/minishell.h"
 
 // main.c
-int		set_up_struct(t_var **mini, char **envp);
+void	set_up_struct(t_var **mini, char **envp);
 
 void	exit_shell(char *input);
 

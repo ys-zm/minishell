@@ -6,7 +6,7 @@
 /*   By: faru <faru@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:15:31 by faru          #+#    #+#                 */
-/*   Updated: 2023/07/07 15:43:08 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/08 01:02:07 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ uint32_t	get_order_cmd(char *str, uint32_t pos)
 	return (order);
 }
 
-t_cmd_status	handle_here_doc(char *cmd, uint32_t *cnt, t_env *vars)
+t_cmd_status	handle_here_doc(char *cmd, uint32_t *cnt, t_var *mini)
 {
 	t_cmd_status	status;
 	int32_t			del_pos;
@@ -106,7 +106,7 @@ t_cmd_status	handle_here_doc(char *cmd, uint32_t *cnt, t_env *vars)
 		del = isolate_eof((cmd + del_pos));
 		if (del == NULL)
 			return (CMD_MEM_ERR);
-		status = fork_here_doc(*cnt, del, ! is_quote(cmd[del_pos]), vars);
+		status = fork_here_doc(*cnt, del, ! is_quote(cmd[del_pos]), mini);
 		ft_free(del);
 		if ((status != CMD_OK) && (status != CMD_CTRL_D))
 			break ;
@@ -118,41 +118,31 @@ t_cmd_status	handle_here_doc(char *cmd, uint32_t *cnt, t_env *vars)
 	return (status);
 }
 
-bool	remove_here_docs(void)
+bool	remove_here_docs(t_var *mini)
 {
 	struct dirent	*entry;
 	DIR				*dir;
 	char			*file_name;
-	char			*here_doc_path;
 	bool			success;
 
-	here_doc_path = ft_strdup(HERE_DOC_FOLDER);
-	if (here_doc_path == NULL)
-		return (false);
-	here_doc_path = ft_strjoin(getcwd(NULL, 0), here_doc_path, "/", true);
-	if (here_doc_path == NULL)
-		return (false);
-	ft_printf("haloo .. %s\n", here_doc_path);
-	dir = opendir(here_doc_path);
+	dir = opendir(mini->here_doc_path);
 	if (dir == NULL)
 		return (false);
 	entry = readdir(dir);
 	success = true;
 	while ((entry != NULL) && (success == true))
 	{
-		if (is_actual_file(entry->d_name) == true)
+		if (entry->d_type == DT_REG)
 		{
-			ft_printf("file to check; %s\n", entry->d_name);
 			success = false;
-			ft_printf("str: %s\n", getcwd(NULL, 0));
-			file_name = ft_strjoin(here_doc_path, entry->d_name, "", false);
+			file_name = ft_strjoin(mini->here_doc_path, entry->d_name, "", false);
+			if (file_name == NULL)
+				return (false);
 			success = unlink(file_name) == 0;
 			ft_free(file_name);
 		}
 		entry = readdir(dir);
 	}
-	ft_printf("status: %d\n", success);
 	closedir(dir);
-	ft_free(here_doc_path);
 	return (success);
 }

@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 02:32:32 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/07 13:55:04 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/08 01:08:44 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	main_loop(t_var *mini)
 	while (true)
 	{
 		input = NULL;
-		status = aquire_input(&input, *mini->env_list);
+		status = aquire_input(&input, mini);
 		if ((status == CMD_MEM_ERR) || (status == CMD_FILE_ERR)
 			|| (status == CMD_PROC_ERR))
 			malloc_protect(mini);
@@ -60,22 +60,29 @@ void	main_loop(t_var *mini)
 	clear_history();
 }
 
-int	set_up_struct(t_var **mini, char **envp)
+void	set_up_struct(t_var **mini, char **envp)
 {
+	char	*cwd;
+
 	*mini = ft_calloc(1, sizeof(t_var));
 	if (*mini == NULL)
-		return (EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 	(*mini)->cmd_data = NULL;
 	(*mini)->n_cmd = 0;
 	(*mini)->env_list = NULL;
-	(void)envp;
 	(*mini)->shell_loc = NULL;
-	make_env_list(envp, *mini);
 	(*mini)->env_arr = NULL;
 	(*mini)->paths = NULL;
 	(*mini)->pipes = NULL;
 	(*mini)->pid = NULL;
-	return (EXIT_SUCCESS);
+	make_env_list(envp, *mini);
+	cwd = get_var_value(*((*mini)->env_list), "SHELL");
+	if (cwd == NULL)
+		malloc_protect(*mini);
+	(*mini)->here_doc_path = ft_strjoin(cwd, HERE_DOC_FOLDER, "/", false);
+	ft_free(cwd);
+	if ((*mini)->here_doc_path == NULL)
+		malloc_protect(*mini);
 }
 
 void	f(void)

@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 02:06:12 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/01 02:44:46 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/07 23:30:43 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,6 @@ t_cmd_status	ft_readline(char **buffer, const char *prompt, bool check);
 
 t_cmd_status	input_error(char **input, char *buffer, t_cmd_status status);
 
-t_cmd_status	aquire_input(char **cmd, t_env *vars);
+t_cmd_status	aquire_input(char **cmd, t_var *mini);
 
 #endif

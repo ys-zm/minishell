@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:14:36 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/07 15:12:52 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/07 23:17:21 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	ft_set_to_null(t_var *mini)
 	// mini->pid = NULL;
 	mini->env_list = NULL;
 	mini->shell_loc = NULL;
+	mini->here_doc_path = NULL;
 }
 
 void	ft_free_all(t_var *mini)
@@ -42,6 +43,7 @@ void	ft_free_all(t_var *mini)
 		ft_free_strings(mini->env_arr);
 	if (mini->pid)
 		free(mini->pid);
+	ft_free(mini->here_doc_path);
 	ft_set_to_null(mini);
 	free(mini);
 }
@@ -59,7 +61,7 @@ void	ft_error_msg(t_var *mini, char *str, int error)
 // kill program when malloc fails, sets exit code to 1
 int	malloc_protect(t_var *mini)
 {
-	remove_here_docs();
+	remove_here_docs(mini);
 	ft_free_exec_alloc(mini);
 	ft_free_all(mini);
 	ft_error_msg(mini, "", 137);

@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:06:07 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/03 16:31:06 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/07 23:19:28 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ t_env	*ft_envp_node(t_var *mini, char *envp)
 	return (new_node);
 }
 
-// NB this function must return NULL/0/... in case of failure
 void	make_env_list(char **envp, t_var *mini)
 {
 	t_env	*head;

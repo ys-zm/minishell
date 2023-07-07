@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/07/07 14:31:23 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/08 01:00:02 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_cmd_status	input_error(char **input, char *buffer, t_cmd_status status)
 	return (status);
 }
 
-t_cmd_status	aquire_input(char **input, t_env *vars)
+t_cmd_status	aquire_input(char **input, t_var *mini)
 {
 	t_cmd_status	status;
 	char			*buffer;
@@ -61,7 +61,7 @@ t_cmd_status	aquire_input(char **input, t_env *vars)
 	cnt = 0;
 	while (status == CMD_OK)
 	{
-		status = handle_here_doc(buffer, &cnt, vars);
+		status = handle_here_doc(buffer, &cnt, mini);
 		if ((status != CMD_OK) && (status != CMD_CTRL_C))
 			return (ft_free(buffer), ft_free(*input), status);
 		*input = ft_strjoin(*input, buffer, "\n", true);

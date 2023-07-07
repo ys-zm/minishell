@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/24 21:39:02 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/01 01:48:21 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/08 01:08:35 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ uint32_t	count_redirections(t_list *tokens)
 	return (cnt);
 }
 
-t_red_type	*get_redirections(t_list *tokens, uint32_t n_redirect, int order)
+t_red_type	*get_redirections(t_list *tokens, uint32_t n, int order, char *hd)
 {
 	uint32_t	i;
 	char		*here_doc_file;
 	t_red_type	*redirections;
 
-	redirections = ft_calloc(n_redirect, sizeof(t_red_type));
+	redirections = ft_calloc(n, sizeof(t_red_type));
 	if (redirections == NULL)
 		return (NULL);
 	i = 0;
@@ -87,7 +87,7 @@ t_red_type	*get_redirections(t_list *tokens, uint32_t n_redirect, int order)
 			tokens = tokens->next;
 			if (redirections[i++] != RED_IN_DOUBLE)
 				continue ;
-			here_doc_file = create_file_name(HERE_DOC_FIX, order);
+			here_doc_file = create_file_name(HERE_DOC_FIX, hd, order);
 			if (here_doc_file == NULL)
 				return (ft_free(redirections));
 			ft_free(tokens->content);

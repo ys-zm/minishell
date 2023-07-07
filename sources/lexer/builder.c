@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/25 00:26:11 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/02 21:01:05 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/08 00:49:58 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,13 @@ bool	set_cmd(t_list *tokens, t_cmd *cmd)
 	return (true);
 }
 
-bool	set_reds(t_list *tokens, t_cmd *cmd, uint32_t order)
+bool	set_reds(t_list *tokens, t_cmd *cmd, uint32_t order, char *hd)
 {
 	cmd->n_redirect = count_redirections(tokens);
 	if (cmd->n_redirect != 0)
 	{
-		cmd->redirections = get_redirections(tokens, cmd->n_redirect, order);
+		cmd->redirections = \
+			get_redirections(tokens, cmd->n_redirect, order, hd);
 		if (cmd->redirections == NULL)
 			return (false);
 		cmd->files = get_files(tokens, cmd->n_redirect);
@@ -39,7 +40,7 @@ bool	set_reds(t_list *tokens, t_cmd *cmd, uint32_t order)
 	return (true);
 }
 
-t_cmd	*build_cmd(t_cmd *cmd, char *curr_cmd, uint32_t order_cmd)
+t_cmd	*build_cmd(t_var *mini, t_cmd *cmd, char *curr_cmd, uint32_t order_cmd)
 {
 	t_list		*tokens;
 
@@ -57,7 +58,7 @@ t_cmd	*build_cmd(t_cmd *cmd, char *curr_cmd, uint32_t order_cmd)
 			return (NULL);
 		if (set_cmd(tokens, cmd) == false)
 			return (ft_lstclear(&tokens, ft_free));
-		if (set_reds(tokens, cmd, order_cmd) == false)
+		if (set_reds(tokens, cmd, order_cmd, mini->here_doc_path) == false)
 			return (ft_lstclear(&tokens, ft_free));
 		ft_lstclear(&tokens, ft_free);
 	}
