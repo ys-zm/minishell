@@ -78,10 +78,9 @@ endif
 GREEN = \x1b[32;01m
 RED = \x1b[31;01m
 BLUE = \x1b[34;01m
-RESET = \x1b[0m
 YELLOW = \x1b[33;01m
+RESET = \x1b[0m
 
-GITCMT = default commit message from makefile
 
 all: $(LIBFT) $(NAME)
 
@@ -90,11 +89,6 @@ run: all
 
 git: 
 # fclean
-	@git add .
-# @git commit -m "$(GITCMT)"
-	@printf "\n(git) files updated:\n $(GREEN)"
-	@git status | grep -e "modified:" -e "new file:"
-	@printf "$(RESET)"
 # @git push
 
 $(LIBFT):
