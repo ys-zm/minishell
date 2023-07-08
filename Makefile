@@ -88,10 +88,15 @@ all: $(LIBFT) $(NAME)
 run: all
 	./$(NAME)
 
-git: fclean
+git: 
+# fclean
 	@git add .
-	@git commit -m "$(GITCMT)"
+# @git commit -m "$(GITCMT)"
+	@printf "\n(git) files updated:\n $(GREEN)"
+	@git status | grep -e "modified:" -e "new file:"
+	@printf "$(RESET)"
 # @git push
+
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR) --quiet
 
