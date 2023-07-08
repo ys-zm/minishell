@@ -66,7 +66,7 @@ OBJECTS := $(patsubst $(SRC_DIR)%,$(OBJ_DIR)%,$(SOURCES:.c=.o))
 CC  := cc
 IFLAGS := -Iinclude -I$(LIBFT_DIR)/include
 CFLAGS = -Wall -Wextra -Werror
-CFLAGS += -g3 -fsanitize=address
+# CFLAGS += -g3 -fsanitize=address
 #  CFLAGS += -arch x86_64
 LFLAGS := -Llibft -lft -lreadline -lhistory 
 
@@ -81,11 +81,17 @@ BLUE = \x1b[34;01m
 RESET = \x1b[0m
 YELLOW = \x1b[33;01m
 
+GITCMT = default commit message from makefile
+
 all: $(LIBFT) $(NAME)
 
 run: all
 	./$(NAME)
 
+git: fclean
+	@git add .
+	@git commit -m "$(GITCMT)"
+# @git push
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR) --quiet
 
