@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/17 11:03:02 by faru          #+#    #+#                 */
-/*   Updated: 2023/07/08 01:00:02 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/08 20:01:00 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ bool	update_status(t_cmd_status to_check)
 	if (to_check == CMD_CTRL_D)
 		to_check = CMD_SIN_ERR;
 	return (to_check);
-
 }
+
 t_cmd_status	input_error(char **input, char *buffer, t_cmd_status status)
 {
 	if (status == CMD_SIN_ERR)

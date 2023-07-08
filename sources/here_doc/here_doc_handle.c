@@ -6,7 +6,7 @@
 /*   By: faru <faru@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:15:31 by faru          #+#    #+#                 */
-/*   Updated: 2023/07/08 01:02:07 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/08 20:00:14 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,14 +118,14 @@ t_cmd_status	handle_here_doc(char *cmd, uint32_t *cnt, t_var *mini)
 	return (status);
 }
 
-bool	remove_here_docs(t_var *mini)
+bool	remove_here_docs(char *here_doc_path)
 {
 	struct dirent	*entry;
 	DIR				*dir;
 	char			*file_name;
 	bool			success;
 
-	dir = opendir(mini->here_doc_path);
+	dir = opendir(here_doc_path);
 	if (dir == NULL)
 		return (false);
 	entry = readdir(dir);
@@ -135,7 +135,7 @@ bool	remove_here_docs(t_var *mini)
 		if (entry->d_type == DT_REG)
 		{
 			success = false;
-			file_name = ft_strjoin(mini->here_doc_path, entry->d_name, "", false);
+			file_name = ft_strjoin(here_doc_path, entry->d_name, "", false);
 			if (file_name == NULL)
 				return (false);
 			success = unlink(file_name) == 0;

@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/17 22:02:45 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/08 01:07:01 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/08 20:19:24 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,20 @@
 # define HERE_DOC_FOLDER			"here_doc/"
 # define HERE_DOC_FIX				"here_doc"
 # define PROMPT						"minishell-> "
-# include <stdlib.h>    			// malloc(), free()
-# include <unistd.h>    			// write(), read(), ...
-# include <fcntl.h>					// to open files (O_CREAT, O_WRONLY, O_RDONLY ..)
-# include <stdbool.h>				// boolean types
+# include <stdlib.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <stdbool.h>
 # include <stdio.h>
-# include <stdint.h>				// cross-compiler types
-# include <signal.h>    			// signal(), sigemptyset(), kill(), getpid(), ...
-# include <termios.h>				// terminal configuration stuff
-# include <sys/wait.h>				// waitpip(), WIFSIGNALED, WEXITSTATUS
-# include <errno.h>					// errorno global var, perror(), ...
-# include <stddef.h>				// NULL, type size_t
-# include <dirent.h>				// opendir(), readdir(), closedir(), struct dirent
-# include <readline/readline.h>		// readline(), rl_on_new_line(), rl_replace_line(), rl_redisplay()
-# include <readline/history.h>		// add_history()
+# include <stdint.h>
+# include <signal.h>
+# include <termios.h>
+# include <sys/wait.h>
+# include <errno.h>
+# include <stddef.h>
+# include <dirent.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include "libft.h"
 # include "minishell/enum.h"
 # include "builtins/builtins.h"

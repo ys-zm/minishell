@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:14:36 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/07 23:17:21 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/08 19:59:32 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	ft_error_msg(t_var *mini, char *str, int error)
 // kill program when malloc fails, sets exit code to 1
 int	malloc_protect(t_var *mini)
 {
-	remove_here_docs(mini);
+	remove_here_docs(mini->here_doc_path);
 	ft_free_exec_alloc(mini);
 	ft_free_all(mini);
 	ft_error_msg(mini, "", 137);
