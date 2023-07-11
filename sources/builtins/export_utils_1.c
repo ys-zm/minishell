@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/23 14:01:18 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/01 01:48:21 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/11 17:53:53 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	ft_replace_value(t_var *mini, char *key, char *new_value)
 	if (list)
 	{
 		free(list->value);
-		list->value = ft_strdup(new_value);
+		list->value = new_value;
 		if (!list->value)
 			malloc_protect(mini);
 	}
@@ -78,12 +78,9 @@ void	ft_append_value(t_var *mini, char *key, char *to_add)
 	if (list)
 	{
 		new_value = ft_strjoin(list->value, to_add, "", 0);
-		if (!new_value)
-		{
-			free(to_add);
-			malloc_protect(mini);
-		}
 		free(to_add);
+		if (!new_value)
+			malloc_protect(mini);
 		free(list->value);
 		list->value = new_value;
 	}
