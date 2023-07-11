@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:05:32 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/11 18:57:28 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/11 19:00:01 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,32 +66,18 @@ void	ft_update_shlvl(t_shlvl_status ret, t_env *env)
 		ft_change_node(env, NULL);
 	else if (ret == INCREMENT)
 	{
-<<<<<<< HEAD
 		value = ft_atoi(env->value) + 1;
-=======
-		value = ft_atoi(env->value);
-		value += 1;
->>>>>>> c24983520a87ae07ed0117a9fdc0e564b7f262ab
 		free(env->value);
 		env->value = ft_itoa(value);
 	}
 	else if (ret == OUT_OF_BOUNDS)
-<<<<<<< HEAD
 	{
 		ft_change_node(env, "1");
 		ft_write_error(2, NULL, "warning", \
 			"shell level too high, resetting to 1");
 	}
-=======
-		ft_write_error(2, NULL, \
-			"warning", "shell level too high, resetting to 1");
->>>>>>> c24983520a87ae07ed0117a9fdc0e564b7f262ab
 	else
 		ft_write_error(2, NULL, NULL, "error when setting shell level");
-<<<<<<< HEAD
-	}
-=======
->>>>>>> c24983520a87ae07ed0117a9fdc0e564b7f262ab
 }
 
 void	ft_set_shlvl(t_var *mini)
