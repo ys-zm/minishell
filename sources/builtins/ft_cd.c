@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/23 14:02:36 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/08 01:33:58 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/11 14:44:26 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,18 +68,19 @@ char	*ft_calculate_path(t_var *mini, char *arg, char *curr_path)
 // mkdir 1/2/3/4
 // cd 1/2/3/4
 // rm -rf ../../../../1
+
 int	ft_cd(t_var *mini, char **args)
 {
 	char	*cwd;
 	char	*new_path;
 
+	if (count_args(args) == 1)
+		return (ft_cd_to_homedir(mini, ft_find_pwd_val(mini->env_list)), 0);
 	cwd = getcwd(0, 0);
 	if (!cwd)
-		ft_error_msg(mini, "cd", 0);
+		return (ft_write_error(2, "cd", NULL, "getcwd failed"), EXIT_FAILURE);
 	if (args[1] && !ft_strcmp(args[1], "."))
 		return (free(cwd), EXIT_SUCCESS);
-	if (count_args(args) == 1)
-		return (free(cwd), ft_cd_to_homedir(mini, cwd));
 	if (!ft_strncmp("-", args[1], 1))
 		return (free(cwd), ft_cd_to_oldpwd(mini, cwd));
 	if (args[1][0] == '/')
@@ -87,11 +88,9 @@ int	ft_cd(t_var *mini, char **args)
 	else
 		new_path = ft_calculate_path(mini, args[1], cwd);
 	if (!chdir(new_path))
-	{
-		ft_update_env_var(mini, mini->env_list, "OLDPWD", cwd);
-		ft_update_env_var(mini, mini->env_list, "PWD", new_path);
-		return (free(new_path), EXIT_SUCCESS);
-	}
+		return (ft_update_env_var(mini, mini->env_list, "OLDPWD", \
+			ft_find_pwd_val(mini->env_list)), ft_update_env_var(mini, \
+			mini->env_list, "PWD", new_path), free(new_path), EXIT_SUCCESS);
 	else
 		return (free(new_path), \
 		ft_write_error(2, "cd", args[1], "No such file or directory"), \

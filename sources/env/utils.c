@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:06:50 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/01 01:48:21 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/11 14:25:36 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,13 @@ int	ft_check_key(char *key, char *cmd)
 
 	i = 0;
 	if (key && key[0] == '\0')
-		return (ft_write_error(2, cmd, "`'", "not a valid identifer"), EXIT_FAILURE);
+		return (ft_write_error(2, cmd, "`'", "not a valid identifer"), \
+			EXIT_FAILURE);
 	while (key && key[i])
 	{
 		if (!ft_key_rules(key[i], i))
 		{
 			ft_write_error(2, cmd, key, "not a valid identifier");
-			// ft_putstr_fd("minishell: export: '", 2);
-			// ft_putstr_fd(key, 2);
-			// ft_putstr_fd("' : not a valid identifier\n", 2);
 			return (EXIT_FAILURE);
 		}
 		i++;

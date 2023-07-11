@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/23 14:34:51 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/08 20:45:39 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/11 14:45:57 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,10 @@ int	ft_if_sign(char *str)
 	return (ret);
 }
 
-
 bool	ft_check_atoll(char *arg)
 {
 	uint64_t	tmp;
-	int32_t	sign;
+	int32_t		sign;
 	uint32_t	i;
 
 	sign = 1;
@@ -73,7 +72,8 @@ bool	ft_check_atoll(char *arg)
 		tmp += arg[i] - '0';
 		i++;
 	}
-	if (tmp > __LONG_LONG_MAX__ && !(tmp - __LONG_LONG_MAX__ == 1 && sign == -1))
+	if (tmp > __LONG_LONG_MAX__ && \
+		!(tmp - __LONG_LONG_MAX__ == 1 && sign == -1))
 		return (false);
 	return (true);
 }
@@ -86,7 +86,6 @@ bool	ft_check_if_numeric(char *arg)
 		return (false);
 	return (true);
 }
-
 
 //ft_exit // only hapens in curr process if using pipes!
 //sometimes its an exit code1 or 255 when int too long, or non numeric

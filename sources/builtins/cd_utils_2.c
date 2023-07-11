@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 12:31:00 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/08 20:45:34 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/11 14:40:19 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,20 @@ t_env	*ft_search_env_var(t_env **env_list, char *which_env)
 		env = env->next;
 	}
 	return (env);
+}
+
+char	*ft_find_pwd_val(t_env **env_list)
+{
+	t_env	*env;
+
+	env = *env_list;
+	while (env)
+	{
+		if (!ft_strncmp(env->key, "PWD", 3))
+			return (env->value);
+		env = env->next;
+	}
+	return (NULL);
 }
 
 void	ft_update_env_var(t_var *mini, t_env **env_list, \

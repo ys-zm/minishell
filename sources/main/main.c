@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 02:32:32 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/08 19:57:23 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/11 15:29:15 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void	set_up_struct(t_var **mini, char **envp)
 	(*mini)->cmd_data = NULL;
 	(*mini)->n_cmd = 0;
 	(*mini)->env_list = NULL;
-	(*mini)->shell_loc = NULL;
 	(*mini)->env_arr = NULL;
 	(*mini)->paths = NULL;
 	(*mini)->pipes = NULL;
@@ -85,14 +84,21 @@ void	set_up_struct(t_var **mini, char **envp)
 		malloc_protect(*mini);
 }
 
+void	ft_leaks(void)
+{
+	system("leaks -q minishell");
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_var	*mini;
 
+	atexit(&ft_leaks);
 	init_sig_handle(0);
 	(void)argc;
 	(void)argv;
 	set_up_struct(&mini, envp);
+	ft_set_shlvl(mini);
 	main_loop(mini);
 	ft_free_exec_alloc(mini);
 	ft_free_all(mini);

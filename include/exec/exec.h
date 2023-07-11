@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 02:18:00 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/01 02:18:12 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/11 15:26:45 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int		ft_redirect(t_var *mini, int index);
 
 // shlvl.c
 
-void	ft_set_shlvl(t_var *mini, char *cmd_name);
+void	ft_set_shlvl(t_var *mini);
 
 void	ft_increment_shlvl(t_var *mini);
 

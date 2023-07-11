@@ -6,12 +6,21 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 01:56:43 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/08 20:19:38 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/11 15:58:38 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ENUM_H
 # define ENUM_H
+
+typedef	enum s_shlvl_status
+{
+	SET_NULL,
+	SET_ZERO,
+	INCREMENT,
+	SET_ONE,
+	OUT_OF_BOUNDS
+}	t_shlvl_status;
 
 typedef enum s_cmd_status
 {
