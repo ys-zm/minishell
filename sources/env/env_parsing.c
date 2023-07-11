@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:06:07 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/11 15:43:04 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/11 16:48:38 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	ft_print_array(char **arr)
 	}
 }
 
-void	ft_update_shell(t_var *mini, t_env **env_list)
+void	ft_update_shell(t_env **env_list)
 {
 	t_env	*env;
 	char	*check_file;
@@ -41,7 +41,6 @@ void	ft_update_shell(t_var *mini, t_env **env_list)
 			free(env->value);
 			free(check_file);
 			env->value = cwd;
-			mini->shell_loc = ft_strdup(env->value);
 			return ;
 		}
 		env = env->next;
@@ -101,5 +100,5 @@ void	make_env_list(char **envp, t_var *mini)
 		i++;
 	}
 	*(mini->env_list) = head;
-	ft_update_shell(mini, mini->env_list);
+	ft_update_shell(mini->env_list);
 }

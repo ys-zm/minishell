@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 02:16:54 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/11 14:36:01 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/11 16:56:20 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	check_if_one_arg(t_var *mini, char **args);
 // ft_pwd.c
 char	*ft_get_pwd(t_var *mini);
 
-int	    ft_pwd(t_var *mini, char **args, int fd_out);
+int		ft_pwd(t_var *mini, char **args, int fd_out);
 
 // Env
 // ft_env.c
@@ -59,7 +59,7 @@ size_t	ft_list_size_to_print(t_env *env_list);
 
 char	**ft_list_to_arr(t_var *mini, t_env *env_list);
 
-int     ft_env(t_var *mini, int fd_out);
+int		ft_env(t_var *mini, int fd_out);
 
 //Echo
 //ft_echo.c
@@ -67,20 +67,19 @@ t_env	*ft_find_node(t_env *env_list, char *key);
 
 void	ft_print_echo(char **args, int i, int fd_out);
 
-int     ft_echo(char **args, int fd_out);
-
+int		ft_echo(char **args, int fd_out);
 
 // Exit
 // ft_exit.c
-int     ft_ifnum(char *str);
+int		ft_ifnum(char *str);
 
-int     ft_if_sign(char *str);
+int		ft_if_sign(char *str);
 
 bool	ft_check_atoll(char *arg);
 
 bool	ft_check_if_numeric(char *arg);
 
-int     ft_exit(t_var *mini, char **args);
+int		ft_exit(t_var *mini, char **args);
 
 //Export
 // export_utils_1.c
@@ -108,15 +107,15 @@ void	ft_add_node(t_env **env_list, t_env *new_node);
 
 void	ft_update_env_list(t_var *mini, char *key, char *value, size_t op_type);
 
-int     ft_export_single(t_var *mini, char *arg, size_t op_type, size_t op_pos);
+int		ft_export_single(t_var *mini, char *arg, size_t op_type, size_t op_pos);
 
-int     ft_export(t_var *mini, char **args);
+int		ft_export(t_var *mini, char **args);
 
 // Unset
 // ft_unset.c
 void	ft_del_node(t_env **env_list, char *key);
 
-int	    ft_unset(t_var *mini, char **args);
+int		ft_unset(t_var *mini, char **args);
 
 // Utils
 // utils.c

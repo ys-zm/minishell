@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 02:17:37 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/01 02:17:58 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/11 16:54:33 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,7 @@ int		ft_free_cmd_arr(t_cmd *cmd_data, u_int32_t n_cmds);
 
 int		ft_free_env_list(t_var *mini);
 
-
 //Error Handling Functions --> error_handling/error.c
-
 void	ft_set_to_null(t_var *mini);
 
 void	ft_free_all(t_var *mini);
