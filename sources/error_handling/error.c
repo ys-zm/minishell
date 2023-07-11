@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:14:36 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/11 15:44:10 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/11 16:50:29 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	ft_set_to_null(t_var *mini)
 	mini->env_arr = NULL;
 	mini->env_list = NULL;
 	mini->here_doc_path = NULL;
-	mini->shell_loc = NULL;
 }
 
 void	ft_free_all(t_var *mini)
@@ -29,7 +28,6 @@ void	ft_free_all(t_var *mini)
 	if (mini->cmd_data)
 		ft_free_cmd_arr(mini->cmd_data, mini->n_cmd);
 	ft_free_env_list(mini);
-	free(mini->shell_loc);
 	if (mini->pipes)
 	{
 		ft_free_pipes(mini->pipes, mini->n_cmd - 1);
