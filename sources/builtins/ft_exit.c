@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/23 14:34:51 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/12 12:19:22 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/12 15:34:21 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ bool	ft_check_if_numeric(char *arg)
 int	ft_exit(t_var *mini, char **args)
 {
 	if (mini->n_cmd == 1)
-		ft_putstr_fd("exit\n", 1);
+		ft_putstr_fd("exit\n", 2);
 	if (count_args(args) == 1)
 	{
 		ft_free_all(mini);

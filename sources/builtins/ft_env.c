@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/23 14:30:00 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/01 01:48:21 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/12 15:18:42 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,7 @@ int	ft_env(t_var *mini, int fd_out)
 	if (!mini->env_arr)
 		return (EXIT_FAILURE);
 	ft_print_env(mini->env_arr, fd_out);
+	ft_free_strings(mini->env_arr);
+	mini->env_arr = NULL;
 	return (EXIT_SUCCESS);
 }

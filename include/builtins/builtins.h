@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 02:16:54 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/11 16:56:20 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/12 16:13:24 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,34 +16,22 @@
 //Builtin Functions and Utils including: cd, pwd, env, echo, exit, export,unset
 // Cd
 // ft_cd.c
-bool	ft_check_err_new_path(t_var *mini, char *new_path);
-
-char	*ft_path_finder(t_var *mini, char *curr_path, char **args);
-
-char	*ft_calculate_path(t_var *mini, char *arg, char *curr_path);
+int		ft_run_chdir(t_var *mini, char *arg);
 
 int		ft_cd(t_var *mini, char **args);
 
 // cd_utils_1.c
-char	*ft_remove_lastdir(t_var *mini, char *old_path);
-
-char	*ft_get_home(t_var *mini);
 
 int		ft_cd_to_homedir(t_var *mini, char *cwd);
 
 int		ft_cd_to_oldpwd(t_var *mini, char *cwd);
-
-// cd_utils_2.c
-int		ft_count_directories(char *arg);
 
 t_env	*ft_search_env_var(t_env **env_list, char *which_env);
 
 void	ft_update_env_var(t_var *mini, t_env **env_list, \
 			char *which_env, char *new_env);
 
-char	*ft_find_pwd_val(t_env **env_list);
-
-void	check_if_one_arg(t_var *mini, char **args);
+char	*ft_find_env_val(t_env **env_list, char *env_var);
 
 // Pwd 
 // ft_pwd.c

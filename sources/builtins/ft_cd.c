@@ -6,94 +6,52 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/23 14:02:36 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/11 14:44:26 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/12 16:49:28 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell/minishell.h"
 
-bool	ft_check_err_new_path(t_var *mini, char *new_path)
+int	ft_run_chdir(t_var *mini, char *arg)
 {
-	if (!new_path)
-		malloc_protect(mini);
-	if (access(new_path, F_OK))
-		return (false);
-	return (true);
-}
-
-char	*ft_path_finder(t_var *mini, char *curr_path, char **args)
-{
-	size_t	i;
+	char	*pwd;
+	char	*new_pwd;
 	char	*new_path;
-
-	i = 0;
-	while (args && args[i])
+	
+	if (chdir(arg) == -1)
+		return (ft_write_error(2, "cd", arg, "No such file or directory"), EXIT_FAILURE);
+	pwd = ft_find_env_val(mini->env_list, "PWD");
+	if (!pwd)
+		return (ft_write_error(2, "cd", NULL, "pwd not set"), 137);
+	new_path = getcwd(0, 0);
+	if (!new_path)
 	{
-		if (!ft_strncmp(args[i], "..", 2))
+		if (*arg != '/')
 		{
-			new_path = ft_remove_lastdir(mini, curr_path);
-			free(curr_path);
-			curr_path = new_path;
+			new_pwd = ft_strjoin(pwd, arg, "/", 0);
+			if (!new_pwd)
+				malloc_protect(mini);
+			ft_update_env_var(mini, mini->env_list, "PWD", new_pwd);
+			free(new_pwd);
 		}
 		else
 		{
-			new_path = ft_strjoin(curr_path, args[i], "/", 0);
-			if (!ft_check_err_new_path(mini, new_path))
-				return (free(curr_path), free(new_path), NULL);
-			free(curr_path);
-			curr_path = new_path;
+			ft_update_env_var(mini, mini->env_list, "PWD", pwd);
+			free(pwd);
 		}
-		i++;
+		return (ft_write_error(2, "cd", NULL, "getcwd failed"), EXIT_SUCCESS);
 	}
-	return (curr_path);
+	ft_update_env_var(mini, mini->env_list, "OLDPWD", pwd);
+	ft_update_env_var(mini, mini->env_list, "PWD", new_path);
+	free(new_path);
+	return (EXIT_SUCCESS);
 }
-
-char	*ft_calculate_path(t_var *mini, char *arg, char *curr_path)
-{
-	char	**args;
-	char	*ret;
-
-	args = ft_split(arg, '/', 0);
-	if (!args)
-		malloc_protect(mini);
-	ret = ft_path_finder(mini, curr_path, args);
-	ft_free_strings(args);
-	return (ret);
-}
-
-//ft_cd: change directory
-//I dont get the behaviour of cd when you delete a directory two times above
-//i.e mkdir 1/2
-// mkdir 1/2/3
-// mkdir 1/2/3/4
-// cd 1/2/3/4
-// rm -rf ../../../../1
 
 int	ft_cd(t_var *mini, char **args)
 {
-	char	*cwd;
-	char	*new_path;
-
-	if (count_args(args) == 1)
-		return (ft_cd_to_homedir(mini, ft_find_pwd_val(mini->env_list)), 0);
-	cwd = getcwd(0, 0);
-	if (!cwd)
-		return (ft_write_error(2, "cd", NULL, "getcwd failed"), EXIT_FAILURE);
-	if (args[1] && !ft_strcmp(args[1], "."))
-		return (free(cwd), EXIT_SUCCESS);
-	if (!ft_strncmp("-", args[1], 1))
-		return (free(cwd), ft_cd_to_oldpwd(mini, cwd));
-	if (args[1][0] == '/')
-		new_path = ft_strdup(args[1]);
-	else
-		new_path = ft_calculate_path(mini, args[1], cwd);
-	if (!chdir(new_path))
-		return (ft_update_env_var(mini, mini->env_list, "OLDPWD", \
-			ft_find_pwd_val(mini->env_list)), ft_update_env_var(mini, \
-			mini->env_list, "PWD", new_path), free(new_path), EXIT_SUCCESS);
-	else
-		return (free(new_path), \
-		ft_write_error(2, "cd", args[1], "No such file or directory"), \
-		EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+	if (!args[1])
+		return (ft_cd_to_homedir(mini, ft_find_env_val(mini->env_list, "PWD")));
+	if (!ft_strncmp(args[1], "-", 1))
+		return (ft_cd_to_oldpwd(mini, ft_find_env_val(mini->env_list, "PWD")));
+	return (ft_run_chdir(mini, args[1]));
 }

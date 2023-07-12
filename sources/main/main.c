@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 02:32:32 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/12 12:19:48 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/12 16:39:20 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ int	g_exit_code;
 void	exit_shell(char *input)
 {
 	if (has_trailing_pipe(input) == true)
-		ft_printf("minishell: syntax error\n");
+		ft_putstr_fd("minishell: syntax error\n", 2);
 	else
-		ft_printf("minishell: exit\n");
+		ft_putstr_fd("minishell: exit\n", 2);
 	ft_free(input);
 }
 
@@ -55,7 +55,7 @@ void	main_loop(t_var *mini)
 		else
 			ft_free(input);
 		if (status == CMD_SIN_ERR)
-			ft_printf("minishell: syntax error\n");
+			ft_putstr_fd("minishell: syntax error\n", 2);
 	}
 	clear_history();
 }
@@ -84,10 +84,16 @@ void	set_up_struct(t_var **mini, char **envp)
 		malloc_protect(*mini);
 }
 
+void	f(void)
+{
+	system("leaks -q minishell");
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_var	*mini;
 
+	// atexit(&f);
 	init_sig_handle(0);
 	(void)argc;
 	(void)argv;
@@ -96,5 +102,5 @@ int	main(int argc, char **argv, char **envp)
 	main_loop(mini);
 	ft_free_exec_alloc(mini);
 	ft_free_all(mini);
-	return (EXIT_SUCCESS);
+	return (g_exit_code);
 }
