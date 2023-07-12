@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 13:54:26 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/12 17:21:36 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/12 18:15:50 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ int	single_cmd(t_var *mini)
 
 int	multiple_cmds(t_var *mini)
 {
-	create_pipes(mini);
+	if (create_pipes(mini))
+		return (EXIT_FAILURE);
 	process_management(mini);
 	close_pipes(mini);
 	return (wait_for_children(mini));

@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 02:18:00 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/11 16:54:19 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/12 18:15:22 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	ft_split_path(t_var *mini);
 
 // multiple_cmds.c
 
-void	create_pipes(t_var *mini);
+int	create_pipes(t_var *mini);
 
 void	close_pipes(t_var *mini);
 

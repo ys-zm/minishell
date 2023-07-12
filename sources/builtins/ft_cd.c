@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/23 14:02:36 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/12 16:49:28 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/12 18:24:36 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@ int	ft_run_chdir(t_var *mini, char *arg)
 	char	*pwd;
 	char	*new_pwd;
 	char	*new_path;
-	
+
 	if (chdir(arg) == -1)
-		return (ft_write_error(2, "cd", arg, "No such file or directory"), EXIT_FAILURE);
+		return (ft_write_error(2, "cd", arg, "No such file or directory"), \
+		EXIT_FAILURE);
 	pwd = ft_find_env_val(mini->env_list, "PWD");
 	if (!pwd)
 		return (ft_write_error(2, "cd", NULL, "pwd not set"), 137);
@@ -42,9 +43,7 @@ int	ft_run_chdir(t_var *mini, char *arg)
 		return (ft_write_error(2, "cd", NULL, "getcwd failed"), EXIT_SUCCESS);
 	}
 	ft_update_env_var(mini, mini->env_list, "OLDPWD", pwd);
-	ft_update_env_var(mini, mini->env_list, "PWD", new_path);
-	free(new_path);
-	return (EXIT_SUCCESS);
+	return (free(new_path), ft_update_env_var(mini, mini->env_list, "PWD", new_path), EXIT_SUCCESS);
 }
 
 int	ft_cd(t_var *mini, char **args)

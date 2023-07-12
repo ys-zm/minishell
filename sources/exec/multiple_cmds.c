@@ -6,13 +6,13 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:00:26 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/12 17:30:38 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/12 18:21:21 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell/minishell.h"
 
-void	create_pipes(t_var *mini)
+int	create_pipes(t_var *mini)
 {
 	u_int32_t	i;
 
@@ -21,11 +21,13 @@ void	create_pipes(t_var *mini)
 	{
 		if (pipe(mini->pipes[i]) == -1)
 		{
-			ft_free_all(mini);
+			ft_free_exec_alloc(mini);
 			ft_error_msg(mini, "Creating pipes failed", 1);
+			return (EXIT_FAILURE);
 		}
 		i++;
 	}
+	return (EXIT_SUCCESS);
 }
 
 void	close_pipes(t_var *mini)

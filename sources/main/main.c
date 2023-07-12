@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 02:32:32 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/12 17:30:46 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/12 18:23:07 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_var	*mini;
 
-	// atexit(&f);
+	atexit(&f);
 	init_sig_handle(0);
 	(void)argc;
 	(void)argv;
