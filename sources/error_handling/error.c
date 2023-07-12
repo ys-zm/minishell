@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:14:36 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/11 16:50:29 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/12 21:52:31 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	ft_error_msg(t_var *mini, char *str, int error)
 {
 	(void)mini;
 	ft_putstr_fd("minishell: ", 2);
+	printf("str: %s\n", str);
 	perror(str);
 	g_exit_code = error;
 }

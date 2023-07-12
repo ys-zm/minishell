@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 01:56:43 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/11 16:52:08 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/12 20:27:46 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct s_cmd
 	char				**files;
 	int32_t				fd_in;
 	int32_t				fd_out;
+	bool				if_next;
 }	t_cmd;
 
 typedef struct s_var
@@ -67,6 +68,8 @@ typedef struct s_var
 	char		**env_arr;
 	char		**paths;
 	int			**pipes;
+	int			pipe[2];
+	pid_t		f_pid;
 	pid_t		*pid;
 	int			status;
 	char		*here_doc_path;

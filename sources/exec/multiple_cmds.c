@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:00:26 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/12 18:21:21 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/12 21:02:04 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,22 +60,22 @@ int	wait_for_children(t_var *mini)
 	return (status);
 }
 
-int	process_management(t_var *mini)
-{
-	u_int32_t	i;
+// int	process_management(t_var *mini)
+// {
+// 	u_int32_t	i;
 
-	i = 0;
-	while (i < mini->n_cmd)
-	{
-		init_sig_handle(1);
-		mini->pid[i] = fork();
-		if (mini->pid[i] == 0)
-		{
-			init_sig_handle(2);
-			ft_exec_multiple(mini, i);
-		}
-		i++;
-		init_sig_handle(0);
-	}
-	return (EXIT_SUCCESS);
-}
+// 	i = 0;
+// 	while (i < mini->n_cmd)
+// 	{
+// 		init_sig_handle(1);
+// 		mini->pid[i] = fork();
+// 		if (mini->pid[i] == 0)
+// 		{
+// 			init_sig_handle(2);
+// 			ft_exec_multiple(mini, i);
+// 		}
+// 		i++;
+// 		init_sig_handle(0);
+// 	}
+// 	return (EXIT_SUCCESS);
+// }

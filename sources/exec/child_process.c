@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 13:41:41 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/12 17:32:10 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/12 22:14:56 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,39 +42,42 @@ void	ft_call_execve(t_var *mini, t_cmd cmd)
 	execve(cmd_path, cmd.full_cmd, mini->env_arr);
 	free(cmd_path);
 	g_exit_code = 127;
+	printf("hi\n");
 	ft_error_msg(mini, "", g_exit_code);
 }
 
 int	ft_exec_child_multiple(t_var *mini, int index)
 {
 	t_cmd	cmd;
-	int		status_check;
 
-	status_check = 0;
 	cmd = mini->cmd_data[index];
 	if (!cmd.cmd_name)
 		exit(EXIT_SUCCESS);
 	if (!ft_if_builtin(cmd.cmd_name))
 		ft_call_execve(mini, cmd);
 	else
-	{
-		status_check = ft_exec_builtin(mini, index, STDOUT_FILENO);
-		if (status_check)
-			g_exit_code = status_check;
-		else
-			exit(status_check);
-	}
+		g_exit_code = ft_exec_builtin(mini, index, STDOUT_FILENO);
 	exit(g_exit_code);
 }
 
-void	ft_exec_multiple(t_var *mini, u_int32_t index)
+void	ft_exec_multiple(t_var *mini, u_int32_t index, int fd_in)
 {
 	if (index > 0)
-		dup2(mini->pipes[index - 1][READ], STDIN_FILENO);
+	{
+		printf("fd_in: %d\n", fd_in);
+		dup2(fd_in, STDIN_FILENO);
+		close(fd_in);
+	}
 	if (index < mini->n_cmd - 1)
-		dup2(mini->pipes[index][WRITE], STDOUT_FILENO);
+	{
+		
+		close(mini->pipe[READ]);
+		printf("read endclose: %d\n", mini->pipe[READ]);
+		printf("write endclose: %d\n", mini->pipe[WRITE]);
+		dup2(mini->pipe[WRITE], STDOUT_FILENO);
+		close(mini->pipe[WRITE]);
+	}
 	if (ft_if_redir(mini, index))
 		ft_redirect(mini, index);
-	close_pipes(mini);
 	ft_exec_child_multiple(mini, index);
 }

@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 02:18:00 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/12 18:15:22 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/12 21:00:04 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	ft_call_execve(t_var *mini, t_cmd cmd);
 
 int		ft_exec_child_multiple(t_var *mini, int index);
 
-void	ft_exec_multiple(t_var *mini, uint32_t index);
+void	ft_exec_multiple(t_var *mini, u_int32_t index, int fd_in);
 
 // exec.c
 int		ft_exec_child_multiple(t_var *mini, int index);
