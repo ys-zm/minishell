@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/24 00:55:08 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/07 12:16:20 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/12 17:29:37 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ bool	is_valid_dollar(char *string, uint32_t pos_to_check)
 	if (string[pos_to_check] != '$')
 		return (false);
 	if ((! string[pos_to_check + 1]) || ft_isspace(string[pos_to_check + 1]) \
-		|| is_quote(string[pos_to_check + 1]))
+		|| is_quote(string[pos_to_check + 1]) || (string[pos_to_check + 1] == '='))
 		return (false);
 	i = 0;
 	open_quotes = false;

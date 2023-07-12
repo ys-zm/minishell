@@ -6,11 +6,20 @@
 /*   By: faru <faru@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/28 11:57:18 by faru          #+#    #+#                 */
-/*   Updated: 2023/07/01 02:20:57 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/12 17:19:05 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell/minishell.h"
+
+void	init_shell_envioment(void)
+{
+	struct termios	attributes;
+
+	tcgetattr(STDIN_FILENO, &attributes);
+	attributes.c_lflag &= ~(ECHOCTL);
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &attributes);
+}
 
 void	signal_handler(int signum)
 {

@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 01:49:19 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/08 20:05:33 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/12 17:27:32 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,11 @@ char	*expand_vars(char *input, t_env *env_vars)
 		if (is_valid_dollar(input, i++) == false)
 			continue ;
 		end = i;
-		while (input[end] && \
-			(ft_isalpha(input[end]) || ft_strchr("?_", input[end])))
-			end++;
+		while (input[end] && (ft_isalnum(input[end]) || ft_strchr("?_", input[end])))
+		{
+			if (input[end++] == '?')
+				break ;
+		}
 		var_name = ft_substr(input, i, end - i);
 		var_value = get_var_value(env_vars, var_name);
 		ft_free(var_name);
