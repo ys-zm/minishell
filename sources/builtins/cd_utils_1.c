@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 11:57:18 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/12 16:12:07 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/12 17:36:02 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*ft_find_env_val(t_env **env_list, char *env_var)
 	env = *env_list;
 	while (env)
 	{
-		if (!ft_strncmp(env->key, env_var, 3))
+		if (!ft_strncmp(env->key, env_var, ft_strlen(env_var)))
 			return (env->value);
 		env = env->next;
 	}

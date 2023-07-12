@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 13:41:41 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/12 17:08:37 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/12 17:32:10 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,6 @@ void	ft_exec_multiple(t_var *mini, u_int32_t index)
 		dup2(mini->pipes[index][WRITE], STDOUT_FILENO);
 	if (ft_if_redir(mini, index))
 		ft_redirect(mini, index);
-	// close_pipes(mini);
+	close_pipes(mini);
 	ft_exec_child_multiple(mini, index);
 }
