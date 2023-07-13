@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 13:22:13 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/12 16:57:16 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/13 09:56:41 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	ft_print_pwd(char *curr_dir, int fd_out)
 	ft_putstr_fd(curr_dir, fd_out);
 	ft_putstr_fd("\n", fd_out);
 }
+
 //ft_pwd: print working directory
 int	ft_pwd(t_var *mini, char **args, int fd_out)
 {

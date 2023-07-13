@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 13:54:26 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/12 18:15:50 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/13 09:57:45 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	single_cmd(t_var *mini)
 		return (ft_error_msg(mini, "Fork failed", 1), 1);
 	if (mini->pid[0] == 0)
 	{
-	init_sig_handle(2);
+		init_sig_handle(2);
 		ft_do_redirections(mini, 0);
 		ft_exec_child_single(mini);
 	}
