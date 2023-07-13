@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 12:52:50 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/13 16:18:20 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/13 18:42:04 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,6 @@ int	ft_export_single(t_var *mini, char *arg, size_t op_type, size_t op_pos)
 	return (EXIT_SUCCESS);
 }
 
-//a=b ignores the key for some reason
-//expansion should work i.e. echo $new_key shold expand new_value
-// export a="ls -la". run $a should run the cmd.
 int	ft_export(t_var *mini, char **args)
 {
 	size_t	op_type;

@@ -66,20 +66,6 @@ char	*ft_find_path(t_var *mini);
 
 void	ft_split_path(t_var *mini);
 
-// multiple_cmds.c
-<<<<<<< HEAD
-
-int	    create_pipes(t_var *mini);
-=======
-int		create_pipes(t_var *mini);
->>>>>>> c37ca1b273fda4dc3b7fea0b7fcd5484191fb738
-
-void	close_pipes(t_var *mini);
-
-int		wait_for_children(t_var *mini);
-
-int		process_management(t_var *mini);
-
 // path_utils.c
 void	ft_command_not_found(t_var *mini, char *cmd);
 
