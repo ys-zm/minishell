@@ -6,7 +6,11 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 02:18:00 by fra           #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2023/07/13 17:47:07 by yzaim         ########   odam.nl         */
+=======
+/*   Updated: 2023/07/13 10:21:45 by faru          ########   odam.nl         */
+>>>>>>> c37ca1b273fda4dc3b7fea0b7fcd5484191fb738
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +67,12 @@ char	*ft_find_path(t_var *mini);
 void	ft_split_path(t_var *mini);
 
 // multiple_cmds.c
+<<<<<<< HEAD
 
 int	    create_pipes(t_var *mini);
+=======
+int		create_pipes(t_var *mini);
+>>>>>>> c37ca1b273fda4dc3b7fea0b7fcd5484191fb738
 
 void	close_pipes(t_var *mini);
 

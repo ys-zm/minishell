@@ -6,7 +6,11 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 13:54:26 by yzaim         #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2023/07/13 17:53:45 by yzaim         ########   odam.nl         */
+=======
+/*   Updated: 2023/07/13 16:33:26 by faru          ########   odam.nl         */
+>>>>>>> c37ca1b273fda4dc3b7fea0b7fcd5484191fb738
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +42,29 @@ int	single_cmd(t_var *mini)
 			return (EXIT_FAILURE);
 		return (ft_exec_builtin(mini, 0, mini->cmd_data[0].fd_out));
 	}
+<<<<<<< HEAD
 	init_sig_handle(1);
 	(mini)->f_pid = fork();
 	if ((mini)->f_pid < 0)
 		return (ft_error_msg("Fork failed"), 1);
 	if (mini->f_pid == 0)
+=======
+	(mini)->pid[0] = fork();
+	if ((mini)->pid[0] < 0)
+		return (ft_error_msg(mini, "Fork failed", 1), 1);
+	if (mini->pid[0] == 0)
+>>>>>>> c37ca1b273fda4dc3b7fea0b7fcd5484191fb738
 	{
 		init_sig_handle(2);
 		ft_do_redirections(mini, 0);
 		ft_exec_child_single(mini);
 	}
+<<<<<<< HEAD
 	waitpid(mini->f_pid, &exit_status, 0);
+=======
+	init_sig_handle(1);
+	waitpid(mini->pid[0], &exit_status, 0);
+>>>>>>> c37ca1b273fda4dc3b7fea0b7fcd5484191fb738
 	init_sig_handle(0);
 	if (WIFEXITED(exit_status))
 		return (WEXITSTATUS(exit_status));
