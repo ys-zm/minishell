@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 13:54:26 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/13 09:57:45 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/13 16:33:26 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int	single_cmd(t_var *mini)
 			return (EXIT_FAILURE);
 		return (ft_exec_builtin(mini, 0, mini->cmd_data[0].fd_out));
 	}
-	init_sig_handle(1);
 	(mini)->pid[0] = fork();
 	if ((mini)->pid[0] < 0)
 		return (ft_error_msg(mini, "Fork failed", 1), 1);
@@ -48,6 +47,7 @@ int	single_cmd(t_var *mini)
 		ft_do_redirections(mini, 0);
 		ft_exec_child_single(mini);
 	}
+	init_sig_handle(1);
 	waitpid(mini->pid[0], &exit_status, 0);
 	init_sig_handle(0);
 	if (WIFEXITED(exit_status))

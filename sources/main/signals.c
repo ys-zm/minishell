@@ -6,7 +6,7 @@
 /*   By: faru <faru@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/28 11:57:18 by faru          #+#    #+#                 */
-/*   Updated: 2023/07/12 17:19:05 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/13 16:22:40 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	init_sig_handle(int mode)
 {
 	if (mode == 0)
 	{
+		init_shell_envioment();
 		signal(SIGINT, signal_handler);
 		signal(SIGQUIT, SIG_IGN);
 	}
