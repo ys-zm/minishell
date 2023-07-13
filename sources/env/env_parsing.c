@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:06:07 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/11 16:48:38 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/13 18:34:20 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,11 @@ void	make_env_list(char **envp, t_var *mini)
 	t_env	*node;
 	int		i;
 
+	if (!envp && !*envp)
+	{
+		fprintf(stderr, "no envp\n");
+		return ;
+	}
 	i = 1;
 	mini->env_list = ft_calloc(sizeof(t_env *), 1);
 	if (!mini->env_list)

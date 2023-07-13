@@ -6,16 +6,26 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/23 14:02:36 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/12 18:24:36 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/13 18:27:05 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell/minishell.h"
 
+void	ft_get_cwd_fails(t_var *mini, char *pwd, char *arg)
+{
+	char	*new_pwd;
+
+	new_pwd = ft_strjoin(pwd, arg, "/", 0);
+	if (!new_pwd)
+		malloc_protect(mini);
+	ft_update_env_var(mini, mini->env_list, "PWD", new_pwd);
+	free(new_pwd);
+}
+
 int	ft_run_chdir(t_var *mini, char *arg)
 {
 	char	*pwd;
-	char	*new_pwd;
 	char	*new_path;
 
 	if (chdir(arg) == -1)
@@ -29,21 +39,14 @@ int	ft_run_chdir(t_var *mini, char *arg)
 	{
 		if (*arg != '/')
 		{
-			new_pwd = ft_strjoin(pwd, arg, "/", 0);
-			if (!new_pwd)
-				malloc_protect(mini);
-			ft_update_env_var(mini, mini->env_list, "PWD", new_pwd);
-			free(new_pwd);
+			ft_get_cwd_fails(mini, pwd, arg);
+			return (ft_write_error(2, "cd", NULL, "getcwd failed"), \
+			EXIT_SUCCESS);
 		}
-		else
-		{
-			ft_update_env_var(mini, mini->env_list, "PWD", pwd);
-			free(pwd);
-		}
-		return (ft_write_error(2, "cd", NULL, "getcwd failed"), EXIT_SUCCESS);
 	}
 	ft_update_env_var(mini, mini->env_list, "OLDPWD", pwd);
-	return (free(new_path), ft_update_env_var(mini, mini->env_list, "PWD", new_path), EXIT_SUCCESS);
+	return (ft_update_env_var(mini, mini->env_list, "PWD", new_path), \
+	free(new_path), EXIT_SUCCESS);
 }
 
 int	ft_cd(t_var *mini, char **args)

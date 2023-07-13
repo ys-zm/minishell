@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:05:32 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/11 19:00:01 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/13 16:27:57 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,23 @@ void	ft_update_shlvl(t_shlvl_status ret, t_env *env)
 		ft_write_error(2, NULL, NULL, "error when setting shell level");
 }
 
+void	ft_add_to_env(t_var *mini, char *key, char *value)
+{
+	char *m_key;
+	char *m_value;
+
+	m_key = ft_strdup(key);
+	if (!m_key)
+		malloc_protect(mini);
+	m_value = ft_strdup(value);
+	if (!m_value)
+	{
+		free(m_key);
+		malloc_protect(mini);
+	}
+	ft_add_node(mini->env_list, ft_new_node(m_key, m_value));
+}
+
 void	ft_set_shlvl(t_var *mini)
 {
 	t_env			*env;
@@ -100,5 +117,5 @@ void	ft_set_shlvl(t_var *mini)
 			ft_update_shlvl(ret, env);
 	}
 	else
-		ft_add_node(mini->env_list, ft_new_node("SHLVL", "1"));
+		ft_add_to_env(mini, "SHLVL", "1");
 }

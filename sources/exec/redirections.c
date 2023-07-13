@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 13:49:24 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/01 01:48:12 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/13 17:46:38 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	ft_redir_type(t_var *mini, int index)
 	{
 		if (ft_check_permission(cmd, cmd->redirections[i], i) == EXIT_FAILURE)
 		{
-			ft_error_msg(mini, cmd->files[i], 1);
+			ft_error_msg(cmd->files[i]);
 			return (EXIT_FAILURE);
 		}
 		i++;
@@ -66,22 +66,15 @@ int	ft_redir_type(t_var *mini, int index)
 	return (EXIT_SUCCESS);
 }
 
-int	ft_redirect(t_var *mini, int index)
+int	ft_file_redirect(t_var *mini, int index)
 {
 	t_cmd	*cmd;
 
 	cmd = mini->cmd_data + index;
 	if (ft_redir_type(mini, index))
-		return (EXIT_FAILURE);
-	if (cmd->fd_in != 0)
 	{
-		dup2(cmd->fd_in, STDIN_FILENO);
-		close(cmd->fd_in);
-	}
-	if (cmd->fd_out != 1)
-	{
-		dup2(cmd->fd_out, STDOUT_FILENO);
-		close(cmd->fd_out);
+		g_exit_code = 1;
+		exit(g_exit_code);
 	}
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 13:41:41 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/12 22:14:56 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/13 17:46:48 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_exec_child_single(t_var *mini)
 	g_exit_code = 0;
 	execve(cmd_path, cmd.full_cmd, mini->env_arr);
 	g_exit_code = 127;
-	ft_error_msg(mini, "", g_exit_code);
+	ft_error_msg("");
 	ft_free_all(mini);
 	exit(g_exit_code);
 }
@@ -42,8 +42,7 @@ void	ft_call_execve(t_var *mini, t_cmd cmd)
 	execve(cmd_path, cmd.full_cmd, mini->env_arr);
 	free(cmd_path);
 	g_exit_code = 127;
-	printf("hi\n");
-	ft_error_msg(mini, "", g_exit_code);
+	ft_error_msg("");
 }
 
 int	ft_exec_child_multiple(t_var *mini, int index)
@@ -60,24 +59,46 @@ int	ft_exec_child_multiple(t_var *mini, int index)
 	exit(g_exit_code);
 }
 
+int	ft_pipe_dup(int fd, int fileno)
+{
+	if (fd == fileno && fd != -1)
+		return (0);
+	if (dup2(fd, fileno) == -1)
+	{
+		ft_error_msg("");
+		g_exit_code = 1;
+		close(fd);
+		return (-1);
+	}
+	close(fd);
+	return (EXIT_SUCCESS);
+}
+
+int redirect_pipe_in(t_var *mini, int index) 
+{
+	return (ft_pipe_dup(mini->cmd_data[index].fd_in, STDIN_FILENO));
+}
+
+int redirect_pipe_out(t_var *mini, int index) 
+{
+	return (ft_pipe_dup(mini->cmd_data[index].fd_out, STDOUT_FILENO));
+}
+
 void	ft_exec_multiple(t_var *mini, u_int32_t index, int fd_in)
 {
-	if (index > 0)
-	{
-		printf("fd_in: %d\n", fd_in);
-		dup2(fd_in, STDIN_FILENO);
-		close(fd_in);
-	}
-	if (index < mini->n_cmd - 1)
-	{
-		
+	if (mini->cmd_data[index].if_next)
 		close(mini->pipe[READ]);
-		printf("read endclose: %d\n", mini->pipe[READ]);
-		printf("write endclose: %d\n", mini->pipe[WRITE]);
-		dup2(mini->pipe[WRITE], STDOUT_FILENO);
-		close(mini->pipe[WRITE]);
-	}
+	if (fd_in != -1)
+		mini->cmd_data[index].fd_in = fd_in;
+	mini->cmd_data[index].fd_out = mini->pipe[WRITE];
+	if (!mini->cmd_data[index].if_next)
+		mini->cmd_data[index].fd_out = STDOUT_FILENO;
 	if (ft_if_redir(mini, index))
-		ft_redirect(mini, index);
+		ft_file_redirect(mini, index);
+	if (redirect_pipe_in(mini, index) == -1)
+		exit(g_exit_code);
+	if (redirect_pipe_out(mini, index) == -1)
+		exit(g_exit_code);
 	ft_exec_child_multiple(mini, index);
 }
+  

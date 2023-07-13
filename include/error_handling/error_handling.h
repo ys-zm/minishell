@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 02:17:37 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/11 16:54:33 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/13 16:30:31 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_set_to_null(t_var *mini);
 
 void	ft_free_all(t_var *mini);
 
-void	ft_error_msg(t_var *mini, char *str, int error);
+void	ft_error_msg(char *str);
 
 int		malloc_protect(t_var *mini);
 

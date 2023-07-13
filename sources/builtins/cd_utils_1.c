@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 11:57:18 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/12 18:23:25 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/13 18:23:10 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,14 @@ t_env	*ft_search_env_var(t_env **env_list, char *which_env)
 
 char	*ft_find_env_val(t_env **env_list, char *env_var)
 {
-	t_env	*env;
+	t_env		*env;
+	size_t		len;
 
 	env = *env_list;
+	len = ft_strlen(env_var);
 	while (env)
 	{
-		if (!ft_strncmp(env->key, env_var, ft_strlen(env_var)))
+		if (!ft_strncmp(env->key, env_var, len))
 			return (env->value);
 		env = env->next;
 	}
@@ -84,14 +86,14 @@ char	*ft_find_env_val(t_env **env_list, char *env_var)
 void	ft_update_env_var(t_var *mini, t_env **env_list, \
 		char *which_env, char *new_env)
 {
-	t_env	*env_var;
+	t_env	*env;
 
-	env_var = ft_search_env_var(env_list, which_env);
-	if (env_var)
+	env = ft_search_env_var(env_list, which_env);
+	if (env)
 	{
-		free(env_var->value);
-		env_var->value = ft_strdup(new_env);
-		if (!env_var->value)
+		free(env->value);
+		env->value = ft_strdup(new_env);
+		if (!env->value)
 			malloc_protect(mini);
 	}
 }

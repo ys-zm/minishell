@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 02:18:00 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/12 21:00:04 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/13 17:47:07 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ int		ft_exec_child_single(t_var *mini);
 
 void	ft_call_execve(t_var *mini, t_cmd cmd);
 
-int		ft_exec_child_multiple(t_var *mini, int index);
-
 void	ft_exec_multiple(t_var *mini, u_int32_t index, int fd_in);
 
 // exec.c
@@ -66,7 +64,7 @@ void	ft_split_path(t_var *mini);
 
 // multiple_cmds.c
 
-int	create_pipes(t_var *mini);
+int	    create_pipes(t_var *mini);
 
 void	close_pipes(t_var *mini);
 
@@ -86,7 +84,7 @@ bool	ft_check_permission(t_cmd *cmd, t_red_type red_type, int index);
 
 int		ft_redir_type(t_var *mini, int index);
 
-int		ft_redirect(t_var *mini, int index);
+int		ft_file_redirect(t_var *mini, int index);
 
 // shlvl.c
 void	ft_set_shlvl(t_var *mini);

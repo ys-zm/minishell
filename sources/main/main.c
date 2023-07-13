@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 02:32:32 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/12 21:51:01 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/13 18:39:10 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,10 @@ void	set_up_struct(t_var **mini, char **envp)
 	(*mini)->paths = NULL;
 	(*mini)->pipes = NULL;
 	(*mini)->pid = NULL;
-	make_env_list(envp, *mini);
+	if (envp != NULL)
+	{
+		make_env_list(envp, *mini);
+	}
 	cwd = get_var_value(*((*mini)->env_list), "SHELL");
 	if (cwd == NULL)
 		malloc_protect(*mini);

@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:14:36 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/12 21:52:31 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/13 16:30:25 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,10 @@ void	ft_free_all(t_var *mini)
 
 // print error message from minishell and set g_exit_code
 // function does not exit
-void	ft_error_msg(t_var *mini, char *str, int error)
+void	ft_error_msg(char *str)
 {
-	(void)mini;
 	ft_putstr_fd("minishell: ", 2);
-	printf("str: %s\n", str);
 	perror(str);
-	g_exit_code = error;
 }
 
 // kill program when malloc fails, sets exit code to 1
@@ -62,7 +59,8 @@ int	malloc_protect(t_var *mini)
 	remove_here_docs(mini->here_doc_path);
 	ft_free_exec_alloc(mini);
 	ft_free_all(mini);
-	ft_error_msg(mini, "", 137);
+	ft_error_msg("");
+	g_exit_code = 137;
 	exit(g_exit_code);
 }
 
