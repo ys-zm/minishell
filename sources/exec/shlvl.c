@@ -102,6 +102,11 @@ void	ft_set_shlvl(t_var *mini)
 	t_env			*env;
 	t_shlvl_status	ret;
 
+	if (!mini->env_list)
+	{
+		printf("NO ENV\n");
+		return ;
+	}
 	env = *(mini->env_list);
 	ret = -1;
 	if (ft_check_if_key_exists(*(mini->env_list), "SHLVL"))

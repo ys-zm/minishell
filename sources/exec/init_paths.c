@@ -16,10 +16,8 @@ char	*ft_find_path(t_var *mini)
 {
 	t_env	*env_list;
 
-	if (!(mini->env_list))
-		exit(0);
-	if (*(mini->env_list) == NULL)
-		exit(0);
+	if (!(mini->env_list) && *(mini->env_list) == NULL)
+		return (NULL);
 	env_list = *(mini->env_list);
 	while (env_list)
 	{

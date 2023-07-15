@@ -68,9 +68,6 @@ int	ft_redir_type(t_var *mini, int index)
 
 int	ft_file_redirect(t_var *mini, int index)
 {
-	t_cmd	*cmd;
-
-	cmd = mini->cmd_data + index;
 	if (ft_redir_type(mini, index))
 	{
 		g_exit_code = 1;

@@ -47,8 +47,10 @@ char	**ft_list_to_arr(t_var *mini, t_env *env_list)
 
 	i = 0;
 	size = ft_list_size_to_print(env_list);
-	if (!size)
+	if (size == 0)
+	{
 		return (NULL);
+	}
 	arr = malloc(sizeof(char *) * (size + 1));
 	if (!arr)
 		malloc_protect(mini);

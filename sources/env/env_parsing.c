@@ -17,6 +17,11 @@ void	ft_print_array(char **arr)
 	int	i;
 
 	i = 0;
+	if (!arr)
+	{
+		printf("array is empty\n");
+		return ;
+	}
 	while (arr[i])
 	{
 		ft_putstr_fd(arr[i], 1);
@@ -80,7 +85,7 @@ void	make_env_list(char **envp, t_var *mini)
 	t_env	*node;
 	int		i;
 
-	if (!envp && !*envp)
+	if (!envp || !*envp)
 	{
 		fprintf(stderr, "no envp\n");
 		return ;

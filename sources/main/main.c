@@ -62,11 +62,11 @@ void	main_loop(t_var *mini)
 
 void	set_up_struct(t_var **mini, char **envp)
 {
-	char	*cwd;
+	char	*cwd = NULL;
 
 	*mini = ft_calloc(1, sizeof(t_var));
 	if (*mini == NULL)
-		exit(EXIT_FAILURE);
+		malloc_protect(*mini);
 	(*mini)->cmd_data = NULL;
 	(*mini)->n_cmd = 0;
 	(*mini)->env_list = NULL;
@@ -74,13 +74,13 @@ void	set_up_struct(t_var **mini, char **envp)
 	(*mini)->paths = NULL;
 	(*mini)->pipes = NULL;
 	(*mini)->pid = NULL;
-	if (envp != NULL)
+	make_env_list(envp, *mini);
+	if ((*mini)->env_list)
 	{
-		make_env_list(envp, *mini);
+		cwd = get_var_value(*((*mini)->env_list), "SHELL"); //what if there are no envp variables? function segfaults
+		if (cwd == NULL)
+			malloc_protect(*mini);
 	}
-	cwd = get_var_value(*((*mini)->env_list), "SHELL");
-	if (cwd == NULL)
-		malloc_protect(*mini);
 	(*mini)->here_doc_path = ft_strjoin(cwd, HERE_DOC_FOLDER, "/", false);
 	ft_free(cwd);
 	if ((*mini)->here_doc_path == NULL)
@@ -101,6 +101,7 @@ int	main(int argc, char **argv, char **envp)
 	init_sig_handle(0);
 	(void)argc;
 	(void)argv;
+	
 	set_up_struct(&mini, envp);
 	ft_set_shlvl(mini);
 	main_loop(mini);
