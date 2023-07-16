@@ -70,9 +70,10 @@ int	ft_free_env_list(t_var *mini)
 	t_env	*tmp;
 	t_env	**env_list;
 
-	env_list = mini->env_list;
-	if (!env_list)
+	if (!mini->env_list)
 		return (EXIT_SUCCESS);
+	env_list = mini->env_list;
+	printf("here!\n");
 	while (*env_list != NULL)
 	{
 		tmp = *env_list;

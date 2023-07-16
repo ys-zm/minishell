@@ -33,7 +33,7 @@ int	ft_run_chdir(t_var *mini, char *arg)
 		EXIT_FAILURE);
 	pwd = ft_find_env_val(mini->env_list, "PWD");
 	if (!pwd)
-		return (ft_write_error(2, "cd", NULL, "pwd not set"), 137);
+		return (ft_write_error(2, "cd", NULL, "pwd not set"), EXIT_FAILURE);
 	new_path = getcwd(0, 0);
 	if (!new_path)
 	{

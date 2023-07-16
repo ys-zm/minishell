@@ -30,25 +30,24 @@ void	ft_print_array(char **arr)
 void	ft_update_shell(t_env **env_list)
 {
 	t_env	*env;
-	char	*check_file;
+	t_env	*start;
 	char	*cwd;
 
+	start = *env_list;
 	env = *env_list;
 	cwd = getcwd(0, 0);
-	check_file = ft_strjoin(cwd, "Makefile", "/", 0);
-	while (env && !access(check_file, F_OK))
+	while (env )
 	{
 		if (!ft_strncmp("SHELL", env->key, 5))
 		{
 			free(env->value);
-			free(check_file);
 			env->value = cwd;
 			return ;
 		}
 		env = env->next;
 	}
+	env_list = &start;
 	free(cwd);
-	free(check_file);
 }
 
 void	ft_free_prev(t_env *head)
@@ -83,10 +82,7 @@ void	make_env_list(char **envp, t_var *mini)
 	int		i;
 
 	if (!envp || !*envp)
-	{
-		fprintf(stderr, "no envp\n");
 		return ;
-	}
 	i = 1;
 	mini->env_list = ft_calloc(sizeof(t_env *), 1);
 	if (!mini->env_list)
@@ -107,5 +103,5 @@ void	make_env_list(char **envp, t_var *mini)
 		i++;
 	}
 	*(mini->env_list) = head;
-	ft_update_shell(mini->env_list);
+	// ft_update_shell(mini->env_list);
 }

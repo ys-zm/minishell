@@ -72,6 +72,11 @@ char	*ft_find_env_val(t_env **env_list, char *env_var)
 	t_env		*env;
 	size_t		len;
 
+	if (!env_list || !*env_list)
+	{
+		printf("return null\n");
+		return (NULL);
+	}
 	env = *env_list;
 	len = ft_strlen(env_var);
 	while (env)
