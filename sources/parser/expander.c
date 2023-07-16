@@ -6,31 +6,29 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 01:49:19 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/13 10:22:11 by faru          ########   odam.nl         */
+/*   Updated: 2023/07/16 16:33:45 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell/minishell.h"
 
-char	*get_var_value(t_env *env_vars, char *var_name)
+char	*get_var_value(t_env **env_vars, char *var_name)
 {
-	if ((var_name == NULL) || (env_vars == NULL))
-		return (NULL);
-	else if (ft_strncmp(var_name, "?", 1) == 0)
+	if (ft_strncmp(var_name, "?", 1) == 0)
 		return (ft_itoa(g_exit_code));
 	else
 	{
-		while (env_vars)
+		while (env_vars && *env_vars)
 		{
-			if (ft_strncmp(env_vars->key, var_name, ft_strlen(var_name)) == 0)
-				return (ft_strdup(env_vars->value));
-			env_vars = env_vars->next;
+			if (ft_strncmp((*env_vars)->key, var_name, ft_strlen(var_name)) == 0)
+				return (ft_strdup((*env_vars)->value));
+			(*env_vars) = (*env_vars)->next;
 		}
 		return (ft_strdup(""));
 	}
 }
 
-char	*expand_vars(char *input, t_env *env_vars)
+char	*expand_vars(char *input, t_env **env_vars)
 {
 	uint32_t	i;
 	uint32_t	end;
@@ -58,7 +56,7 @@ char	*expand_vars(char *input, t_env *env_vars)
 	return (input);
 }
 
-char	*expand_tilde(char *str, t_env *env_vars)
+char	*expand_tilde(char *str, t_env **env_vars)
 {
 	uint32_t	i;
 	char		*home_var;
@@ -112,7 +110,7 @@ char	*expand_pid(char *input)
 	return (input);
 }
 
-char	*expander(char *input, t_env *env_vars)
+char	*expander(char *input, t_env **env_vars)
 {
 	char	*tilde_exp;
 	char	*pid_exp;

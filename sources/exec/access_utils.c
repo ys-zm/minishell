@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 13:41:15 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/01 01:48:12 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/16 16:48:43 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ bool	ft_if_path_exists(t_var *mini)
 {
 	t_env	*env;
 
+	if (mini->env_list == NULL)
+		return (false);
 	env = *(mini->env_list);
 	while (env)
 	{

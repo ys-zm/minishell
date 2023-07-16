@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 13:48:59 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/01 01:48:12 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/16 16:46:04 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*ft_find_path(t_var *mini)
 {
 	t_env	*env_list;
 
-	if (!(mini->env_list) && *(mini->env_list) == NULL)
+	if ((mini->env_list == NULL) || (*(mini->env_list) == NULL))
 		return (NULL);
 	env_list = *(mini->env_list);
 	while (env_list)
