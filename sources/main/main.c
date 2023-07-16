@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 02:32:32 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/13 18:41:10 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/16 16:54:55 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,12 @@ void	set_up_struct(t_var **mini, char **envp)
 	(*mini)->pipes = NULL;
 	(*mini)->pid = NULL;
 	make_env_list(envp, *mini);
-	if ((*mini)->env_list)
-	{
-		cwd = get_var_value(*((*mini)->env_list), "SHELL"); //what if there are no envp variables? function segfaults
-		if (cwd == NULL)
-			malloc_protect(*mini);
-	}
+	if ((*mini)->env_list && envp)
+		cwd = get_var_value((*mini)->env_list, "SHELL");
+	else
+		cwd = getcwd(0, 0);
+	if (cwd == NULL)
+		malloc_protect(*mini);
 	(*mini)->here_doc_path = ft_strjoin(cwd, HERE_DOC_FOLDER, "/", false);
 	ft_free(cwd);
 	if ((*mini)->here_doc_path == NULL)
@@ -101,7 +101,6 @@ int	main(int argc, char **argv, char **envp)
 	init_sig_handle(0);
 	(void)argc;
 	(void)argv;
-	
 	set_up_struct(&mini, envp);
 	ft_set_shlvl(mini);
 	main_loop(mini);

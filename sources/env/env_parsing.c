@@ -18,10 +18,7 @@ void	ft_print_array(char **arr)
 
 	i = 0;
 	if (!arr)
-	{
-		printf("array is empty\n");
 		return ;
-	}
 	while (arr[i])
 	{
 		ft_putstr_fd(arr[i], 1);

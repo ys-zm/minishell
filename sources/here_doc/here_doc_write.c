@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/19 17:46:55 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/08 01:08:30 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/16 16:35:16 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int32_t	open_and_expand(char **here_doc, int32_t cnt, bool expand, t_var *mini)
 	ft_free(file_name);
 	if (expand)
 	{
-		*here_doc = expander(*here_doc, *(mini->env_list));
+		*here_doc = expander(*here_doc, mini->env_list);
 		if (*here_doc == NULL)
 		{
 			close(fd);

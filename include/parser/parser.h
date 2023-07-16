@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 02:06:12 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/07 23:30:43 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/16 16:31:56 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@ char			**split_into_cmds(char *input_cmd);
 t_cmd			*create_new_cmd(char *cmd, t_var *depo);
 
 // expander.c
-char			*expand_vars(char *input, t_env *env_vars);
+char			*expand_vars(char *input, t_env **env_vars);
 
-char			*get_var_value(t_env *env_vars, char *var_name);
+char			*get_var_value(t_env **env_vars, char *var_name);
 
-char			*expand_tilde(char *input, t_env *env_vars);
+char			*expand_tilde(char *input, t_env **env_vars);
 
 char			*expand_pid(char *input);
 
-char			*expander(char *input, t_env *env_vars);
+char			*expander(char *input, t_env **env_vars);
 
 // parser.c
 t_cmd_status	ft_readline(char **buffer, const char *prompt, bool check);

@@ -87,14 +87,10 @@ char	*find_cmd_path(t_var *mini, char *cmd)
 {
 	char	*cmd_path;
 
-	printf("cmd: %s\n", cmd);
 	if (cmd && *cmd == '\0')
 		ft_command_not_found(mini, cmd);
 	if (ft_is_path(cmd) == true)
-	{
-		printf("IS PATH\n");
 		return (cmd);
-	}
 	if (ft_if_path_exists(mini))
 	{
 		if (mini->paths)
@@ -118,10 +114,8 @@ char	*find_cmd_path(t_var *mini, char *cmd)
 char	*access_cmd_path(t_var *mini, char *cmd)
 {
 	char	*cmd_path;
-	printf("COMES HERE!\n");
 	ft_split_path(mini);
 	cmd_path = find_cmd_path(mini, cmd);
-	printf("cmd path: %s\n", cmd_path);
 	if (cmd_path)
 	{
 		if (mini->env_list != NULL)

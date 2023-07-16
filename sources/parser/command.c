@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/25 01:18:26 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/08 20:45:57 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/16 16:31:44 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,7 @@ t_cmd	*create_new_cmd(char *cmd_input, t_var *mini)
 	t_cmd		*cmd;
 	uint32_t	i;
 
-	if (mini->env_list)
-		cmd_input = expander(cmd_input, *(mini->env_list));
+	cmd_input = expander(cmd_input, mini->env_list);
 	if (cmd_input == NULL)
 		return (NULL);
 	mini->n_cmd = n_cmds(cmd_input);
