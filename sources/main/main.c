@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 02:32:32 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/16 20:35:43 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/16 20:49:30 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	run_cmd(char *input, t_var *mini)
 	mini->cmd_data = create_new_cmd(input, mini);
 	if (mini->cmd_data == NULL)
 		malloc_protect(mini);
-	// print_cmd(mini);
 	ft_exec(mini);
 }
 
@@ -61,44 +60,9 @@ void	main_loop(t_var *mini)
 	clear_history();
 }
 
-void	print_cmd(t_var	*mini)
-{
-	uint32_t	i;
-	uint32_t	j;
-
-	j = 0;
-	if (mini == NULL)
-		return;
-	while (j < mini->n_cmd)
-	{
-		ft_printf("COMMAND\n\tcmd name: %s\n", mini->cmd_data[j].cmd_name);
-		i = 0;
-		while (mini->cmd_data[j].full_cmd && mini->cmd_data[j].full_cmd[i])
-			ft_printf("\t\targ: %s\n", mini->cmd_data[j].full_cmd[i++]);
-		if (mini->cmd_data[j].redirections)
-		{
-			// ft_printf("\tn. redirections: %u\n", mini->cmd_data[j].n_redirect);
-			i = 0;
-			while (i < mini->cmd_data[j].n_redirect)
-			{
-				if (mini->cmd_data[j].redirections[i] == RED_IN_SINGLE)
-					ft_printf("\t\tred type: %s file: %s\n", "<", mini->cmd_data[j].files[i]);
-				else if (mini->cmd_data[j].redirections[i] == RED_OUT_SINGLE)
-					ft_printf("\t\tred type: %s file: %s\n", ">", mini->cmd_data[j].files[i]);
-				else if (mini->cmd_data[j].redirections[i] == RED_IN_DOUBLE)
-					ft_printf("\t\tred type: %s file: %s\n", "<<", mini->cmd_data[j].files[i]);
-				else if (mini->cmd_data[j].redirections[i] == RED_OUT_DOUBLE)
-					ft_printf("\t\tred type: %s file: %s\n", ">>", mini->cmd_data[j].files[i]);
-				i++;
-			}
-		}
-		j++;
-	}
-}
-
 void	set_up_struct(t_var **mini, char **envp)
 {
-	char	*cwd = NULL;
+	char	*cwd;
 
 	*mini = ft_calloc(1, sizeof(t_var));
 	if (*mini == NULL)
@@ -123,17 +87,10 @@ void	set_up_struct(t_var **mini, char **envp)
 		malloc_protect(*mini);
 }
 
-void	f(void)
-{
-	// system("leaks -q minishell");
-	// system("lsof -c minishell");
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_var	*mini;
 
-	// atexit(&f);
 	init_sig_handle(0);
 	(void)argc;
 	(void)argv;
