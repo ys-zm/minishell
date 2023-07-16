@@ -60,7 +60,8 @@ t_cmd	*create_new_cmd(char *cmd_input, t_var *mini)
 	t_cmd		*cmd;
 	uint32_t	i;
 
-	cmd_input = expander(cmd_input, *(mini->env_list));
+	if (mini->env_list)
+		cmd_input = expander(cmd_input, *(mini->env_list));
 	if (cmd_input == NULL)
 		return (NULL);
 	mini->n_cmd = n_cmds(cmd_input);

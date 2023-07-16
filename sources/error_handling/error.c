@@ -27,7 +27,8 @@ void	ft_free_all(t_var *mini)
 {
 	if (mini->cmd_data)
 		ft_free_cmd_arr(mini->cmd_data, mini->n_cmd);
-	ft_free_env_list(mini);
+	if (mini->env_list)
+		ft_free_env_list(mini);
 	if (mini->pipes)
 	{
 		ft_free_pipes(mini->pipes, mini->n_cmd - 1);

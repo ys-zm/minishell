@@ -16,11 +16,12 @@ char	*ft_find_path(t_var *mini)
 {
 	t_env	*env_list;
 
-	if (!(mini->env_list) && *(mini->env_list) == NULL)
+	if (!mini->env_list && !*(mini->env_list))
 		return (NULL);
 	env_list = *(mini->env_list);
 	while (env_list)
 	{
+		printf("key: %s\n", env_list->key);
 		if (!ft_strncmp(env_list->key, "PATH", 4))
 			return (env_list->value);
 		env_list = env_list->next;
@@ -43,5 +44,6 @@ void	ft_split_path(t_var *mini)
 		}
 		return ;
 	}
+	
 	mini->paths = NULL;
 }

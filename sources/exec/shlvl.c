@@ -84,7 +84,9 @@ void	ft_add_to_env(t_var *mini, char *key, char *value)
 {
 	char *m_key;
 	char *m_value;
+	t_env	*new_node;
 
+	printf("SETTING SHLVL!\n");
 	m_key = ft_strdup(key);
 	if (!m_key)
 		malloc_protect(mini);
@@ -94,7 +96,18 @@ void	ft_add_to_env(t_var *mini, char *key, char *value)
 		free(m_key);
 		malloc_protect(mini);
 	}
-	ft_add_node(mini->env_list, ft_new_node(m_key, m_value));
+	new_node = ft_new_node(m_key, m_value);
+	if (mini->env_list)
+	{
+		printf("1\n");
+		ft_add_node(mini->env_list, new_node);
+	}
+	else
+	{
+		printf("2\n");
+		mini->env_list = calloc(sizeof(t_env *), 1);
+		*mini->env_list = new_node;
+	}
 }
 
 void	ft_set_shlvl(t_var *mini)
@@ -104,7 +117,7 @@ void	ft_set_shlvl(t_var *mini)
 
 	if (!mini->env_list)
 	{
-		printf("NO ENV\n");
+		ft_add_to_env(mini, "SHLVL", "1");
 		return ;
 	}
 	env = *(mini->env_list);
