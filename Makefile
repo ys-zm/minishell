@@ -14,7 +14,7 @@ CC  := cc
 IFLAGS := -Iinclude -I$(LIBFT_DIR)/include
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS += -g3 -fsanitize=address
-# CFLAGS += -arch x86_64
+CFLAGS += -arch x86_64
 LFLAGS := -Llibft -lft -lreadline -lhistory 
 
 ifeq ($(shell uname -s),Darwin)			# Mac
@@ -32,7 +32,8 @@ RESET = \x1b[0m
 all: $(LIBFT) $(NAME)
 
 run: all
-	./$(NAME)
+	@clear
+	@./$(NAME)
 
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR) --quiet
@@ -40,7 +41,6 @@ $(LIBFT):
 $(NAME): $(OBJ_DIR) $(OBJECTS)
 	@mkdir -p $(HERE_DOC_DIR)
 	@$(CC) $(CFLAGS) $(IFLAGS) $(OBJECTS) $(LFLAGS) -o $(NAME)
-	@clear
 	@printf "(minishell) $(GREEN)Created program $(NAME)$(RESET)\n"
 
 $(OBJ_DIR):
