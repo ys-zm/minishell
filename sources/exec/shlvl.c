@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:05:32 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/13 16:27:57 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/16 17:15:59 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,10 @@ void	ft_add_to_env(t_var *mini, char *key, char *value)
 	if (mini->env_list)
 		ft_add_node(mini->env_list, new_node);
 	else
+	{
 		mini->env_list = calloc(sizeof(t_env *), 1);
 		*mini->env_list = new_node;
+	}
 }
 
 void	ft_set_shlvl(t_var *mini)

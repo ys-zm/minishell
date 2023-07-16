@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 13:41:41 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/13 17:46:48 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/16 20:51:12 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	ft_exec_child_single(t_var *mini)
 	if (!cmd.cmd_name)
 		exit(EXIT_SUCCESS);
 	cmd_path = access_cmd_path(mini, cmd.cmd_name);
-	// ft_print_array(mini->env_arr);
 	g_exit_code = 0;
 	execve(cmd_path, cmd.full_cmd, mini->env_arr);
 	g_exit_code = 127;

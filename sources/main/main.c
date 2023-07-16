@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 02:32:32 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/16 16:54:55 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/16 20:49:30 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	main_loop(t_var *mini)
 
 void	set_up_struct(t_var **mini, char **envp)
 {
-	char	*cwd = NULL;
+	char	*cwd;
 
 	*mini = ft_calloc(1, sizeof(t_var));
 	if (*mini == NULL)
