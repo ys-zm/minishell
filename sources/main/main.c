@@ -79,7 +79,6 @@ void	set_up_struct(t_var **mini, char **envp)
 		cwd = get_var_value((*mini)->env_list, "SHELL");
 	else
 		cwd = getcwd(0, 0);
-	exit(0);
 	if (cwd == NULL)
 		malloc_protect(*mini);
 	(*mini)->here_doc_path = ft_strjoin(cwd, HERE_DOC_FOLDER, "/", false);
@@ -103,7 +102,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	set_up_struct(&mini, envp);
-	// ft_set_shlvl(mini);
+	ft_set_shlvl(mini);
 	main_loop(mini);
 	ft_free_exec_alloc(mini);
 	ft_free_all(mini);

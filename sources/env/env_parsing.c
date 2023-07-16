@@ -103,5 +103,5 @@ void	make_env_list(char **envp, t_var *mini)
 		i++;
 	}
 	*(mini->env_list) = head;
-	// ft_update_shell(mini->env_list);
+	ft_update_shell(mini->env_list);
 }
