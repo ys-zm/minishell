@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 13:47:59 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/13 16:17:28 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/17 12:56:52 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	ft_mem_alloc(t_var *mini)
 	mini->cmd_data->fd_in = 0;
 	mini->cmd_data->fd_out = 1;
 	mini->f_pid = 0;
-	
 	while (i < mini->n_cmd)
 	{
 		if (i == mini->n_cmd - 1)

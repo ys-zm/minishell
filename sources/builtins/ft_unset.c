@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 13:25:57 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/01 01:48:21 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/17 12:27:04 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,11 @@ int	ft_unset(t_var *mini, char **args)
 		if (!ft_check_key(args[i], "unset"))
 			ft_del_node(mini->env_list, args[i]);
 		i++;
+	}
+	if (mini->env_list && !*mini->env_list)
+	{
+		free(mini->env_list);
+		mini->env_list = NULL;
 	}
 	return (EXIT_SUCCESS);
 }

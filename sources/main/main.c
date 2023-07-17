@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 02:32:32 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/16 20:49:30 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/17 13:04:43 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ void	set_up_struct(t_var **mini, char **envp)
 	(*mini)->paths = NULL;
 	(*mini)->pipes = NULL;
 	(*mini)->pid = NULL;
-	make_env_list(envp, *mini);
+	if (envp || *envp)
+		make_env_list(envp, *mini);
 	if ((*mini)->env_list && envp)
 		cwd = get_var_value((*mini)->env_list, "SHELL");
 	else
@@ -87,17 +88,10 @@ void	set_up_struct(t_var **mini, char **envp)
 		malloc_protect(*mini);
 }
 
-void	f(void)
-{
-	system("leaks -q minishell");
-	// system("lsof -c minishell");
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_var	*mini;
 
-	atexit(&f);
 	init_sig_handle(0);
 	(void)argc;
 	(void)argv;

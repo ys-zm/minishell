@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:03:26 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/01 01:48:12 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/17 12:49:36 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,11 @@ int	ft_exec_builtin(t_var *mini, int index, int fd_out)
 	if (!ft_strcmp(cmd.cmd_name, "unset"))
 		return (ft_unset(mini, cmd.full_cmd));
 	return (EXIT_FAILURE);
+}
+
+int	ft_run_builtin(t_var *mini)
+{
+	if (ft_redir_type(mini, 0))
+		return (EXIT_FAILURE);
+	return (ft_exec_builtin(mini, 0, mini->cmd_data[0].fd_out));
 }

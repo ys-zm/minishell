@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 13:29:37 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/13 18:38:07 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/17 12:36:58 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ char	*find_cmd_path(t_var *mini, char *cmd)
 char	*access_cmd_path(t_var *mini, char *cmd)
 {
 	char	*cmd_path;
+
 	ft_split_path(mini);
 	cmd_path = find_cmd_path(mini, cmd);
 	if (cmd_path)

@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:06:07 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/16 19:32:00 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/17 12:42:39 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	ft_update_shell(t_env **env_list)
 	start = *env_list;
 	env = *env_list;
 	cwd = getcwd(0, 0);
-	while (env )
+	while (env)
 	{
 		if (!ft_strncmp("SHELL", env->key, 5))
 		{
@@ -81,8 +81,6 @@ void	make_env_list(char **envp, t_var *mini)
 	t_env	*node;
 	int		i;
 
-	if (!envp || !*envp)
-		return ;
 	i = 1;
 	mini->env_list = ft_calloc(sizeof(t_env *), 1);
 	if (!mini->env_list)

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   cd_utils_1.c                                       :+:    :+:            */
+/*   cd_utils.c                                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 11:57:18 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/16 20:33:23 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/17 12:40:29 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,8 @@ char	*ft_find_env_val(t_env **env_list, char *env_var)
 	t_env		*env;
 	size_t		len;
 
-	if (!env_list || !*env_list)
-	{
-		printf("return null\n");
+	if (!env_list)
 		return (NULL);
-	}
 	env = *env_list;
 	len = ft_strlen(env_var);
 	while (env)
@@ -93,12 +90,20 @@ void	ft_update_env_var(t_var *mini, t_env **env_list, \
 {
 	t_env	*env;
 
-	env = ft_search_env_var(env_list, which_env);
-	if (env)
+	if (env_list && ft_check_if_key_exists(*env_list, which_env))
 	{
+		env = *env_list;
+		while (env)
+		{
+			if (!ft_strcmp(env->key, which_env))
+				break ;
+			env = env->next;
+		}
 		free(env->value);
 		env->value = ft_strdup(new_env);
 		if (!env->value)
 			malloc_protect(mini);
 	}
+	else
+		ft_add_to_env(mini, which_env, new_env);
 }

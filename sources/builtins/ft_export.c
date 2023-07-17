@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 12:52:50 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/13 18:42:04 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/17 12:23:02 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@ void	ft_add_node(t_env **env_list, t_env *new_node)
 {
 	t_env	*env;
 
+	env = NULL;
+	if (!*env_list)
+		return ;
 	env = *env_list;
 	while (env->next != NULL)
 		env = env->next;

@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:05:32 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/16 17:15:59 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/17 13:12:21 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ void	ft_update_shlvl(t_shlvl_status ret, t_env *env)
 
 void	ft_add_to_env(t_var *mini, char *key, char *value)
 {
-	char *m_key;
-	char *m_value;
+	char	*m_key;
+	char	*m_value;
 	t_env	*new_node;
 
 	m_key = ft_strdup(key);
@@ -103,32 +103,4 @@ void	ft_add_to_env(t_var *mini, char *key, char *value)
 		mini->env_list = calloc(sizeof(t_env *), 1);
 		*mini->env_list = new_node;
 	}
-}
-
-void	ft_set_shlvl(t_var *mini)
-{
-	t_env			*env;
-	t_shlvl_status	ret;
-
-	if (!mini->env_list)
-	{
-		ft_add_to_env(mini, "SHLVL", "1");
-		return ;
-	}
-	env = *(mini->env_list);
-	ret = -1;
-	if (ft_check_if_key_exists(*(mini->env_list), "SHLVL"))
-	{
-		while (env)
-		{
-			if (!ft_strcmp(env->key, "SHLVL"))
-				break ;
-			env = env->next;
-		}
-		ret = ft_check_val_shlvl(env->value);
-		if (ret >= 0)
-			ft_update_shlvl(ret, env);
-	}
-	else
-		ft_add_to_env(mini, "SHLVL", "1");
 }

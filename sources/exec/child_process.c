@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 13:41:41 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/16 20:51:12 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/17 12:46:48 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	ft_exec_child_single(t_var *mini)
 	char	*cmd_path;
 	t_cmd	cmd;
 
+	ft_do_redirections(mini, 0);
 	cmd_path = NULL;
 	cmd = mini->cmd_data[0];
 	if (!cmd.cmd_name)
@@ -59,31 +60,6 @@ int	ft_exec_child_multiple(t_var *mini, int index)
 	exit(g_exit_code);
 }
 
-int	ft_pipe_dup(int fd, int fileno)
-{
-	if (fd == fileno && fd != -1)
-		return (0);
-	if (dup2(fd, fileno) == -1)
-	{
-		ft_error_msg("");
-		g_exit_code = 1;
-		close(fd);
-		return (-1);
-	}
-	close(fd);
-	return (EXIT_SUCCESS);
-}
-
-int redirect_pipe_in(t_var *mini, int index) 
-{
-	return (ft_pipe_dup(mini->cmd_data[index].fd_in, STDIN_FILENO));
-}
-
-int redirect_pipe_out(t_var *mini, int index) 
-{
-	return (ft_pipe_dup(mini->cmd_data[index].fd_out, STDOUT_FILENO));
-}
-
 void	ft_exec_multiple(t_var *mini, u_int32_t index, int fd_in)
 {
 	if (mini->cmd_data[index].if_next)
@@ -101,4 +77,3 @@ void	ft_exec_multiple(t_var *mini, u_int32_t index, int fd_in)
 		exit(g_exit_code);
 	ft_exec_child_multiple(mini, index);
 }
-  
