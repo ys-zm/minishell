@@ -64,7 +64,7 @@ int				multiple_cmds(t_var *mini);
 void			ft_exec(t_var *mini);
 
 // init_exec.c
-void			ft_mem_alloc(t_var *mini);
+void			ft_init(t_var *mini);
 
 void			ft_free_exec_alloc(t_var *mini);
 

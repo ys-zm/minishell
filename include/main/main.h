@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 02:00:55 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/08 20:13:59 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/17 15:02:13 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 
 // main.c
 void	set_up_struct(t_var **mini, char **envp);
+
+void	ft_set_home(t_var *mini);
 
 void	exit_shell(char *input);
 

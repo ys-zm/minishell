@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 01:56:43 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/12 20:27:46 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/17 14:46:47 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,11 @@ typedef struct s_var
 	t_env		**env_list;
 	char		**env_arr;
 	char		**paths;
-	int			**pipes;
 	int			pipe[2];
 	pid_t		f_pid;
-	pid_t		*pid;
 	int			status;
 	char		*here_doc_path;
+	char		*home;
 }	t_var;
 
 #endif

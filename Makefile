@@ -4,7 +4,6 @@ NAME := minishell
 SRC_DIR := sources
 OBJ_DIR := objects
 LIBFT_DIR := libft
-HERE_DOC_DIR := here_doc/
 LIBFT := $(LIBFT_DIR)/libft.a
 HEADERS := $(shell find include -type f -name '*.h')
 SOURCES = $(shell find $(SRC_DIR) -type f -name '*.c')
@@ -39,7 +38,6 @@ $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR) --quiet
 
 $(NAME): $(OBJ_DIR) $(OBJECTS)
-	@mkdir -p $(HERE_DOC_DIR)
 	@$(CC) $(CFLAGS) $(IFLAGS) $(OBJECTS) $(LFLAGS) -o $(NAME)
 	@printf "(minishell) $(GREEN)Created program $(NAME)$(RESET)\n"
 

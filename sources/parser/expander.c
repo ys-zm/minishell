@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 01:49:19 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/16 20:32:16 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/17 14:12:03 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,14 @@ char	*get_var_value(t_env **env_vars, char *var_name)
 {
 	t_env	*env_list;
 
+	env_list = NULL;
 	if (ft_strncmp(var_name, "?", 1) == 0)
 		return (ft_itoa(g_exit_code));
 	else
 	{
-		env_list = *env_vars;
-		while (env_vars && env_list)
+		if (env_vars)
+			env_list = *env_vars;
+		while (env_list)
 		{
 			if (ft_strncmp(env_list->key, var_name, ft_strlen(var_name)) == 0)
 				return (ft_strdup(env_list->value));

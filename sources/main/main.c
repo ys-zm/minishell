@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 02:32:32 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/17 13:04:43 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/17 15:31:55 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,9 @@ void	set_up_struct(t_var **mini, char **envp)
 	(*mini)->env_list = NULL;
 	(*mini)->env_arr = NULL;
 	(*mini)->paths = NULL;
-	(*mini)->pipes = NULL;
-	(*mini)->pid = NULL;
-	if (envp || *envp)
+	if (envp && *envp)
 		make_env_list(envp, *mini);
-	if ((*mini)->env_list && envp)
-		cwd = get_var_value((*mini)->env_list, "SHELL");
-	else
-		cwd = getcwd(0, 0);
+	cwd = getcwd(NULL, 0);
 	if (cwd == NULL)
 		malloc_protect(*mini);
 	(*mini)->here_doc_path = ft_strjoin(cwd, HERE_DOC_FOLDER, "/", false);
@@ -88,17 +83,23 @@ void	set_up_struct(t_var **mini, char **envp)
 		malloc_protect(*mini);
 }
 
+void	f(void)
+{
+	system("leaks -q minishell");
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_var	*mini;
 
+	atexit(&f);
 	init_sig_handle(0);
 	(void)argc;
 	(void)argv;
 	set_up_struct(&mini, envp);
 	ft_set_shlvl(mini);
 	main_loop(mini);
-	ft_free_exec_alloc(mini);
+	// ft_free_exec_alloc(mini);
 	ft_free_all(mini);
 	return (g_exit_code);
 }
