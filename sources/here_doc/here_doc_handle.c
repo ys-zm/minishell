@@ -6,7 +6,7 @@
 /*   By: faru <faru@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:15:31 by faru          #+#    #+#                 */
-/*   Updated: 2023/07/17 16:00:21 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/17 22:13:59 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,33 +33,31 @@ int32_t	find_next_eof_pos(char *cmd, uint32_t start_pos)
 	return (-1);
 }
 
-char	*isolate_eof(char *start)
+char	*isolate_del(char *start)
 {
-	char		*eof;
-	uint32_t	eof_len;
+	char		*del;
+	uint32_t	del_len;
 
-	eof_len = 0;
-	while (is_valid_space(start, eof_len))
+	del_len = 0;
+	while (is_valid_space(start, del_len))
 		start++;
-	while (start[eof_len] != '\0')
+	while (start[del_len] != '\0')
 	{
-		if (is_valid_space(start, eof_len))
+		if (is_valid_space(start, del_len))
 			break ;
-		else if (is_valid_arrow(start, eof_len))
+		else if (is_valid_arrow(start, del_len))
 			break ;
-		else if (is_valid_symbol(start, eof_len, '|'))
-			break ;
-		else if (is_valid_space(start, eof_len))
+		else if (is_valid_symbol(start, del_len, '|'))
 			break ;
 		else
-			eof_len++;
+			del_len++;
 	}
-	eof = ft_calloc((eof_len + 1), sizeof(char));
-	if (eof == NULL)
+	del = ft_calloc((del_len + 1), sizeof(char));
+	if (del == NULL)
 		return (NULL);
-	while (eof_len--)
-		eof[eof_len] = start[eof_len];
-	return (remove_quotes(eof, true));
+	while (del_len--)
+		del[del_len] = start[del_len];
+	return (del);
 }
 
 uint32_t	get_order_cmd(char *str, uint32_t pos)
@@ -103,10 +101,10 @@ t_cmd_status	handle_here_doc(char *cmd, uint32_t *cnt, t_var *mini)
 			*cnt = get_order_cmd(cmd, del_pos);
 		else
 			*cnt += get_order_cmd(cmd, del_pos);
-		del = isolate_eof((cmd + del_pos));
+		del = isolate_del((cmd + del_pos));
 		if (del == NULL)
 			return (CMD_MEM_ERR);
-		status = fork_here_doc(*cnt, del, ! is_quote(cmd[del_pos]), mini);
+		status = fork_here_doc(*cnt, del, mini);
 		ft_free(del);
 		if ((status != CMD_OK) && (status != CMD_CTRL_D))
 			break ;
