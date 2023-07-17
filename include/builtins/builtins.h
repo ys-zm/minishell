@@ -47,7 +47,7 @@ size_t	ft_list_size_to_print(t_env *env_list);
 
 char	**ft_list_to_arr(t_var *mini, t_env *env_list);
 
-int		ft_env(t_var *mini, int fd_out);
+int		ft_env(t_var *mini, char **args, int fd_out);
 
 //Echo
 //ft_echo.c

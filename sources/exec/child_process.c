@@ -12,6 +12,14 @@
 
 #include "minishell/minishell.h"
 
+void	ft_exit_code(void)
+{
+	if (errno == 13)
+		g_exit_code = 126;
+	else
+		g_exit_code = 127;
+}
+
 // Execution of single command using execve(). 
 // Global variable g_exit_code is set to 0. 
 // If it fails, g_exit_code is switched to 127 with ft_error_msg() function.
@@ -28,7 +36,7 @@ int	ft_exec_child_single(t_var *mini)
 	cmd_path = access_cmd_path(mini, cmd.cmd_name);
 	g_exit_code = 0;
 	execve(cmd_path, cmd.full_cmd, mini->env_arr);
-	g_exit_code = 127;
+	ft_exit_code();
 	ft_error_msg("");
 	ft_free_all(mini);
 	exit(g_exit_code);
@@ -42,7 +50,7 @@ void	ft_call_execve(t_var *mini, t_cmd cmd)
 	g_exit_code = 0;
 	execve(cmd_path, cmd.full_cmd, mini->env_arr);
 	free(cmd_path);
-	g_exit_code = 127;
+	ft_exit_code();
 	ft_error_msg("");
 }
 
