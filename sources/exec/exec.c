@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 13:54:26 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/17 15:01:02 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/17 15:57:40 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	ft_exec(t_var *mini)
 	else if (remove_here_docs(mini->here_doc_path) == false)
 		malloc_protect(mini);
 	ft_free_cmd_arr(mini->cmd_data, mini->n_cmd);
-	// ft_free_exec_alloc(mini);
 	mini->cmd_data = NULL;
 	mini->n_cmd = 0;
 }

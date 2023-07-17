@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 01:56:43 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/17 14:46:47 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/17 15:58:51 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ typedef struct s_var
 	pid_t		f_pid;
 	int			status;
 	char		*here_doc_path;
-	char		*home;
 }	t_var;
 
 #endif

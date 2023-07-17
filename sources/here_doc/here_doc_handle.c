@@ -6,7 +6,7 @@
 /*   By: faru <faru@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:15:31 by faru          #+#    #+#                 */
-/*   Updated: 2023/07/17 15:39:59 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/17 16:00:21 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,20 +132,17 @@ bool	remove_here_docs(char *here_doc_path)
 	success = true;
 	while ((entry != NULL) && (success == true))
 	{
-		if (entry->d_type == DT_REG && ft_strnstr(entry->d_type, "here_doc_", 9));
+		if (entry->d_type == DT_REG && \
+		ft_strnstr(entry->d_name, "here_doc_", 9))
 		{
 			success = false;
 			file_name = ft_strjoin(here_doc_path, entry->d_name, "/", false);
-			ft_printf("hd: %s\n", file_name);
 			if (file_name == NULL)
-			{
 				return (false);
-			}
 			success = unlink(file_name) == 0;
 			ft_free(file_name);
 		}
 		entry = readdir(dir);
 	}
-	closedir(dir);
-	return (success);
+	return (closedir(dir), success);
 }

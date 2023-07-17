@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/17 22:02:45 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/08 20:19:24 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/17 15:50:24 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@
 # define WRITE						1
 # define REPLACE					2
 # define APPEND						3
-# define HERE_DOC_FOLDER			"here_doc/"
-# define HERE_DOC_FIX				"here_doc"
+# define HERE_DOC_FIX				"/here_doc_"
 # define PROMPT						"minishell-> "
 # include <stdlib.h>
 # include <unistd.h>
