@@ -12,22 +12,6 @@
 
 #include "minishell/minishell.h"
 
-int	ft_same(t_env *env_list, char *key, char *value)
-{
-	t_env	*list;
-
-	list = env_list;
-	while (list)
-	{
-		if (ft_strcmp(list->key, key) == 0)
-			break ;
-		list = list->next;
-	}
-	if (list && list->value && ft_strcmp(list->value, value) == 0)
-		return (true);
-	return (false);
-}
-
 int	ft_check_if_key_exists(t_env *env_list, char *key)
 {
 	t_env	*list;

@@ -71,7 +71,6 @@ int		ft_exit(t_var *mini, char **args);
 
 //Export
 // export_utils_1.c
-int		ft_same(t_env *env_list, char *key, char *value);
 
 int		ft_check_if_key_exists(t_env *env_list, char *key);
 
