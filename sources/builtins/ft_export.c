@@ -44,13 +44,16 @@ void	ft_update_env_list(t_var *mini, char *key, char *value, size_t op_type)
 	{
 		if (ft_check_if_key_exists(*(mini->env_list), key))
 		{
-			if (op_type == REPLACE && !ft_same(*(mini->env_list), key, value))
+			if (op_type == REPLACE)
 			{
 				ft_replace_value(mini, key, value);
 				free(key);
 			}
 			else if (op_type == APPEND)
+			{
 				ft_append_value(mini, key, value);
+				free(key);
+			}
 		}
 		else
 			ft_add_node(mini->env_list, ft_new_node(key, value));
@@ -86,19 +89,22 @@ int	ft_export(t_var *mini, char **args)
 {
 	size_t	op_type;
 	size_t	op_pos;
+	int		ret;
 	int		i;
 
 	i = 1;
 	op_type = 0;
 	op_pos = 0;
+	ret = 0;
 	if (!args[i])
 		return (ft_print_export(mini->env_list), EXIT_SUCCESS);
 	while (args && args[i])
 	{
 		op_type = ft_find_operator_type(args[i]);
 		op_pos = ft_find_operator_pos(args[i]);
-		ft_export_single(mini, args[i], op_type, op_pos);
+		if (ft_export_single(mini, args[i], op_type, op_pos))
+			ret = 1;
 		i++;
 	}
-	return (EXIT_SUCCESS);
+	return (ret);
 }

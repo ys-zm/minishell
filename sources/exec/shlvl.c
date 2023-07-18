@@ -41,7 +41,7 @@ t_shlvl_status	ft_check_val_shlvl(char *val)
 	else if (!ft_check_if_digits(val) && (value > INT_MAX || value < INT_MIN))
 		ret = SET_ONE;
 	else if (value > 999)
-		ret = OUT_OF_BOUNDS; 
+		ret = OUT_OF_BOUNDS;
 	else if (value >= 0 && value < 999)
 		ret = INCREMENT;
 	return (ret);
