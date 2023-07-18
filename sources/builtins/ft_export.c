@@ -51,8 +51,8 @@ void	ft_update_env_list(t_var *mini, char *key, char *value, size_t op_type)
 			}
 			else if (op_type == APPEND)
 			{
-				free(key);
 				ft_append_value(mini, key, value);
+				free(key);
 			}
 		}
 		else
