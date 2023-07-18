@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/25 01:18:26 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/16 16:31:44 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/18 22:57:16 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,31 +54,31 @@ char	**split_into_cmds(char *input)
 	return (cmds);
 }
 
-t_cmd	*create_new_cmd(char *cmd_input, t_var *mini)
+t_cmd_status	create_new_cmd(char *cmd_input, t_var *mini)
 {
-	char		**str_cmds;
-	t_cmd		*cmd;
-	uint32_t	i;
+	char			**cmds;
+	t_cmd_status	status;
+	uint32_t		i;
 
-	cmd_input = expander(cmd_input, mini->env_list);
-	if (cmd_input == NULL)
-		return (NULL);
+	status = expander(&cmd_input, mini->env_list, true);
+	if (status != CMD_OK)
+		return (status);
 	mini->n_cmd = n_cmds(cmd_input);
-	str_cmds = split_into_cmds(cmd_input);
-	ft_free(cmd_input);
-	if (str_cmds == NULL)
-		return (NULL);
-	cmd = ft_calloc(mini->n_cmd, sizeof(t_cmd));
-	if (cmd == NULL)
-		return (ft_free_double((void **) str_cmds, -1));
+	cmds = split_into_cmds(cmd_input);
+	if (cmds == NULL)
+		return (CMD_MEM_ERR);
+	mini->cmd_data = ft_calloc(mini->n_cmd, sizeof(t_cmd));
+	if (mini->cmd_data == NULL)
+		return (ft_free_double((void **) cmds, -1), CMD_MEM_ERR);
 	i = 0;
 	while (i < mini->n_cmd)
 	{
-		if (build_cmd(mini, cmd + i, str_cmds[i], i + 1) == NULL)
-			return (ft_free_cmd_arr(cmd, i + 1), \
-				ft_free_double((void **) str_cmds, -1));
+		status = build_cmd(mini->cmd_data + i, cmds[i], i + 1, mini->hd_path);
+		if (status != CMD_OK)
+			break ;
 		i++;
 	}
-	ft_free_double((void **) str_cmds, -1);
-	return (cmd);
+	if (status != CMD_OK)
+		ft_free_cmd_arr(mini);
+	return (ft_free_double((void **) cmds, -1), status);
 }

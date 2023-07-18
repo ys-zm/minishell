@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/19 17:46:55 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/17 22:31:05 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/18 20:50:14 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int32_t	open_and_expand(char **here_doc, int32_t cnt, bool expand, t_var *mini)
 	int32_t	fd;
 	char	*file_name;
 
-	file_name = create_file_name(HERE_DOC_FIX, mini->here_doc_path, cnt);
+	file_name = create_file_name(HERE_DOC_FIX, mini->hd_path, cnt);
 	fd = open(file_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 	{
@@ -65,8 +65,7 @@ int32_t	open_and_expand(char **here_doc, int32_t cnt, bool expand, t_var *mini)
 	ft_free(file_name);
 	if (expand)
 	{
-		*here_doc = expander(*here_doc, mini->env_list);
-		if (*here_doc == NULL)
+		if (expander(here_doc, mini->env_list, false) == CMD_MEM_ERR)
 		{
 			close(fd);
 			exit(CMD_MEM_ERR);

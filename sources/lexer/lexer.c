@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/24 21:39:02 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/08 20:45:48 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/18 22:57:52 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,13 @@ uint32_t	count_words(t_list *tokens)
 	return (cnt);
 }
 
-char	**fill_words(t_list *tokens)
+t_cmd_status	fill_words(t_cmd *cmd, t_list *tokens)
 {
-	char		**full_cmd;
 	uint32_t	i;
 
-	full_cmd = ft_calloc(count_words(tokens) + 1, sizeof(char *));
-	if (full_cmd == NULL)
-		return (NULL);
+	cmd->full_cmd = ft_calloc(cmd->n_words + 1, sizeof(char *));
+	if (cmd->full_cmd == NULL)
+		return (CMD_MEM_ERR);
 	i = 0;
 	while (tokens)
 	{
@@ -45,14 +44,18 @@ char	**fill_words(t_list *tokens)
 			tokens = tokens->next;
 		else
 		{
-			full_cmd[i] = remove_quotes(tokens->content, false);
-			if (full_cmd[i] == NULL)
-				return (ft_free(full_cmd));
+			cmd->full_cmd[i] = remove_quotes(tokens->content, false);
+			if (cmd->full_cmd[i] == NULL)
+			{
+				ft_free(cmd->full_cmd);
+				return (CMD_MEM_ERR);
+			}
 			i++;
 		}
 		tokens = tokens->next;
 	}
-	return (full_cmd);
+	cmd->cmd_name = cmd->full_cmd[0];
+	return (CMD_OK);
 }
 
 uint32_t	count_redirections(t_list *tokens)
@@ -69,55 +72,54 @@ uint32_t	count_redirections(t_list *tokens)
 	return (cnt);
 }
 
-t_red_type	*get_redirections(t_list *tokens, uint32_t n, int order, char *hd)
+t_cmd_status	\
+	get_redirections(t_cmd *cmd, t_list *tokens, int order, char *hd)
 {
 	uint32_t	i;
 	char		*here_doc_file;
-	t_red_type	*redirections;
 
-	redirections = ft_calloc(n, sizeof(t_red_type));
-	if (redirections == NULL)
-		return (NULL);
+	cmd->redirections = ft_calloc(cmd->n_redirect, sizeof(t_red_type));
+	if (cmd->redirections == NULL)
+		return (CMD_MEM_ERR);
 	i = 0;
 	while (tokens)
 	{
 		if (is_redirection(tokens))
 		{
-			redirections[i] = get_type_redirection(tokens->content);
+			cmd->redirections[i] = get_type_redirection(tokens->content);
 			tokens = tokens->next;
-			if (redirections[i++] != RED_IN_DOUBLE)
+			if (cmd->redirections[i++] != RED_IN_DOUBLE)
 				continue ;
 			here_doc_file = create_file_name(HERE_DOC_FIX, hd, order);
 			if (here_doc_file == NULL)
-				return (ft_free(redirections));
+				return (ft_free(cmd->redirections), CMD_MEM_ERR);
 			ft_free(tokens->content);
 			tokens->content = here_doc_file;
 		}
 		tokens = tokens->next;
 	}
-	return (redirections);
+	return (CMD_OK);
 }
 
-char	**get_files(t_list *tokens, uint32_t n_redirect)
+t_cmd_status	get_files(t_cmd *cmd, t_list *tokens)
 {
-	uint32_t	i;
-	char		**files;
+	uint32_t		i;
 
-	files = ft_calloc(n_redirect + 1, sizeof(char *));
-	if (files == NULL)
-		return (NULL);
+	cmd->files = ft_calloc(cmd->n_redirect + 1, sizeof(char *));
+	if (cmd->files == NULL)
+		return (CMD_MEM_ERR);
 	i = 0;
 	while (tokens)
 	{
 		if (is_redirection(tokens))
 		{
 			tokens = tokens->next;
-			files[i] = remove_quotes(tokens->content, false);
-			if (files[i] == NULL)
-				return (ft_free(files));
+			cmd->files[i] = remove_quotes(tokens->content, false);
+			if (cmd->files[i] == NULL)
+				return (ft_free(cmd->files), CMD_MEM_ERR);
 			i++;
 		}
 		tokens = tokens->next;
 	}
-	return (files);
+	return (CMD_OK);
 }

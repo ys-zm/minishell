@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:30:46 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/08 20:45:31 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/18 22:55:02 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,19 @@ int	ft_free_cmd_struct(t_cmd *cmd)
 	return (EXIT_SUCCESS);
 }
 
-int	ft_free_cmd_arr(t_cmd *cmd_data, uint32_t n_cmds)
+int	ft_free_cmd_arr(t_var *mini)
 {
 	uint32_t	i;
 
 	i = 0;
-	while (i < n_cmds)
+	while (i < mini->n_cmd)
 	{
-		ft_free_cmd_struct(cmd_data + i);
+		ft_free_cmd_struct(mini->cmd_data + i);
 		i++;
 	}
-	ft_free(cmd_data);
+	ft_free(mini->cmd_data);
+	mini->cmd_data = NULL;
+	mini->n_cmd = 0;
 	return (EXIT_SUCCESS);
 }
 

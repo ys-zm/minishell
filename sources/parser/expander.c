@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 01:49:19 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/17 14:12:03 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/18 22:24:47 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,8 @@ char	*expand_tilde(char *str, t_env **env_vars)
 	i = 0;
 	while (str && str[i])
 	{
-		if (ft_isspace(str[i]) && str[i + 1])
+		if (ft_isspace(str[i++]) && str[i])
 		{
-			i++;
 			if (is_valid_symbol(str, i++, '~') && \
 				(ft_isspace(str[i]) || (str[i] == '/') || (! str[i])))
 			{
@@ -83,8 +82,6 @@ char	*expand_tilde(char *str, t_env **env_vars)
 				ft_free(home_var);
 			}
 		}
-		else
-			i++;
 	}
 	return (str);
 }
@@ -115,21 +112,27 @@ char	*expand_pid(char *input)
 	return (input);
 }
 
-char	*expander(char *input, t_env **env_vars)
+t_cmd_status	expander(char **input, t_env **env_vars, bool check)
 {
-	char	*tilde_exp;
-	char	*pid_exp;
-	char	*var_exp;
+	char	*tmp_exp;
 
-	tilde_exp = expand_tilde(input, env_vars);
-	if (tilde_exp == NULL)
-		return (NULL);
-	pid_exp = expand_pid(tilde_exp);
-	if (pid_exp == NULL)
-		return (NULL);
-	var_exp = expand_vars(pid_exp, env_vars);
-	if (var_exp == NULL)
-		return (NULL);
+	tmp_exp = expand_tilde(*input, env_vars);
+	if (*input == NULL)
+		return (CMD_MEM_ERR);
+	tmp_exp = expand_pid(tmp_exp);
+	if (tmp_exp == NULL)
+		return (CMD_MEM_ERR);
+	tmp_exp = expand_vars(tmp_exp, env_vars);
+	if (tmp_exp == NULL)
+		return (CMD_MEM_ERR);
+	if (check && (check_sintax(tmp_exp) == false))
+	{
+		ft_free(tmp_exp);
+		return (CMD_SIN_ERR);
+	}
 	else
-		return (var_exp);
+	{
+		*input = tmp_exp;
+		return (CMD_OK);
+	}
 }
