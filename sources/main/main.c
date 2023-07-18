@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 02:32:32 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/17 16:00:34 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/18 20:00:33 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,10 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_var	*mini;
 
-	init_sig_handle(0);
-	(void)argc;
 	(void)argv;
+	if (argc > 1)
+		ft_putstr_fd("unnecessary argoment provided\n", 2);
+	init_sig_handle(0);
 	set_up_struct(&mini, envp);
 	ft_set_shlvl(mini);
 	main_loop(mini);
