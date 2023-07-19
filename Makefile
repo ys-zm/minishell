@@ -12,7 +12,7 @@ OBJECTS := $(patsubst $(SRC_DIR)%,$(OBJ_DIR)%,$(SOURCES:.c=.o))
 CC  := cc
 IFLAGS := -Iinclude -I$(LIBFT_DIR)/include
 CFLAGS = -Wall -Wextra -Werror
-# CFLAGS += -g3 -fsanitize=address
+CFLAGS += -g3 -fsanitize=address
 CFLAGS += -arch x86_64
 LFLAGS := -Llibft -lft -lreadline -lhistory 
 
