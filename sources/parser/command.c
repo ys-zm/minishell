@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/25 01:18:26 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/18 22:57:16 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/19 11:09:05 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,25 +32,28 @@ char	**split_into_cmds(char *input)
 {
 	char		**cmds;
 	uint32_t	i;
+	uint32_t	j;
 	uint32_t	len;
 
 	cmds = ft_calloc(n_cmds(input) + 1, sizeof(char *));
 	if (! cmds)
 		return (NULL);
 	i = 0;
+	j = 0;
 	while (true)
 	{
 		len = 0;
-		while (input[len] && (is_valid_symbol(input, len, '|') == false))
+		while (input[j + len] && is_valid_symbol(input, j + len, '|') == false)
 			len++;
-		cmds[i] = ft_substr(input, 0, len);
+		cmds[i] = ft_substr(input + j, 0, len);
 		if (cmds[i] == NULL)
 			return (ft_free_double((void **) cmds, i));
 		i++;
-		input += len + (input[len] != 0);
-		if (*input == '\0')
+		j += len + (input[j + len] != 0);
+		if (input[j] == '\0')
 			break ;
 	}
+	ft_free(input);
 	return (cmds);
 }
 

@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 02:32:32 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/18 22:49:21 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/19 10:49:23 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	run_cmd(char *input, t_var *mini)
 	t_cmd_status	status;
 
 	status = create_new_cmd(input, mini);
-	ft_free(input);
 	if (status == CMD_SIN_ERR)
 	{
 		ft_putstr_fd("minishell: syntax error\n", 2);
