@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 02:17:37 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/13 16:30:31 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/18 22:50:19 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int		ft_free_pipes(int **pipes, int size);
 
 int		ft_free_cmd_struct(t_cmd *cmd);
 
-int		ft_free_cmd_arr(t_cmd *cmd_data, u_int32_t n_cmds);
+int		ft_free_cmd_arr(t_var *mini);
 
 int		ft_free_env_list(t_var *mini);
 

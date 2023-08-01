@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 02:06:12 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/16 16:31:56 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/18 22:58:42 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ uint32_t		n_cmds(char *string);
 
 char			**split_into_cmds(char *input_cmd);
 
-t_cmd			*create_new_cmd(char *cmd, t_var *depo);
+t_cmd_status	create_new_cmd(char *cmd, t_var *depo);
 
 // expander.c
 char			*expand_vars(char *input, t_env **env_vars);
@@ -30,7 +30,7 @@ char			*expand_tilde(char *input, t_env **env_vars);
 
 char			*expand_pid(char *input);
 
-char			*expander(char *input, t_env **env_vars);
+t_cmd_status	expander(char **input, t_env **env_vars, bool check);
 
 // parser.c
 t_cmd_status	ft_readline(char **buffer, const char *prompt, bool check);

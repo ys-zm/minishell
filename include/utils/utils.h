@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 02:12:06 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/07 23:30:03 by fra           ########   odam.nl         */
+/*   Updated: 2023/07/18 20:11:59 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,7 @@ char	*remove_quotes(char *to_clear, bool free_string);
 char	*create_file_name(const char *fix_part, char *path_file, int32_t cnt);
 
 bool	is_actual_file(char *file_name);
+
+void	print_cmd(t_var	*mini);
 
 #endif

@@ -6,13 +6,13 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/19 17:46:55 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/17 15:54:06 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/18 20:50:14 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell/minishell.h"
 
-t_cmd_status	eof_here_doc(char **here_doc, t_cmd_status status)
+t_cmd_status	del_here_doc(char **here_doc, t_cmd_status status)
 {
 	ft_free(*here_doc);
 	*here_doc = ft_strdup("");
@@ -21,7 +21,7 @@ t_cmd_status	eof_here_doc(char **here_doc, t_cmd_status status)
 	return (status);
 }
 
-t_cmd_status	aquire_input_hd(char *eof, char **here_doc)
+t_cmd_status	aquire_input_hd(char *del, char **here_doc)
 {
 	char			*new_line;
 	t_cmd_status	status;
@@ -32,8 +32,8 @@ t_cmd_status	aquire_input_hd(char *eof, char **here_doc)
 		if (status == CMD_MEM_ERR)
 			return (ft_free(*here_doc), status);
 		else if (status == CMD_CTRL_D)
-			return (eof_here_doc(here_doc, status));
-		else if (ft_strncmp(new_line, eof, ft_strlen(eof)) == 0)
+			return (del_here_doc(here_doc, status));
+		else if (ft_strncmp(new_line, del, ft_strlen(del)) == 0)
 		{
 			ft_free(new_line);
 			*here_doc = ft_append_char(*here_doc, '\n');
@@ -52,7 +52,7 @@ int32_t	open_and_expand(char **here_doc, int32_t cnt, bool expand, t_var *mini)
 	int32_t	fd;
 	char	*file_name;
 
-	file_name = create_file_name(HERE_DOC_FIX, mini->here_doc_path, cnt);
+	file_name = create_file_name(HERE_DOC_FIX, mini->hd_path, cnt);
 	fd = open(file_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 	{
@@ -65,8 +65,7 @@ int32_t	open_and_expand(char **here_doc, int32_t cnt, bool expand, t_var *mini)
 	ft_free(file_name);
 	if (expand)
 	{
-		*here_doc = expander(*here_doc, mini->env_list);
-		if (*here_doc == NULL)
+		if (expander(here_doc, mini->env_list, false) == CMD_MEM_ERR)
 		{
 			close(fd);
 			exit(CMD_MEM_ERR);
@@ -75,26 +74,35 @@ int32_t	open_and_expand(char **here_doc, int32_t cnt, bool expand, t_var *mini)
 	return (fd);
 }
 
-t_cmd_status	write_here_doc(int cnt, char *del, bool exp_vars, t_var *mini)
+void	write_here_doc(int cnt, char *del, t_var *mini)
 {
 	t_cmd_status	status;
 	char			*here_doc;
+	bool			exp_vars;
 	int32_t			fd;
 
 	init_sig_handle(2);
 	here_doc = NULL;
+	exp_vars = (ft_strchr(del, '\'') == NULL) && (ft_strchr(del, '"') == NULL);
+	del = remove_quotes(del, false);
+	if (del == NULL)
+		exit(CMD_MEM_ERR);
 	status = aquire_input_hd(del, &here_doc);
 	if (status == CMD_MEM_ERR)
+	{
+		ft_free(del);
 		exit(status);
+	}
 	fd = open_and_expand(&here_doc, cnt, exp_vars, mini);
 	if (write(fd, here_doc, ft_strlen(here_doc)) == -1)
 		status = CMD_FILE_ERR;
+	ft_free(del);
 	close(fd);
 	ft_free(here_doc);
 	exit(status);
 }
 
-t_cmd_status	fork_here_doc(int cnt, char *del, bool exp_vars, t_var *mini)
+t_cmd_status	fork_here_doc(int cnt, char *del, t_var *mini)
 {
 	t_cmd_status	status;
 	int32_t			status_procs;
@@ -105,7 +113,7 @@ t_cmd_status	fork_here_doc(int cnt, char *del, bool exp_vars, t_var *mini)
 	if (child_id == -1)
 		status = CMD_PROC_ERR;
 	else if (child_id == 0)
-		write_here_doc(cnt, del, exp_vars, mini);
+		write_here_doc(cnt, del, mini);
 	else
 	{
 		init_sig_handle(1);

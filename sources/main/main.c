@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 02:32:32 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/17 16:00:34 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/19 10:49:23 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,20 @@ void	exit_shell(char *input)
 
 void	run_cmd(char *input, t_var *mini)
 {
-	mini->cmd_data = create_new_cmd(input, mini);
-	if (mini->cmd_data == NULL)
+	t_cmd_status	status;
+
+	status = create_new_cmd(input, mini);
+	if (status == CMD_SIN_ERR)
+	{
+		ft_putstr_fd("minishell: syntax error\n", 2);
+		if (remove_here_docs(mini->hd_path) == false)
+			malloc_protect(mini);
+		ft_free_cmd_arr(mini);
+	}
+	else if (status == CMD_MEM_ERR)
 		malloc_protect(mini);
-	ft_exec(mini);
+	else
+		ft_exec(mini);
 }
 
 void	main_loop(t_var *mini)
@@ -72,8 +82,8 @@ void	set_up_struct(t_var **mini, char **envp)
 	(*mini)->paths = NULL;
 	if (envp && *envp)
 		make_env_list(envp, *mini);
-	(*mini)->here_doc_path = getcwd(NULL, 0);
-	if ((*mini)->here_doc_path == NULL)
+	(*mini)->hd_path = getcwd(NULL, 0);
+	if ((*mini)->hd_path == NULL)
 		malloc_protect(*mini);
 }
 
@@ -81,9 +91,10 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_var	*mini;
 
-	init_sig_handle(0);
-	(void)argc;
 	(void)argv;
+	if (argc > 1)
+		ft_putstr_fd("unnecessary argoment(s) provided\n", 2);
+	init_sig_handle(0);
 	set_up_struct(&mini, envp);
 	ft_set_shlvl(mini);
 	main_loop(mini);

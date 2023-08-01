@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 01:56:43 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/17 15:58:51 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/07/18 21:39:59 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_env
 
 typedef struct s_cmd
 {
+	uint32_t			n_words;
 	char				*cmd_name;
 	char				**full_cmd;
 	uint32_t			n_redirect;
@@ -70,7 +71,7 @@ typedef struct s_var
 	int			pipe[2];
 	pid_t		f_pid;
 	int			status;
-	char		*here_doc_path;
+	char		*hd_path;
 }	t_var;
 
 #endif
