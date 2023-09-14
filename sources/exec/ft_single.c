@@ -35,5 +35,12 @@ int	single_cmd(t_var *mini)
 	init_sig_handle(0);
 	if (WIFEXITED(exit_status))
 		return (WEXITSTATUS(exit_status));
+	if (WIFSIGNALED(exit_status))
+	{
+		if (WTERMSIG(exit_status) == SIGINT)
+			return (130);
+		if (WTERMSIG(exit_status) == SIGQUIT)
+			return (131);
+	}
 	return (EXIT_FAILURE);
 }

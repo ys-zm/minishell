@@ -80,5 +80,12 @@ int	multiple_cmds(t_var *mini)
 		;
 	if (WIFEXITED(exit_status))
 		status = WEXITSTATUS(exit_status);
+	if (WIFSIGNALED(exit_status))
+	{
+		if (WTERMSIG(exit_status) == SIGINT)
+			return (130);
+		if (WTERMSIG(exit_status) == SIGQUIT)
+			return (131);
+	}
 	return (status);
 }
