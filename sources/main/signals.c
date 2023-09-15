@@ -48,6 +48,6 @@ void	init_sig_handle(int mode)
 	else if (mode == 2)
 	{
 		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
+		// signal(SIGQUIT, SIG_DFL); //remove this so that heredoc mode doesnt respond to ctrl '\'
 	}
 }

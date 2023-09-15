@@ -51,8 +51,8 @@ int	malloc_protect(t_var *mini)
 	remove_here_docs(mini->hd_path);
 	ft_free_all(mini);
 	ft_error_msg("");
-	g_exit_code = 137;
-	exit(g_exit_code);
+	mini->status = 137;
+	exit(mini->status);
 }
 
 void	ft_write_error(int fd, char *func, char *str, char *msg)

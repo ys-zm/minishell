@@ -91,7 +91,7 @@ int				ft_file_redirect(t_var *mini, int index);
 
 void			ft_do_redirections(t_var *mini, int index);
 
-int				ft_pipe_dup(int fd, int fileno);
+int				ft_pipe_dup(int fd, int fileno, t_var *mini);
 
 int				redirect_pipe_in(t_var *mini, int index);
 

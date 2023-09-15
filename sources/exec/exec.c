@@ -16,10 +16,10 @@ void	ft_exec(t_var *mini)
 {
 	ft_init(mini);
 	if (mini->n_cmd == 1)
-		g_exit_code = single_cmd(mini);
+		mini->status = single_cmd(mini);
 	else
-		g_exit_code = multiple_cmds(mini);
-	if (g_exit_code == 137)
+		mini->status = multiple_cmds(mini);
+	if (mini->status == 137)
 		malloc_protect(mini);
 	else if (remove_here_docs(mini->hd_path) == false)
 		malloc_protect(mini);

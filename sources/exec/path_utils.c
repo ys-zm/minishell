@@ -19,6 +19,7 @@ void	ft_command_not_found(t_var *mini, char *cmd)
 	ft_putstr_fd(cmd, STDERR_FILENO);
 	ft_putstr_fd(": command not found\n", STDERR_FILENO);
 	ft_free_all(mini);
+	mini->status = 127;
 	exit (127);
 }
 
@@ -28,5 +29,6 @@ void	ft_permission_denied(t_var *mini, char *cmd)
 	ft_putstr_fd(cmd, STDERR_FILENO);
 	ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
 	ft_free_all(mini);
+	mini->status = 126;
 	exit (126);
 }

@@ -97,20 +97,20 @@ int	ft_exit(t_var *mini, char **args)
 	if (count_args(args) == 1)
 	{
 		ft_free_all(mini);
-		exit(g_exit_code);
+		exit(mini->status);
 	}
 	if (!ft_check_if_numeric(args[1]))
 	{
 		ft_write_error(2, "exit", args[1], "numeric argument required");
-		g_exit_code = 255;
-		exit(g_exit_code);
+		mini->status = 255;
+		exit(mini->status);
 	}
 	else
 	{
 		if (count_args(args) == 2)
 		{
-			g_exit_code = ft_if_sign(args[1]);
-			exit(g_exit_code);
+			mini->status = ft_if_sign(args[1]);
+			exit(mini->status);
 		}
 		else
 			return (ft_putstr_fd("minishell: exit: too many arguments\n", 2), \

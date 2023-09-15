@@ -70,8 +70,8 @@ int	ft_file_redirect(t_var *mini, int index)
 {
 	if (ft_redir_type(mini, index))
 	{
-		g_exit_code = 1;
-		exit(g_exit_code);
+		mini->status = 1;
+		exit(mini->status);
 	}
 	return (EXIT_SUCCESS);
 }

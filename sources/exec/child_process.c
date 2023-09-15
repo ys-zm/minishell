@@ -12,12 +12,12 @@
 
 #include "minishell/minishell.h"
 
-void	ft_exit_code(void)
+void	ft_exit_code(t_var *mini)
 {
 	if (errno == 13)
-		g_exit_code = 126;
+		mini->status = 126;
 	else
-		g_exit_code = 127;
+		mini->status = 127;
 }
 
 // Execution of single command using execve(). 
@@ -34,12 +34,12 @@ int	ft_exec_child_single(t_var *mini)
 	if (!cmd.cmd_name)
 		exit(EXIT_SUCCESS);
 	cmd_path = access_cmd_path(mini, cmd.cmd_name);
-	g_exit_code = 0;
+	mini->status = 0;
 	execve(cmd_path, cmd.full_cmd, mini->env_arr);
-	ft_exit_code();
+	ft_exit_code(mini);
 	ft_error_msg("");
 	ft_free_all(mini);
-	exit(g_exit_code);
+	exit(mini->status);
 }
 
 void	ft_call_execve(t_var *mini, t_cmd cmd)
@@ -47,10 +47,10 @@ void	ft_call_execve(t_var *mini, t_cmd cmd)
 	char	*cmd_path;
 
 	cmd_path = access_cmd_path(mini, cmd.cmd_name);
-	g_exit_code = 0;
+	mini->status = 0;
 	execve(cmd_path, cmd.full_cmd, mini->env_arr);
 	free(cmd_path);
-	ft_exit_code();
+	ft_exit_code(mini);
 	ft_error_msg("");
 }
 
@@ -64,8 +64,8 @@ int	ft_exec_child_multiple(t_var *mini, int index)
 	if (!ft_if_builtin(cmd.cmd_name))
 		ft_call_execve(mini, cmd);
 	else
-		g_exit_code = ft_exec_builtin(mini, index, STDOUT_FILENO);
-	exit(g_exit_code);
+		mini->status = ft_exec_builtin(mini, index, STDOUT_FILENO);
+	exit(mini->status);
 }
 
 void	ft_exec_multiple(t_var *mini, u_int32_t index, int fd_in)
@@ -80,8 +80,8 @@ void	ft_exec_multiple(t_var *mini, u_int32_t index, int fd_in)
 	if (ft_if_redir(mini, index))
 		ft_file_redirect(mini, index);
 	if (redirect_pipe_in(mini, index) == -1)
-		exit(g_exit_code);
+		exit(mini->status);
 	if (redirect_pipe_out(mini, index) == -1)
-		exit(g_exit_code);
+		exit(mini->status);
 	ft_exec_child_multiple(mini, index);
 }

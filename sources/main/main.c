@@ -39,6 +39,7 @@ void	run_cmd(char *input, t_var *mini)
 		malloc_protect(mini);
 	else
 		ft_exec(mini);
+	g_exit_code = mini->status; //TAKE THIS OUT WHEN EXPANDER HAS ACCESS TO MINI->STATUS
 }
 
 void	main_loop(t_var *mini)
@@ -99,5 +100,5 @@ int	main(int argc, char **argv, char **envp)
 	ft_set_shlvl(mini);
 	main_loop(mini);
 	ft_free_all(mini);
-	return (g_exit_code);
+	return (mini->status);
 }
