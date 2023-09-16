@@ -6,19 +6,19 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 01:49:19 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/18 22:24:47 by fra           ########   odam.nl         */
+/*   Updated: 2023/09/16 23:26:04 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell/minishell.h"
 
-char	*get_var_value(t_env **env_vars, char *var_name)
+char	*get_var_value(t_env **env_vars, char *var_name, int exit_status)
 {
 	t_env	*env_list;
 
 	env_list = NULL;
 	if (ft_strncmp(var_name, "?", 1) == 0)
-		return (ft_itoa(g_exit_code));
+		return (ft_itoa(exit_status));
 	else
 	{
 		if (env_vars)
@@ -33,7 +33,7 @@ char	*get_var_value(t_env **env_vars, char *var_name)
 	}
 }
 
-char	*expand_vars(char *input, t_env **env_vars)
+char	*expand_vars(char *input, t_env **env_vars, int exit_status)
 {
 	uint32_t	i;
 	uint32_t	end;
@@ -50,7 +50,7 @@ char	*expand_vars(char *input, t_env **env_vars)
 			|| ft_strchr("?_", input[end])))
 			end++;
 		var_name = ft_substr(input, i, end - i);
-		var_value = get_var_value(env_vars, var_name);
+		var_value = get_var_value(env_vars, var_name, exit_status);
 		ft_free(var_name);
 		if (var_value == NULL)
 			return (ft_free(input));
@@ -74,7 +74,7 @@ char	*expand_tilde(char *str, t_env **env_vars)
 			if (is_valid_symbol(str, i++, '~') && \
 				(ft_isspace(str[i]) || (str[i] == '/') || (! str[i])))
 			{
-				home_var = get_var_value(env_vars, "HOME");
+				home_var = get_var_value(env_vars, "HOME", 0);
 				if (home_var == NULL)
 					return (ft_free(str));
 				str = ft_insert_str(str, home_var, i, i);
@@ -112,7 +112,7 @@ char	*expand_pid(char *input)
 	return (input);
 }
 
-t_cmd_status	expander(char **input, t_env **env_vars, bool check)
+t_cmd_status	expander(char **input, t_env **env_vars, int stat, bool check)
 {
 	char	*tmp_exp;
 
@@ -122,7 +122,7 @@ t_cmd_status	expander(char **input, t_env **env_vars, bool check)
 	tmp_exp = expand_pid(tmp_exp);
 	if (tmp_exp == NULL)
 		return (CMD_MEM_ERR);
-	tmp_exp = expand_vars(tmp_exp, env_vars);
+	tmp_exp = expand_vars(tmp_exp, env_vars, stat);
 	if (tmp_exp == NULL)
 		return (CMD_MEM_ERR);
 	if (check && (check_sintax(tmp_exp) == false))

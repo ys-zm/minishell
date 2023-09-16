@@ -6,13 +6,13 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 02:32:32 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/19 10:49:23 by faru          ########   odam.nl         */
+/*   Updated: 2023/09/16 23:49:56 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell/minishell.h"
 
-int	g_exit_code;
+int	*g_exit_code;
 
 void	exit_shell(char *input)
 {
@@ -39,7 +39,6 @@ void	run_cmd(char *input, t_var *mini)
 		malloc_protect(mini);
 	else
 		ft_exec(mini);
-	g_exit_code = mini->status; //TAKE THIS OUT WHEN EXPANDER HAS ACCESS TO MINI->STATUS
 }
 
 void	main_loop(t_var *mini)
@@ -97,6 +96,7 @@ int	main(int argc, char **argv, char **envp)
 		ft_putstr_fd("unnecessary argoment(s) provided\n", 2);
 	init_sig_handle(0);
 	set_up_struct(&mini, envp);
+	g_exit_code = &mini->status;
 	ft_set_shlvl(mini);
 	main_loop(mini);
 	ft_free_all(mini);

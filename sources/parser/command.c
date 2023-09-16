@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/25 01:18:26 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/19 11:09:05 by faru          ########   odam.nl         */
+/*   Updated: 2023/09/16 23:03:01 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_cmd_status	create_new_cmd(char *cmd_input, t_var *mini)
 	t_cmd_status	status;
 	uint32_t		i;
 
-	status = expander(&cmd_input, mini->env_list, true);
+	status = expander(&cmd_input, mini->env_list, mini->status, true);
 	if (status != CMD_OK)
 		return (status);
 	mini->n_cmd = n_cmds(cmd_input);

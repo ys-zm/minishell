@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/17 22:02:45 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/17 15:50:24 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/09/16 23:23:34 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@
 # include "parser/parser.h"
 # include "utils/utils.h"
 
-extern int	g_exit_code;
+extern int	*g_exit_code;
 
 // debugging functions
 void	ft_print_array(char **arr);

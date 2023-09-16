@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/15 21:26:00 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/07 12:23:59 by faru          ########   odam.nl         */
+/*   Updated: 2023/09/16 23:23:56 by fra           ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ bool	check_sintax(char *cmd)
 		return (true);
 	else
 	{
-		g_exit_code = 258;
+		*g_exit_code = 258;
 		return (false);
 	}
 }
