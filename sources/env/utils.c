@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:06:50 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/11 14:25:36 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/09/21 11:26:21 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,10 @@ bool	ft_key_rules(char c, int index)
 int	ft_check_key(char *key, char *cmd)
 {
 	int	i;
+	char *new_key;
 
 	i = 0;
+	new_key = NULL;
 	if (key && key[0] == '\0')
 		return (ft_write_error(2, cmd, "`'", "not a valid identifer"), \
 			EXIT_FAILURE);
@@ -53,7 +55,9 @@ int	ft_check_key(char *key, char *cmd)
 	{
 		if (!ft_key_rules(key[i], i))
 		{
-			ft_write_error(2, cmd, key, "not a valid identifier");
+			new_key = ft_trip_join("`", key, "'");
+			ft_write_error(2, cmd, new_key, "not a valid identifier");
+			free(new_key);
 			return (EXIT_FAILURE);
 		}
 		i++;

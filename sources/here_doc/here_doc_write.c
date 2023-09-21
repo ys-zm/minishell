@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/19 17:46:55 by fra           #+#    #+#                 */
-/*   Updated: 2023/09/17 00:04:47 by fra           ########   odam.nl         */
+/*   Updated: 2023/09/21 12:04:39 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ t_cmd_status	fork_here_doc(int cnt, char *del, t_var *mini)
 			status = CMD_PROC_ERR;
 		else if (WIFSIGNALED(status_procs))
 		{
-			mini->status = 130;
+			mini->status = 1;
 			status = CMD_CTRL_C;
 		}
 		else

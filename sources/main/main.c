@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 02:32:32 by fra           #+#    #+#                 */
-/*   Updated: 2023/09/16 23:49:56 by fra           ########   odam.nl         */
+/*   Updated: 2023/09/21 12:10:07 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,16 @@ void	set_up_struct(t_var **mini, char **envp)
 		malloc_protect(*mini);
 }
 
+void	ft_leaks(void)
+{
+	system("leaks -l minishell");
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_var	*mini;
 
+	// atexit(&ft_leaks);
 	(void)argv;
 	if (argc > 1)
 		ft_putstr_fd("unnecessary argoment(s) provided\n", 2);
@@ -102,3 +108,6 @@ int	main(int argc, char **argv, char **envp)
 	ft_free_all(mini);
 	return (mini->status);
 }
+
+//issues:
+//- top -> CTRL \ destroys prompt !
