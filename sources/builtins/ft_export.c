@@ -6,7 +6,7 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 12:52:50 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/17 12:23:02 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/09/21 16:22:21 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,10 @@ void	ft_update_env_list(t_var *mini, char *key, char *value, size_t op_type)
 		if (ft_check_if_key_exists(*(mini->env_list), key))
 		{
 			if (op_type == REPLACE)
-			{
 				ft_replace_value(mini, key, value);
-				free(key);
-			}
 			else if (op_type == APPEND)
-			{
 				ft_append_value(mini, key, value);
-				free(key);
-			}
+			free(key);
 		}
 		else
 			ft_add_node(mini->env_list, ft_new_node(key, value));
