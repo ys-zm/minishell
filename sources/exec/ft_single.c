@@ -6,11 +6,23 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 13:54:26 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/07/17 12:56:35 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/09/21 12:45:24 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell/minishell.h"
+
+int	ft_sig_check(int exit_status)
+{
+	if (WIFSIGNALED(exit_status))
+	{
+		if (WTERMSIG(exit_status) == SIGINT)
+			return (130);
+		if (WTERMSIG(exit_status) == SIGQUIT)
+			return (131);
+	}
+	return (EXIT_FAILURE);
+}
 
 int	single_cmd(t_var *mini)
 {
@@ -35,12 +47,5 @@ int	single_cmd(t_var *mini)
 	init_sig_handle(0);
 	if (WIFEXITED(exit_status))
 		return (WEXITSTATUS(exit_status));
-	if (WIFSIGNALED(exit_status))
-	{
-		if (WTERMSIG(exit_status) == SIGINT)
-			return (130);
-		if (WTERMSIG(exit_status) == SIGQUIT)
-			return (131);
-	}
-	return (EXIT_FAILURE);
+	return (ft_sig_check(exit_status));
 }

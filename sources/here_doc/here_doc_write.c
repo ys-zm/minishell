@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/19 17:46:55 by fra           #+#    #+#                 */
-/*   Updated: 2023/09/21 12:04:39 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/09/21 12:37:48 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ int32_t	open_and_expand(char **here_doc, int32_t cnt, bool expand, t_var *mini)
 	ft_free(file_name);
 	if (expand)
 	{
-		if (expander(here_doc, mini->env_list, mini->status, false) == CMD_MEM_ERR)
+		if (expander(here_doc, mini->env_list, mini->status, false) \
+				== CMD_MEM_ERR)
 		{
 			close(fd);
 			exit(CMD_MEM_ERR);
@@ -126,7 +127,6 @@ t_cmd_status	fork_here_doc(int cnt, char *del, t_var *mini)
 		}
 		else
 			status = WEXITSTATUS(status_procs);
-
 	}
 	init_sig_handle(0);
 	return (status);

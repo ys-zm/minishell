@@ -6,13 +6,11 @@
 /*   By: yzaim <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 14:06:50 by yzaim         #+#    #+#                 */
-/*   Updated: 2023/09/21 11:26:21 by yzaim         ########   odam.nl         */
+/*   Updated: 2023/09/21 12:36:02 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell/minishell.h"
-
-//Uilts for Adding to Env_List
 
 int	ft_find_first_equals(char *env)
 {
@@ -43,8 +41,8 @@ bool	ft_key_rules(char c, int index)
 
 int	ft_check_key(char *key, char *cmd)
 {
-	int	i;
-	char *new_key;
+	int		i;
+	char	*new_key;
 
 	i = 0;
 	new_key = NULL;

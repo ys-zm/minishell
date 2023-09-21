@@ -6,7 +6,7 @@
 /*   By: faru <faru@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/28 11:57:18 by faru          #+#    #+#                 */
-/*   Updated: 2023/09/17 00:06:05 by fra           ########   odam.nl         */
+/*   Updated: 2023/09/21 12:40:16 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,29 @@ void	signal_handler(int signum)
 	}
 }
 
+// mode == 0 : normal flow
+// mode == 1 : main process (when forking)
+// mode == 2 : child process (when forking)
+// mode == 3 : here_doc (child process when forking)
 void	init_sig_handle(int mode)
 {
-	if (mode == 0)						// normal flow
+	if (mode == 0)
 	{
 		init_shell_envioment();
 		signal(SIGINT, signal_handler);
 		signal(SIGQUIT, SIG_IGN);
 	}
-	else if (mode == 1)					// main process (when forking)
+	else if (mode == 1)
 	{
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
 	}
-	else if (mode == 2)					// child process (when forking)
+	else if (mode == 2)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 	}
-	else if (mode == 3)					// here_doc (child process when forking)
+	else if (mode == 3)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_IGN);

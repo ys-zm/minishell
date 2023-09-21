@@ -6,7 +6,7 @@
 /*   By: fra <fra@student.42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/20 19:09:49 by fra           #+#    #+#                 */
-/*   Updated: 2023/07/18 22:36:23 by fra           ########   odam.nl         */
+/*   Updated: 2023/09/21 12:43:38 by yzaim         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,39 +76,4 @@ bool	is_actual_file(char *file_name)
 		return (true);
 	else
 		return (false);
-}
-
-void	print_cmd(t_var	*mini)
-{
-	uint32_t	i;
-	uint32_t	j;
-
-	j = 0;
-	if (mini == NULL)
-		return ;
-	while (j < mini->n_cmd)
-	{
-		ft_printf("COMMAND\n\tcmd name: %s\n", mini->cmd_data[j].cmd_name);
-		i = 0;
-		while (mini->cmd_data[j].full_cmd && mini->cmd_data[j].full_cmd[i])
-			ft_printf("\t\targ: %s\n", mini->cmd_data[j].full_cmd[i++]);
-		if (mini->cmd_data[j].redirections)
-		{
-			// ft_printf("\tn. redirections: %u\n", mini->cmd_data[j].n_redirect);
-			i = 0;
-			while (i < mini->cmd_data[j].n_redirect)
-			{
-				if (mini->cmd_data[j].redirections[i] == RED_IN_SINGLE)
-					ft_printf("\t\tred type: %s file: %s\n", "<", mini->cmd_data[j].files[i]);
-				else if (mini->cmd_data[j].redirections[i] == RED_OUT_SINGLE)
-					ft_printf("\t\tred type: %s file: %s\n", ">", mini->cmd_data[j].files[i]);
-				else if (mini->cmd_data[j].redirections[i] == RED_IN_DOUBLE)
-					ft_printf("\t\tred type: %s file: %s\n", "<<", mini->cmd_data[j].files[i]);
-				else if (mini->cmd_data[j].redirections[i] == RED_OUT_DOUBLE)
-					ft_printf("\t\tred type: %s file: %s\n", ">>", mini->cmd_data[j].files[i]);
-				i++;
-			}
-		}
-		j++;
-	}
 }
