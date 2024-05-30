@@ -11,7 +11,7 @@ Our shell behaves like the bash (Unix OS X version) as much as possible in the w
    
 3. `make fclean` removes object files and the executable
    
-4. `make re` calls `make fclean` followed by `make`  
+4. `make re` calls `fclean` followed by `all`  
 
 ---
 
